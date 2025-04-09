@@ -13,21 +13,15 @@ body {
   min-height: 100vh;
 }
 
-/* .main-content {
-  flex-grow: 1;
-  padding: 20px;
-  background-color: #f1f3f5;
-} */
-
-/* App.css */
 .app-container {
   display: flex;
 }
 
 .main-content {
-  margin-left: 250px; /* Equal to sidebar width */
-  padding: 30px;
-  width: calc(100% - 250px); /* Prevents overflow & keeps layout clean */
-  background-color: #f4f7fa;
+  margin-left: 250px;
+  padding: 0 30px;
+  padding-top: 20px;
+  width: calc(100% - 250px);
+  background-color: #F6FAFF;
   min-height: 100vh;
 }
