@@ -1,3 +1,4 @@
+
 import express from 'express';
 import { addService, getServices, updateService} from './back_end/services.js';
 import cors from 'cors';
@@ -50,7 +51,12 @@ app.put("/service/:id", async (req, res) => {
     res.send(message);
 });
 
-// Start the server
-app.listen(8080, () => {
-    console.log("Server running on port 8080");
-});
+// Detect possible error
+app.use((err,req,res,next)=>{
+    console.error(err.stack);
+    res.status(500).send('Lost connections')
+})
+// Detect if there is a connection
+app.listen(8080,()=>{
+    console.log("Server is running in port 8080");
+})

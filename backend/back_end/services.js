@@ -10,13 +10,21 @@ const pool = mysql.createPool({
     port: process.env.MYSQL_PORT || 3306
 }).promise();
 
+// Test the MySQL connection
+pool.getConnection()
+    .then(() => {
+        console.log("Database connected successfully!");
+    })
+    .catch(err => {
+        console.error("Database connection failed: ", err);
+    });
 
 // Add a new service
 export async function addService(body) {
     const [result] = await pool.query(`
-        INSERT INTO tb_services (service_name, description, price, duration, status)
-        VALUES (?, ?, ?, ?, ?)`, 
-        [body.service_name, body.description, body.price, body.duration, body.status]
+        INSERT INTO tb_services (service_name, inspo)
+        VALUES (?, ?)`, 
+        [body.service_name, body.image]
     );
     const id = result.insertId;
     return getService(id);
@@ -42,9 +50,9 @@ export async function getService(id) {
 export async function updateService(body, id) {
     const [result] = await pool.query(`
         UPDATE tb_services
-        SET service_name = ?, description = ?, price = ?, status = ?
+        SET service_name = ?, inspo = ?
         WHERE id = ?`, 
-        [body.service_name, body.description, body.price, body.status, id]
+        [body.service_name, body.image, id]
     );
     return result;
 }
