@@ -1,5 +1,6 @@
+
 import express from 'express';
-import { addService, getServices} from './back_end/services.js';
+import { addService, getServices, updateService} from './back_end/services.js';
 import cors from 'cors';
 
 const app = express();
@@ -29,7 +30,33 @@ app.get("/services", async (req, res) => {
     }
 });
 
-// Start the server
-app.listen(8080, () => {
-    console.log("Server running on port 8080");
+app.put("/service/:id", async (req, res) => {
+    const id = req.params.id;
+    const results = await updateService(req.body, id);
+    let message = {
+        status: 1,
+        message: "You successfully updated the service"
+    };
+    if (results.affectedRows === 1) {
+        message = {
+            status: 1,
+            message: "You successfully updated the service"
+        };
+    } else {
+        message = {
+            status: 0,
+            message: "Error updating the service"
+        };
+    }
+    res.send(message);
 });
+
+// Detect possible error
+app.use((err,req,res,next)=>{
+    console.error(err.stack);
+    res.status(500).send('Lost connections')
+})
+// Detect if there is a connection
+app.listen(8080,()=>{
+    console.log("Server is running in port 8080");
+})
