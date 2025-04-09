@@ -1,5 +1,5 @@
 import express from 'express';
-import { addService, getServices} from './back_end/services.js';
+import { addService, getServices, updateService} from './back_end/services.js';
 import cors from 'cors';
 
 const app = express();
@@ -27,6 +27,27 @@ app.get("/services", async (req, res) => {
         console.error(error);
         res.status(500).send("Error fetching services");
     }
+});
+
+app.put("/service/:id", async (req, res) => {
+    const id = req.params.id;
+    const results = await updateService(req.body, id);
+    let message = {
+        status: 1,
+        message: "You successfully updated the service"
+    };
+    if (results.affectedRows === 1) {
+        message = {
+            status: 1,
+            message: "You successfully updated the service"
+        };
+    } else {
+        message = {
+            status: 0,
+            message: "Error updating the service"
+        };
+    }
+    res.send(message);
 });
 
 // Start the server

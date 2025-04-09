@@ -37,3 +37,14 @@ export async function getService(id) {
     );
     return rows[0]; // Return the first (and only) result
 }
+
+// Update a service
+export async function updateService(body, id) {
+    const [result] = await pool.query(`
+        UPDATE tb_services
+        SET service_name = ?, description = ?, price = ?, status = ?
+        WHERE id = ?`, 
+        [body.service_name, body.description, body.price, body.status, id]
+    );
+    return result;
+}
