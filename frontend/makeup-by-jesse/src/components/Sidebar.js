@@ -1,16 +1,50 @@
-import Link from "next/link";
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import styles from './Sidebar.module.css';
+import { FaTachometerAlt, FaBookmark, FaCalendarAlt, FaEdit, FaCog, FaSignOutAlt } from 'react-icons/fa';
 
 export default function Sidebar() {
+  const pathname = usePathname();
+
   return (
-    <nav className="sidebar">
-      <ul>
-        <li><Link href="/dashboard">Dashboard</Link></li>
-        <li><Link href="/bookings">Manage Bookings</Link></li>
-        <li><Link href="/schedule">Schedule</Link></li>
-        <li><Link href="/manage-website">Manage Website Content</Link></li>
-        <li><Link href="/settings">Settings</Link></li>
-        <li><Link href="/logout">Log Out</Link></li>
+    <div className={styles.sidebar}>
+      <div className={styles['sidebar-header']}>
+        <h2>admin.</h2>
+      </div>
+      <ul className={styles['sidebar-menu']}>
+        <li className={pathname === '/dashboard' ? styles.active : ''}>
+          <Link href="/dashboard">
+            <FaTachometerAlt className={styles.icon}/> Dashboard
+          </Link>
+        </li>
+        <li className={pathname === '/bookings' ? styles.active : ''}>
+          <Link href="/bookings">
+            <FaBookmark className={styles.icon}/> Manage Bookings
+          </Link>
+        </li>
+        <li className={pathname === '/schedule' ? styles.active : ''}>
+          <Link href="/schedule">
+            <FaCalendarAlt className={styles.icon}/> Schedule
+          </Link>
+        </li>
+        <li className={pathname === '/content' ? styles.active : ''}>
+          <Link href="/content">
+            <FaEdit className={styles.icon}/> Manage Website Content
+          </Link>
+        </li>
+        <li className={pathname === '/settings' ? styles.active : ''}>
+          <Link href="/settings">
+            <FaCog className={styles.icon}/> Settings
+          </Link>
+        </li>
       </ul>
-    </nav>
+      <div className={styles['sidebar-footer']}>
+        <Link href="/logout">
+          <FaSignOutAlt className={styles['logout-icon']}/> Logout
+        </Link>
+      </div>
+    </div>
   );
 }
