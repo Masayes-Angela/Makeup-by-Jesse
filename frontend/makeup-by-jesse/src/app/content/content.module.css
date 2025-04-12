@@ -43,7 +43,7 @@
   border-radius: 999px;
   padding: 0.5rem;
   width: fit-content;
-  margin: 0 auto 2rem;
+  margin: 0 auto 2.5rem;
 }
 
 .mw-nav button {
@@ -52,20 +52,22 @@
   border-radius: 999px;
   padding: 0.5rem 1.5rem;
   color: var(--navtext);
-  font-weight: bold;
+  font-weight: normal;
+  width: 120px;
   cursor: pointer;
   transition: background 0.2s, color 0.3s;
 }
 
 .mw-nav button:hover {
   color: var(--dark-text);
+  font-weight: 600;
 }
 
 .mw-nav button.active,
 .mw-nav button:focus {
   background-color: var(--white);
   color: var(--dark-text);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  font-weight: 600;
 }
 
 /* Unified content container style */
@@ -77,7 +79,7 @@
   width: 80%;
   margin: 0 auto 2rem;
   max-width: 1000px;
-  min-height: 24rem;
+  min-height: 28rem;
 }
 
 .tab-content-header {
@@ -101,6 +103,12 @@
   margin-top: 1rem;
 }
 
+.services-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 5px;
+}
+
 /* Services-specific styles */
 .services-list {
   display: flex;
@@ -110,31 +118,81 @@
 
 .service-item {
   background: var(--light-gray);
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: 8px;
-  width: calc(33.33% - 1rem);
+  width: 100%;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
   margin-top: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .service-item img {
-  width: 100%;
-  height: auto;
+  width: 15rem;
+  height: 15rem;
+  object-fit: cover;
   border-radius: 6px;
+  margin-right: 2rem;
+}
+
+.serviceText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.service-item label {
+  color: var(--gray);
+  font-size: 14px;
+}
+
+.service-item .serviceName {
+  color: var(--dark-text);
+  font-size: 14px;
+  color: var(--dark-text);
+  width: 240px;
+  padding: 18px;
+  border-radius: 6px;
+  border: 1px solid #CED6DC;
+  background-color: #F6F7F8;
 }
 
 .service-actions button {
-  background-color: var(--primary);
-  color: var(--white);
+  font-weight: bold;
   padding: 0.5rem;
-  border-radius: 6px;
+  width: 5rem;
+  border-radius: 4px;
   cursor: pointer;
   transition: background 0.3s;
 }
 
-.service-actions button:hover {
-  background-color: var(--dark-primary);
+.service-actions .updateButton{
+  margin-right: 6px;
+  border: 2px solid var(--dark-text);
+  background-color: var(--dark-text);
+  color: var(--white);
 }
+
+.service-actions .updateButton:hover{
+  border: 2px solid var(--dark-text);
+  background-color: transparent;
+  color: var(--dark-text);
+}
+
+.service-actions .deleteButton{
+  border: 2px solid var(--dark-text);
+  background-color: var(--dark-text);
+  color: var(--white);
+}
+
+.service-actions .deleteButton:hover{
+  border: 2px solid var(--dark-text);
+  background-color: transparent;
+  color: var(--dark-text);
+}
+
 
 /*Buttons */
 .editButton{
@@ -191,6 +249,7 @@
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 
 /* Add Service Form */
 .add-service-form {
@@ -251,19 +310,12 @@
   color: var(--primary);
   border-radius: 6px;
   font-weight: bold;
-  padding: 0.5rem 1rem;
+  margin-right: 5px;
+  padding: 0.5rem 0.6rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
 .add-service-form input[type="file"]:hover::file-selector-button {
   background-color: #e7efef;
-}
-
-/* For responsive layout */
-@media (max-width: 768px) {
-  .add-service-form {
-    width: 90%;
-    padding: 1rem;
-  }
 }
