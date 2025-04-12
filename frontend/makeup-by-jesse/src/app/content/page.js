@@ -33,21 +33,21 @@ const ManageWebsite = () => {
         return (
           <div className={styles['services-container']}>
             <div className={styles['services-header']}>
-            <div>
-              {isEditing ? (
-                <>
-                  <button className={styles.cancelButton} onClick={() => setIsEditing(false)}>Cancel</button>
-                  <button className={styles.saveButton} onClick={() => setIsEditing(false)}>Save Changes</button>
-                </>
-              ) : (
-                <button className={styles.editButton} onClick={() => setIsEditing(true)}>
-                  <span className={styles.buttonText}>Edit</span>
-                  <span className={styles.iconWrapper}>
-                    <FaEdit />
-                  </span>
-                </button>
-              )}
-            </div>
+              <div>
+                {isEditing ? (
+                  <>
+                    <button className={styles.cancelButton} onClick={() => setIsEditing(false)}>Cancel</button>
+                    <button className={styles.saveButton} onClick={() => setIsEditing(false)}>Save Changes</button>
+                  </>
+                ) : (
+                  <button className={styles.editButton} onClick={() => setIsEditing(true)}>
+                    <span className={styles.buttonText}>Edit</span>
+                    <span className={styles.iconWrapper}>
+                      <FaEdit />
+                    </span>
+                  </button>
+                )}
+              </div>
             </div>
 
             {isEditing && <AddServiceForm onAdd={handleAdd} />}
@@ -143,9 +143,17 @@ const AddServiceForm = ({ onAdd }) => {
 
   return (
     <form className={styles['add-service-form']} onSubmit={handleSubmit}> 
-      <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} />
+      <input 
+        type="file" 
+        accept="image/*" 
+        name="serviceImage"
+        id="serviceImage"
+        onChange={(e) => setImage(e.target.files[0])} 
+      />
       <input
         type="text"
+        name="serviceName"
+        id="serviceName"
         placeholder="Service name"
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -177,25 +185,36 @@ const ServiceItem = ({ index, service, isEditing, onUpdate, onDelete }) => {
     <div className={styles['service-item']}>
       {isUpdating ? (
         <>
-          <input type="file" onChange={handleImageChange} />
+          <input 
+            type="file" 
+            name={`updateImage-${index}`} 
+            id={`updateImage-${index}`} 
+            onChange={handleImageChange} 
+          />
           <input
             type="text"
+            name={`updateName-${index}`} 
+            id={`updateName-${index}`}
             value={updatedName}
             onChange={(e) => setUpdatedName(e.target.value)}
           />
-          <button className={styles.saveButton} onClick={handleSave}>Save</button>
           <button className={styles.cancelButton} onClick={() => setIsUpdating(false)}>Cancel</button>
+          <button className={styles.saveButton} onClick={handleSave}>Save</button>
         </>
       ) : (
         <>
           <img src={service.image} alt={service.name} />
-          <p>{service.name}</p>
+          <div className={styles.serviceDetails}>
+            <label htmlFor="service-name" className={styles.serviceNameLabel}>Service Name</label>
+            <p className={styles.serviceName}>{service.name}</p>
+          
           {isEditing && (
             <div className={styles['service-actions']}>
               <button className={styles.updateButton} onClick={() => setIsUpdating(true)}>Update</button>
               <button className={styles.deleteButton} onClick={() => onDelete(index)}>Delete</button>
             </div>
           )}
+          </div>
         </>
       )}
     </div>
