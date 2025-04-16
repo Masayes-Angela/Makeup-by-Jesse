@@ -7,8 +7,7 @@ export const store = configureStore({
   reducer: {
     [serviceApi.reducerPath]: serviceApi.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(serviceApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(serviceApi.middleware),
 });
 
 setupListeners(store.dispatch);
