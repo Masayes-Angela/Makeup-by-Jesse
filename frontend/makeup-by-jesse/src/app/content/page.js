@@ -2,28 +2,13 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import styles from './content.module.css';
+import styles from './content.module.css'; 
 import { FaEdit } from 'react-icons/fa';
-
-// Modal Component
-const Modal = ({ isOpen, onClose, children }) => {
-  if (!isOpen) return null;
-  return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
-        <button className={styles.modalClose} onClick={onClose}>×</button>
-        {children}
-      </div>
-    </div>
-  );
-};
 
 const ManageWebsite = () => {
   const [activeTab, setActiveTab] = useState('services');
   const [services, setServices] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [selectedServiceIndex, setSelectedServiceIndex] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   
 
@@ -35,7 +20,6 @@ const ManageWebsite = () => {
     const updatedList = [...services];
     updatedList[index] = updatedService;
     setServices(updatedList);
-    setIsModalOpen(false);
   };
 
   const handleDelete = (index) => {
@@ -60,7 +44,9 @@ const ManageWebsite = () => {
                 ) : (
                   <button className={styles.editButton} onClick={() => setIsEditing(true)}>
                     <span className={styles.buttonText}>Edit</span>
-                    <span className={styles.iconWrapper}><FaEdit /></span>
+                    <span className={styles.iconWrapper}>
+                      <FaEdit />
+                    </span>
                   </button>
                 )}
               </div>
@@ -75,10 +61,7 @@ const ManageWebsite = () => {
                   index={index}
                   service={service}
                   isEditing={isEditing}
-                  onEditClick={() => {
-                    setSelectedServiceIndex(index);
-                    setIsModalOpen(true);
-                  }}
+                  onUpdate={handleUpdate}
                   onDelete={handleDelete}
                 />
               ))}
@@ -96,8 +79,6 @@ const ManageWebsite = () => {
     }
   };
 
-  const selectedService = selectedServiceIndex !== null ? services[selectedServiceIndex] : null;
-
   return (
     <div className={styles['manage-website']}>
       <div className={styles.container}>
@@ -108,32 +89,43 @@ const ManageWebsite = () => {
       </div>
 
       <nav className={styles['mw-nav']}>
-        <button onClick={() => setActiveTab('services')} className={activeTab === 'services' ? styles.active : ''}>Services</button>
-        <button onClick={() => setActiveTab('about')} className={activeTab === 'about' ? styles.active : ''}>About Me</button>
-        <button onClick={() => setActiveTab('gallery')} className={activeTab === 'gallery' ? styles.active : ''}>Gallery</button>
-        <button onClick={() => setActiveTab('reviews')} className={activeTab === 'reviews' ? styles.active : ''}>Reviews</button>
+        <button
+          onClick={() => setActiveTab('services')}
+          className={activeTab === 'services' ? styles.active : ''}
+        >
+          Services
+        </button>
+        <button
+          onClick={() => setActiveTab('about')}
+          className={activeTab === 'about' ? styles.active : ''}
+        >
+          About Me
+        </button>
+        <button
+          onClick={() => setActiveTab('gallery')}
+          className={activeTab === 'gallery' ? styles.active : ''}
+        >
+          Gallery
+        </button>
+        <button
+          onClick={() => setActiveTab('reviews')}
+          className={activeTab === 'reviews' ? styles.active : ''}
+        >
+          Reviews
+        </button>
       </nav>
 
       <div className={styles['tab-content-container']}>
         {renderTabContent()}
       </div>
-
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        {selectedService && (
-          <UpdateServiceForm
-            service={selectedService}
-            onSave={(updatedService) => handleUpdate(selectedServiceIndex, updatedService)}
-            onCancel={() => setIsModalOpen(false)}
-          />
-        )}
-      </Modal>
     </div>
   );
 };
 
 export default ManageWebsite;
 
-// Add Service
+// Components
+
 const AddServiceForm = ({ onAdd }) => {
   const [name, setName] = useState('');
   const [image, setImage] = useState(null);
@@ -152,18 +144,18 @@ const AddServiceForm = ({ onAdd }) => {
   };
 
   return (
-    <form className={styles['add-service-form']} onSubmit={handleSubmit}>
-      <input
-        id="service-image"
+    <form className={styles['add-service-form']} onSubmit={handleSubmit}> 
+      <input 
+        type="file" 
+        accept="image/*" 
         name="serviceImage"
-        type="file"
-        accept="image/*"
-        onChange={(e) => setImage(e.target.files[0])}
+        id="serviceImage"
+        onChange={(e) => setImage(e.target.files[0])} 
       />
       <input
-        id="service-name"
-        name="serviceName"
         type="text"
+        name="serviceName"
+        id="serviceName"
         placeholder="Service name"
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -173,8 +165,8 @@ const AddServiceForm = ({ onAdd }) => {
   );
 };
 
-// Update Service Modal Form
-const UpdateServiceForm = ({ service, onSave, onCancel }) => {
+const ServiceItem = ({ index, service, isEditing, onUpdate, onDelete }) => {
+  const [isUpdating, setIsUpdating] = useState(false);
   const [updatedName, setUpdatedName] = useState(service.name);
   const [updatedImage, setUpdatedImage] = useState(service.image);
 
@@ -186,61 +178,47 @@ const UpdateServiceForm = ({ service, onSave, onCancel }) => {
     reader.readAsDataURL(file);
   };
 
-  return (
-    <div className={styles.updateForm}>
-      <h3 className={styles.modalTitle}>Update Service</h3>
+  const handleSave = () => {
+    onUpdate(index, { name: updatedName, image: updatedImage });
+    setIsUpdating(false);
+  };
 
-      <label htmlFor="update-image" className={styles.inputLabel}>Change Image</label>
-      <label className={styles.fileInputWrapper}>
-        Choose File
-        <input
-          id="update-image"
-          name="updatedServiceImage"
-          type="file"
-          className={styles.fileInput}
-          onChange={handleImageChange}
-        />
-      </label>
-
-      <label htmlFor="update-name" className={styles.inputLabel}>Service Name</label>
-      <input
-        id="update-name"
-        name="updatedServiceName"
-        type="text"
-        className={styles.textInput}
-        value={updatedName}
-        onChange={(e) => setUpdatedName(e.target.value)}
-      />
-
-      <div className={styles.updateButtons}>
-        <button className={styles.UpdmodalcancelButton} onClick={onCancel}>Cancel</button>
-        <button
-          className={styles.UpdmodalsaveButton}
-          onClick={() => onSave({ name: updatedName, image: updatedImage })}
-        >
-          Save
-        </button>
-      </div>
-    </div>
-  );
-};
-
-// Service Item
-const ServiceItem = ({ index, service, isEditing, onEditClick, onDelete }) => {
   return (
     <div className={styles['service-item']}>
-      <img src={service.image} alt={service.name} />
-      <div className={styles.serviceText}>
-        <p className={styles.serviceNameLabel}>Service Name</p>
-        <p className={styles.serviceName}>{service.name}</p>
-
-        {isEditing && (
-          <div className={styles['service-actions']}>
-            <button className={styles.updateButton} onClick={() => onEditClick(index)}>Update</button>
-            <button className={styles.deleteButton} onClick={() => onDelete(index)}>Delete</button>
+      {isUpdating ? (
+        <>
+          <input 
+            type="file" 
+            name={`updateImage-${index}`} 
+            id={`updateImage-${index}`} 
+            onChange={handleImageChange} 
+          />
+          <input
+            type="text"
+            name={`updateName-${index}`} 
+            id={`updateName-${index}`}
+            value={updatedName}
+            onChange={(e) => setUpdatedName(e.target.value)}
+          />
+          <button className={styles.cancelButton} onClick={() => setIsUpdating(false)}>Cancel</button>
+          <button className={styles.saveButton} onClick={handleSave}>Save</button>
+        </>
+      ) : (
+        <>
+          <img src={service.image} alt={service.name} />
+          <div className={styles.serviceDetails}>
+            <label htmlFor="service-name" className={styles.serviceNameLabel}>Service Name</label>
+            <p className={styles.serviceName}>{service.name}</p>
+          
+          {isEditing && (
+            <div className={styles['service-actions']}>
+              <button className={styles.updateButton} onClick={() => setIsUpdating(true)}>Update</button>
+              <button className={styles.deleteButton} onClick={() => onDelete(index)}>Delete</button>
+            </div>
+          )}
           </div>
-        )}
-      </div>
+        </>
+      )}
     </div>
   );
 };
