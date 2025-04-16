@@ -1,15 +1,21 @@
-  import Sidebar from "@/components/Sidebar";
-  import "./globals.css";
+'use client'
 
-  export default function RootLayout({ children }) {
-    return (
-      <html lang="en">
-        <body>
+import Sidebar from "@/components/Sidebar";
+import { Provider } from "react-redux";
+import { store } from "@/rtk/store";
+import "./globals.css";
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        <Provider store={store}>
           <div className="app">
             <Sidebar />
             <main className="main-content">{children}</main>
           </div>
-        </body>
-      </html>
-    );
-  }
+        </Provider>
+      </body>
+    </html>
+  );
+}

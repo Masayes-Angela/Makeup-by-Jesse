@@ -35,7 +35,7 @@ export default function AddService() {
   const handleSubmit = async () => {
     const newService = {
       service_name: serviceName,
-      inspo: serviceImage,
+      image: serviceImage,
     };
 
     console.log('Submitting:', newService);
