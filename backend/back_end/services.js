@@ -1,5 +1,7 @@
 import mysql from 'mysql2';
 import dotenv from 'dotenv';
+
+
 dotenv.config();
 console.log("MySQL User:", process.env.MYSQL_USER);
 
