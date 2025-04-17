@@ -1,76 +1,94 @@
-import React, { useState, useEffect } from 'react';
-import { useAddServiceMutation } from '@/rtk/serviceApi'; // ← You should have this in your RTK slice
+'use client';
 
-export default function AddService() {
-  const [serviceName, setServiceName] = useState('');
-  const [serviceImage, setServiceImage] = useState('');
-  const [addService] = useAddServiceMutation();
+import { useState } from 'react';
 
-  // 🔼 This should be similar to how you added books using RTK
+const AddServiceForm = ({ onAdd }) => {
+  const [name, setName] = useState('');
+  const [image, setImage] = useState(null);
 
-  const openUploadWidget = () => {
-    if (window.cloudinary) {
-      const cloudinaryWidget = window.cloudinary.createUploadWidget(
-        {
-          cloudName: 'codestudio28',
-          uploadPreset: 'wmnayrn3',
-          sources: ['local', 'url', 'unsplash'],
-          cropping: true,
-          multiple: false,
-          maxFileSize: 2000000,
-          clientAllowedFormats: ['jpg', 'png', 'webp'],
-          folder: 'servicesupload',
-        },
-        (error, result) => {
-          if (!error && result.event === 'success') {
-            console.log('Upload successful:', result.info.secure_url);
-            setServiceImage(result.info.secure_url);
-          }
-        }
-      );
-      cloudinaryWidget.open();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!name || !image) {
+      alert('Please provide both name and image!');
+      return;
     }
-  };
 
-  const handleSubmit = async () => {
-    const newService = {
-      service_name: serviceName,
-      image: serviceImage,
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const newService = {
+        name,
+        image: reader.result,
+      };
+
+      onAdd(newService);
+      setName('');
+      setImage(null);
+      e.target.reset();
     };
 
-    console.log('Submitting:', newService);
-    await addService(newService);
+    reader.readAsDataURL(image);
   };
 
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://upload-widget.cloudinary.com/global/all.js';
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
+  const formStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+    marginTop: '20px',
+    padding: '20px',
+    backgroundColor: '#f9f9f9',
+    borderRadius: '12px',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+    maxWidth: '400px',
+  };
+
+  const inputStyle = {
+    padding: '10px',
+    fontSize: '16px',
+    borderRadius: '6px',
+    border: '1px solid #ccc',
+  };
+
+  const buttonStyle = {
+    padding: '10px',
+    backgroundColor: '#4CAF50',
+    color: '#fff',
+    fontWeight: 'bold',
+    border: 'none',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    transition: 'background-color 0.3s ease',
+  };
+
+  const buttonHoverStyle = {
+    backgroundColor: '#45a049',
+  };
 
   return (
-    <div className="genre-form">
+    <form style={formStyle} onSubmit={handleSubmit}>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => setImage(e.target.files[0])}
+        style={inputStyle}
+      />
       <input
         type="text"
-        value={serviceName}
-        onChange={(e) => setServiceName(e.target.value)}
-        placeholder="Enter service name"
+        placeholder="Service name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        style={inputStyle}
       />
-      <button onClick={openUploadWidget}>Upload Image</button>
-
-      {serviceImage && (
-        <div style={{ marginTop: '10px' }}>
-          <img src={serviceImage} alt="Service Preview" width="150" />
-        </div>
-      )}
-
       <button
-        style={{ backgroundColor: 'blue', color: 'white', marginTop: '10px' }}
-        onClick={handleSubmit}
+        type="submit"
+        style={buttonStyle}
+        onMouseOver={(e) => (e.target.style.backgroundColor = buttonHoverStyle.backgroundColor)}
+        onMouseOut={(e) => (e.target.style.backgroundColor = buttonStyle.backgroundColor)}
       >
         Add Service
       </button>
-    </div>
+    </form>
   );
-}
+};
+
+export default AddServiceForm;
