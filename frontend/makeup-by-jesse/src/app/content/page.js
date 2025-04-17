@@ -5,6 +5,20 @@ import Image from 'next/image';
 import styles from './content.module.css'; 
 import { FaEdit } from 'react-icons/fa';
 
+
+// Modal Component
+const Modal = ({ isOpen, onClose, children }) => {
+  if (!isOpen) return null;
+  return (
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContent}>
+        <button className={styles.modalClose} onClick={onClose}>×</button>
+        {children}
+      </div>
+    </div>
+  );
+};
+
 const ManageWebsite = () => {
   const [activeTab, setActiveTab] = useState('services');
   const [services, setServices] = useState([]);
