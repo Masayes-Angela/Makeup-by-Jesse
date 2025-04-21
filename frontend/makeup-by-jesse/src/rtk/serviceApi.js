@@ -2,13 +2,28 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
 export const serviceApi = createApi({
   reducerPath: "serviceApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8080" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:8080",
+    // Add additional logging for debugging
+    prepareHeaders: (headers, { getState, endpoint, type, url }) => {
+      console.log(`Making ${type} request to ${url}`)
+      return headers
+    },
+  }),
   tagTypes: ["Services"],
   endpoints: (builder) => ({
     // Get all services
     getServices: builder.query({
       query: () => "/services",
-      providesTags: ["Services"],
+      providesTags: (result) =>
+        result
+          ? [...result.map(({ id }) => ({ type: "Services", id })), { type: "Services", id: "LIST" }]
+          : [{ type: "Services", id: "LIST" }],
+      // Add transform response for debugging
+      transformResponse: (response) => {
+        console.log("getServices response:", response)
+        return response
+      },
     }),
 
     // Get a single service
@@ -24,7 +39,7 @@ export const serviceApi = createApi({
         method: "POST",
         body: newService,
       }),
-      invalidatesTags: ["Services"],
+      invalidatesTags: [{ type: "Services", id: "LIST" }],
     }),
 
     // Update a service
@@ -34,16 +49,30 @@ export const serviceApi = createApi({
         method: "PUT",
         body: service,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Services", id }],
+      // Invalidate both the specific service and the list
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Services", id },
+        { type: "Services", id: "LIST" },
+      ],
     }),
 
-    // Delete a service (if you want to add this functionality later)
+    // Delete a service
     deleteService: builder.mutation({
       query: (id) => ({
         url: `/services/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Services"],
+      // Add transform response for debugging
+      transformResponse: (response, meta, arg) => {
+        console.log(`Delete service response for ID ${arg}:`, response)
+        return response
+      },
+      // Add transform error response for debugging
+      transformErrorResponse: (response, meta, arg) => {
+        console.error(`Error deleting service ID ${arg}:`, response)
+        return response
+      },
+      invalidatesTags: [{ type: "Services", id: "LIST" }],
     }),
   }),
 })

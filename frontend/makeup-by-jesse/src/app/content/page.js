@@ -28,9 +28,18 @@ const Modal = ({ isOpen, onClose, children }) => {
 const ManageWebsite = () => {
   const [activeTab, setActiveTab] = useState("services")
   const [isEditing, setIsEditing] = useState(false)
+  const [deleteStatus, setDeleteStatus] = useState({ loading: false, error: null })
 
-  // Use RTK Query hooks
-  const { data: services = [], isLoading, isError, refetch } = useGetServicesQuery()
+  // Use RTK Query hooks with refetch capability
+  const {
+    data: services = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useGetServicesQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  })
+
   const [addService] = useAddServiceMutation()
   const [updateService] = useUpdateServiceMutation()
   const [deleteService] = useDeleteServiceMutation()
@@ -41,7 +50,7 @@ const ManageWebsite = () => {
         service_name: newService.name,
         image: newService.image,
       })
-      // The services list will automatically update due to RTK Query cache invalidation
+      refetch()
     } catch (error) {
       console.error("Failed to add service:", error)
     }
@@ -54,6 +63,7 @@ const ManageWebsite = () => {
         service_name: updatedService.name,
         image: updatedService.image,
       })
+      refetch()
     } catch (error) {
       console.error("Failed to update service:", error)
     }
@@ -62,9 +72,20 @@ const ManageWebsite = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete?")) {
       try {
-        await deleteService(id)
+        setDeleteStatus({ loading: true, error: null })
+        console.log("Deleting service with ID:", id) // Debug log
+
+        // Call the delete mutation with the ID
+        const response = await deleteService(id).unwrap()
+        console.log("Delete response:", response) // Debug log
+
+        // Explicitly refetch to update the UI
+        await refetch()
+        setDeleteStatus({ loading: false, error: null })
       } catch (error) {
         console.error("Failed to delete service:", error)
+        setDeleteStatus({ loading: false, error: error.message || "Failed to delete service" })
+        alert(`Error deleting service: ${error.message || "Unknown error"}`)
       }
     }
   }
@@ -107,19 +128,24 @@ const ManageWebsite = () => {
               </div>
             ) : (
               <div className={styles["services-list"]}>
-                {services.map((service) => (
-                  <ServiceItem
-                    key={service.id}
-                    service={{
-                      id: service.id,
-                      name: service.service_name,
-                      image: service.inspo,
-                    }}
-                    isEditing={isEditing}
-                    onUpdate={(updatedService) => handleUpdate(service.id, updatedService)}
-                    onDelete={() => handleDelete(service.id)}
-                  />
-                ))}
+                {services.length === 0 ? (
+                  <p>No services found. Add a service to get started.</p>
+                ) : (
+                  services.map((service) => (
+                    <ServiceItem
+                      key={service.id}
+                      service={{
+                        id: service.id,
+                        name: service.service_name,
+                        image: service.inspo,
+                      }}
+                      isEditing={isEditing}
+                      onUpdate={(updatedService) => handleUpdate(service.id, updatedService)}
+                      onDelete={() => handleDelete(service.id)}
+                      deleteStatus={deleteStatus}
+                    />
+                  ))
+                )}
               </div>
             )}
           </div>
@@ -171,6 +197,7 @@ export default ManageWebsite
 const AddServiceForm = ({ onAdd }) => {
   const [name, setName] = useState("")
   const [image, setImage] = useState(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -179,12 +206,14 @@ const AddServiceForm = ({ onAdd }) => {
       return
     }
 
+    setIsSubmitting(true)
     const reader = new FileReader()
     reader.onload = () => {
       onAdd({ name, image: reader.result })
       setName("")
       setImage(null)
       e.target.reset()
+      setIsSubmitting(false)
     }
     reader.readAsDataURL(image)
   }
@@ -197,6 +226,7 @@ const AddServiceForm = ({ onAdd }) => {
         name="serviceImage"
         id="serviceImage"
         onChange={(e) => setImage(e.target.files[0])}
+        disabled={isSubmitting}
       />
       <input
         type="text"
@@ -205,18 +235,26 @@ const AddServiceForm = ({ onAdd }) => {
         placeholder="Service name"
         value={name}
         onChange={(e) => setName(e.target.value)}
+        disabled={isSubmitting}
       />
-      <button className={styles.addServiceButton} type="submit">
-        Add Service
+      <button className={styles.addServiceButton} type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "Adding..." : "Add Service"}
       </button>
     </form>
   )
 }
 
-const ServiceItem = ({ service, isEditing, onUpdate, onDelete }) => {
+const ServiceItem = ({ service, isEditing, onUpdate, onDelete, deleteStatus }) => {
   const [isUpdating, setIsUpdating] = useState(false)
   const [updatedName, setUpdatedName] = useState(service.name)
   const [updatedImage, setUpdatedImage] = useState(service.image)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Update local state when service prop changes
+  useState(() => {
+    setUpdatedName(service.name)
+    setUpdatedImage(service.image)
+  }, [service])
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
@@ -227,8 +265,17 @@ const ServiceItem = ({ service, isEditing, onUpdate, onDelete }) => {
   }
 
   const handleSave = () => {
+    setIsSubmitting(true)
     onUpdate({ name: updatedName, image: updatedImage })
-    setIsUpdating(false)
+      .then(() => {
+        setIsUpdating(false)
+        setIsSubmitting(false)
+      })
+      .catch((error) => {
+        console.error("Error updating service:", error)
+        setIsSubmitting(false)
+        alert("Failed to update service. Please try again.")
+      })
   }
 
   return (
@@ -240,6 +287,7 @@ const ServiceItem = ({ service, isEditing, onUpdate, onDelete }) => {
             name={`updateImage-${service.id}`}
             id={`updateImage-${service.id}`}
             onChange={handleImageChange}
+            disabled={isSubmitting}
           />
           <input
             type="text"
@@ -247,12 +295,13 @@ const ServiceItem = ({ service, isEditing, onUpdate, onDelete }) => {
             id={`updateName-${service.id}`}
             value={updatedName}
             onChange={(e) => setUpdatedName(e.target.value)}
+            disabled={isSubmitting}
           />
-          <button className={styles.cancelButton} onClick={() => setIsUpdating(false)}>
+          <button className={styles.cancelButton} onClick={() => setIsUpdating(false)} disabled={isSubmitting}>
             Cancel
           </button>
-          <button className={styles.saveButton} onClick={handleSave}>
-            Save
+          <button className={styles.saveButton} onClick={handleSave} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "Save"}
           </button>
         </>
       ) : (
@@ -269,8 +318,8 @@ const ServiceItem = ({ service, isEditing, onUpdate, onDelete }) => {
                 <button className={styles.updateButton} onClick={() => setIsUpdating(true)}>
                   Update
                 </button>
-                <button className={styles.deleteButton} onClick={() => onDelete()}>
-                  Delete
+                <button className={styles.deleteButton} onClick={onDelete} disabled={deleteStatus?.loading}>
+                  {deleteStatus?.loading ? "Deleting..." : "Delete"}
                 </button>
               </div>
             )}
