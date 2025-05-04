@@ -1,82 +1,80 @@
 'use client'
-
+import { useEffect, useState } from 'react'
 import styles from './dashboard.module.css'
-import { FaThLarge } from 'react-icons/fa'
 
-export default function DashboardPage() {
-  const reminders = [
-    { icon: '❗', label: 'Booking Reminder', text: 'Lorem ipsum neto higuyi iya' },
-    { icon: '❗', label: 'Upcoming Booking', text: 'Lorem ipsum neto higuyi iya' },
-    { icon: '❗', label: 'New Booking Request', text: 'Lorem ipsum neto higuyi iya' },
-    { icon: '❗', label: 'Booking Canceled', text: 'Lorem ipsum neto higuyi iya' },
-  ]
+export default function Dashboard() {
+  const [dashboardData, setDashboardData] = useState(null)
+
+  useEffect(() => {
+    // Simulate an API call (replace this part with actual fetch later)
+    fetch('/api/dashboard') // example endpoint
+      .then(res => res.json())
+      .then(data => setDashboardData(data))
+      .catch(() => {
+        // fallback empty structure
+        setDashboardData({
+          pendingRequests: 0,
+          totalClients: 0,
+          clientsThisMonth: 0,
+          greetingName: '',
+          reminders: []
+        })
+      })
+  }, [])
+
+  if (!dashboardData) return <div className={styles.mainContent}>Loading...</div>
+
+  const {
+    pendingRequests,
+    totalClients,
+    clientsThisMonth,
+    greetingName,
+    reminders
+  } = dashboardData
 
   return (
     <div className={styles.dashboardWrapper}>
-      {/* Heading */}
-      <div className={styles.dashboardHeader}>
-        <div className={styles.container}>
-          <div className={styles['icon-container']}>
-            <FaThLarge />
+
+      <main className={styles.mainContent}>
+        <h1 className={styles.header}>Dashboard</h1>
+
+        <div className={styles.topCards}>
+          <div className={styles.card}>
+            <p>Pending Requests</p>
+            <h2>{pendingRequests}</h2>
           </div>
-          <h1>Dashboard</h1>
+          <div className={styles.card}>
+            <p>Total Clients</p>
+            <h2>{totalClients.toLocaleString()}</h2>
+          </div>
+          <div className={styles.greetingCard}>
+            <p>hello,</p>
+            <h3>{greetingName}</h3>
+          </div>
         </div>
-      </div>
 
-      {/* Main Grid Layout */}
-      <div className={styles.gridLayout}>
-        {/* Left Column */}
-        <div className={styles.leftColumn}>
-          <div className={styles.topRow}>
-            <div className={styles.card}>
-              <h2>Pending Requests</h2>
-              <p className={styles.highlight}>19</p>    
-            </div>
-            <div className={styles.card}>
-              <h2>Total Clients</h2>
-              <p className={styles.highlight}>4,685</p>
-            </div>
-          </div>
-
-          <div className={styles.clientsThisMonth}>
-            <div className={styles.clientsHeader}>
-              <span>👤 Clients</span>
-              <span className={styles.monthTag}>this month</span>
-            </div>
-            <p className={styles.highlight}>143</p>
+        <div className={styles.midSection}>
+          <div className={styles.clientsCard}>
+            <p><span className={styles.icon}>👤</span> Clients | <span className={styles.subText}>this month</span></p>
+            <h2>{clientsThisMonth}</h2>
           </div>
 
           <div className={styles.staticBox}>
-            <p><strong>Title</strong> | Details here</p>
+            <p><strong>IDK</strong> | WALA PA</p>
           </div>
-        </div>
 
-        {/* Right Column */}
-        <div className={styles.rightColumn}>
-          <div className={styles.greetingCard}>
-            <p>hello,<br /><strong>Ms. Jesse!</strong></p>
-            <div className={styles.dots}>
-              <span className={styles.active}></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-          <div className={styles.reminders}>
-            <h2 className={styles.remindersTitle}>Reminders</h2>
+          <div className={styles.reminderBox}>
+            <h3>Reminders</h3>
             <ul>
               {reminders.map((item, index) => (
                 <li key={index}>
-                  <span className={styles.reminderIcon}>{item.icon}</span>
-                  <div>
-                    <div className={styles.reminderLabel}>{item.label}</div>
-                    <div className={styles.reminderText}>{item.text}</div>
-                  </div>
+                  <span className={styles.exclamation}>{item.icon}</span> {item.label}
                 </li>
               ))}
             </ul>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   )
 }
