@@ -1,18 +1,13 @@
-import './public.css';
-import Navbar from './components/Navbar'
-
+// app/layout.js
 export const metadata = {
-  title: 'Makeup by Jesse',
-  description: 'Hair & Makeup Artist Portfolio and Booking Site',
-};
-
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body>
-        <Navbar />
-        {children}
-      </body>
-    </html>
-  );
-}
+    title: 'Makeup by Jesse',
+    description: 'Hair and Makeup Artist Services',
+  };
+  
+  export default function RootLayout({ children }) {
+    return (
+      <html lang="en">
+        <body>{children}</body>
+      </html>
+    );
+  }  
