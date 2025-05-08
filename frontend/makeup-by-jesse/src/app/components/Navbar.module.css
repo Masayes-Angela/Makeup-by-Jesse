@@ -1,0 +1,127 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    padding: 1rem 6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+  }
+  
+  .logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #e55f72;
+    font-style: italic;
+  }
+  
+  .logo span {
+    color: #4ac7c5;
+    font-style: normal;
+  }
+  
+  .navLinks {
+    list-style: none;
+    display: flex;
+    gap: 3.2rem;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navLinks li {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .navLinks li a {
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    font-size: 14px;
+    padding-bottom: 0.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    transition: all 0.3s;
+  }
+  
+  .navLinks li a:hover {
+    color: #000;
+  }
+  
+  .navLinks li a.active {
+    border-bottom: 2px solid #1e1e2f;
+    color: #1e1e2f;
+    font-weight: 600;
+  }
+  
+  .authBtns {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+  }
+
+  .signupBtn {
+    border-radius: 192px;
+    border: 2px solid rgba(255, 255, 255, 0.80);
+    background: linear-gradient(97deg, #ACE1E3 -3.47%, #6DC0C8 108.43%);
+    box-shadow: 0px 30px 50px 0px #D6EDF0;
+    padding: 0.6rem 2rem;
+    font-weight: 600;
+    color: #fff;
+    font-size: 14px;
+    transition: 0.3s;
+    margin-left: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .signupBtn:hover {
+    opacity: 0.9;
+  }
+  
+  .loginBtn {
+    border-radius: 192px;
+    border: 2px solid var(--ACE1E3, #6DC0C8);
+    background: linear-gradient(97deg, #FFF -3.47%, #FFF -3.46%);
+    box-shadow: 0px 30px 50px 0px #D6EDF0;
+    color: #6DC0C8;
+    padding: 0.6rem 2rem;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .loginBtn:hover {
+    opacity: 0.9;
+  }
+  
+  .trackLink {
+    margin-right: 0.8rem;
+    color: #4ac7c5;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  
+  .trackLink:hover {
+    text-decoration: underline;
+  }
+  
+  .userIcon {
+    border-radius: 50%;
+    border: 2px solid #4ac7c5;
+    padding: 2px;
+    background: #fff;
+  }
+  
