@@ -4,7 +4,7 @@
 }
 
 .hero {
-  padding: 4rem 6rem;
+  padding: 1rem 6rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,7 +28,7 @@
   border: 2px solid rgba(255, 255, 255, 0.80);
   background: linear-gradient(97deg, #ACE1E3 -3.47%, #6DC0C8 108.43%);
   box-shadow: 0px 30px 50px 0px #D6EDF0;
-  padding: 1.8rem 3.2rem;
+  padding: .4rem 3.2rem;
   font-weight: 600;
   color: #fff;
   font-size: 14px;
@@ -105,7 +105,7 @@
   border: 2px solid rgba(255, 255, 255, 0.80);
   background: linear-gradient(97deg, #ACE1E3 -3.47%, #6DC0C8 108.43%);
   box-shadow: 0px 30px 50px 0px #D6EDF0;
-  padding: 1rem 2rem;
+  padding: .1rem 2rem;
   font-weight: 600;
   color: #fff;
   font-size: 14px;
@@ -115,7 +115,7 @@
   justify-content: center;
   height: 44px;
   text-decoration: none;
-  margin-top: 1rem;
+  margin: .2rem 0 .6rem 0;
 }
 
 .about {
