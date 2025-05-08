@@ -1,20 +1,17 @@
-'use client'
+import './public.css';
+import Navbar from './components/Navbar'
 
-import Sidebar from "@/components/Sidebar";
-import { Provider } from "react-redux";
-import { store } from "@/rtk/store";
-import "./globals.css";
+export const metadata = {
+  title: 'Makeup by Jesse',
+  description: 'Hair & Makeup Artist Portfolio and Booking Site',
+};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Provider store={store}>
-          <div className="app">
-            <Sidebar />
-            <main className="main-content">{children}</main>
-          </div>
-        </Provider>
+        <Navbar />
+        {children}
       </body>
     </html>
   );
