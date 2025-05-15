@@ -1,11 +1,16 @@
-// backend/app.js
 import express from "express"
 import cors from "cors"
-import { getServices, getService, addService, updateService, deleteService } from "./back_end/services.js"
+import { getServices, getService, addService, updateService, deleteService } from "./back_end/admin/services.js"
 
+import profileRoutes from "./back_end/admin/routes/profile.js";
+import galleryRoutes from "./back_end/admin/routes/gallery.js";
 const app = express()
 app.use(cors())
 app.use(express.json({ limit: "10mb" })) // For handling image uploads
+
+// ✅ Connect /profile and /gallery routes
+app.use("/profile", profileRoutes);
+app.use("/gallery", galleryRoutes);
 
 // GET all services
 app.get("/services", async (req, res) => {
@@ -74,7 +79,7 @@ app.delete("/services/:id", async (req, res) => {
   }
 })
 
-const PORT = process.env.PORT || 8080
+const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+  console.log(`🚀 Server is running on http://localhost:${PORT}`);
+});
