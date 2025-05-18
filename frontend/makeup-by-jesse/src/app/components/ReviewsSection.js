@@ -3,16 +3,17 @@
 import styles from '../styles/page.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ImQuotesLeft } from 'react-icons/im';
 
 const reviews = [
   {
-    name: 'Sofia Mercado',
+    name: 'Angela Beatrice',
     message:
       'I really like the team for example, a relationship-focused performance expectation might be that the employee sustain collegial working relationships with her peers, subordinates and customers.',
     avatar: '/id/id1.jpg',
   },
   {
-    name: 'Angela Beatrice',
+    name: 'Sofia Mercado',
     message:
       'I really like the team for example, a relationship-focused performance expectation might be that the employee sustain collegial working relationships with her peers, subordinates and customers.',
     avatar: '/id/id2.jpg',
@@ -30,7 +31,7 @@ export default function ReviewsSection() {
       <div className={styles.reviewGrid}>
         {reviews.map((review, i) => (
           <div className={styles.reviewCard} key={i}>
-            <p className={styles.quoteIcon}>❝</p>
+            <ImQuotesLeft className={styles.quoteIcon} />
             <p className={styles.reviewText}>{review.message}</p>
             <div className={styles.reviewer}>
               <Image

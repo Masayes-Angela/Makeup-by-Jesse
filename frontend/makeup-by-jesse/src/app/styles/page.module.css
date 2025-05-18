@@ -291,57 +291,64 @@
 
 /* Section 5 */
 .reviewsSection {
-  padding: 4rem 2rem;
+  padding: 8rem 2rem;
   background: linear-gradient(180deg, #F5FAFB 0%, #D6EDF0 100%);
   text-align: center;
 }
 
 .reviewsTag {
-  color: #4ac7c5;
+  color: #71c5cd;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 400;
+  letter-spacing: .8px;
 }
 
 .reviewsTitle {
   font-size: 2rem;
   font-weight: 700;
-  margin: 0.5rem 0 2rem;
+  margin: 1rem 0 3rem;
   color: #1b1b1b;
 }
 
 .reviewGrid {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 2rem;
   justify-content: center;
-  margin-bottom: 2rem;
+  margin-bottom: 4rem;
 }
 
 .reviewCard {
   background: #fff;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 2rem 3rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  max-width: 300px;
+  max-width: 500px;
   text-align: left;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .quoteIcon {
-  font-size: 2rem;
-  color: #4ac7c5;
-  margin-bottom: 0.5rem;
+  font-size: 2.4rem;
+  color: #6DC0C8;
+  margin-bottom: 8px;
 }
 
 .reviewText {
   font-size: 0.95rem;
+  line-height: 1.6;
   color: #333;
-  margin-bottom: 1rem;
+  margin-bottom: 8px;
 }
 
 .reviewer {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin-bottom: 4px;
 }
 
 .reviewerImg {
@@ -360,19 +367,20 @@
 }
 
 .seeMoreBtn {
-  background: linear-gradient(97deg, #ACE1E3 -3.47%, #6DC0C8 108.43%);
-  padding: 0.6rem 2rem;
+  background-color: #63b6be;
+  padding: 0.9rem 2rem;
   border-radius: 999px;
   color: #fff;
   text-decoration: none;
   font-weight: 600;
   box-shadow: 0 8px 24px rgba(109, 192, 200, 0.4);
-  transition: background 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .seeMoreBtn:hover {
-  opacity: 0.9;
+  background-color: #80d4dc;
 }
+
 
 /* Section 6 */
 .contactSection {
