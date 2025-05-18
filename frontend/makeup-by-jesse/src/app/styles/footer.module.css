@@ -1,0 +1,53 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1.6rem 2rem;
+  border-top: 1px solid #eaeaea;
+  background: #fff;
+  font-family: sans-serif;
+}
+
+.footerLogo {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 2rem;
+  font-size: 0.95rem;
+}
+
+.footerLinks a {
+  color: #333;
+  text-decoration: none;
+}
+
+.footerLinks a:hover {
+  color: #6cbcc5;
+}
+
+.footerSocials {
+  display: flex;
+  gap: 1rem;
+}
+
+.socialCircle {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(145deg, #d6edf0, #f5fafb);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4ac7c5;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.socialCircle:hover {
+  background: #75CED7;
+  color: white;
+}
