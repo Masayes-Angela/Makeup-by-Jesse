@@ -5,16 +5,6 @@
     font-family: 'Arial', sans-serif;
   }
   
-  .sidebar {
-    width: 240px;
-    background: #f5f9fc;
-    padding: 2rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 1px 0 8px rgba(0, 0, 0, 0.05);
-  }
-  
   .logo {
     color: #88c5c4;
     font-weight: bold;
@@ -48,10 +38,7 @@
     cursor: pointer;
   }
   
-  .mainContent {
-    flex: 1;
-    padding: 2rem;
-  }
+
   
   .header {
     color: #66a4a2;

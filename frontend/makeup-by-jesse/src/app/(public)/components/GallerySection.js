@@ -25,6 +25,11 @@ export default function GallerySection() {
 
   return (
     <section id='gallery' className={styles.gallerySection}>
+      <div className={styles.galleryLines}>
+        <div className={styles.line}></div>
+        <div className={styles.line}></div>
+      </div>
+
       <div className={styles.galleryText}>
         <h2>Jesse’s Gallery</h2>
         <p>A showcase of beauty, confidence, and creativity—powered by you.</p>
@@ -42,7 +47,6 @@ export default function GallerySection() {
           >
             {images.map((src, i) => (
               <div className={styles.imageCard} key={i}>
-               {/* Image size updated */}
                 <Image
                   src={src}
                   alt={`Gallery ${i + 1}`}
