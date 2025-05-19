@@ -1,42 +1,57 @@
-import db from '../../db.js';
+import db from "../../db.js";
 
-export const uploadImage = async (req, res) => {
+// Add new gallery photo
+export const addGalleryPhoto = async (req, res) => {
   try {
-    // Handle missing file
-    if (!req.file) {
-      return res.status(400).json({ error: "No image file uploaded." });
-    }
-
-    const { caption } = req.body;
-    const path = req.file.path;
-    const uploaded_by = 1; // Jesse's ID
-
-    await db.query(
-      "INSERT INTO gallery_images (image_path, caption, uploaded_by) VALUES (?, ?, ?)",
-      [path, caption, uploaded_by]
+    const { image_url, caption, status } = req.body;
+    const [result] = await db.query(
+      "INSERT INTO gallery (image_url, caption, status) VALUES (?, ?, ?)",
+      [image_url, caption, status || 'ACTIVE']
     );
-
-    res.json({ message: "Image uploaded." });
+    res.status(201).json({ message: "Photo added", id: result.insertId });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ error: err.message });
   }
 };
 
-export const getAllImages = async (req, res) => {
+// Get active photos for carousel
+export const getActivePhotos = async (req, res) => {
   try {
-    const [result] = await db.query("SELECT * FROM gallery_images ORDER BY uploaded_at DESC");
-    res.json(result);
+    const [rows] = await db.query(
+      "SELECT * FROM gallery WHERE status = 'ACTIVE' ORDER BY uploaded_at DESC"
+    );
+    res.json(rows);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ error: err.message });
   }
 };
 
-export const deleteImage = async (req, res) => {
+// Get all photos (admin view)
+export const getAllGalleryPhotos = async (req, res) => {
   try {
-    const { id } = req.params;
-    await db.query("DELETE FROM gallery_images WHERE id = ?", [id]);
-    res.json({ message: "Image deleted." });
+    const [rows] = await db.query("SELECT * FROM gallery ORDER BY uploaded_at DESC");
+    res.json(rows);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Deactivate photo (soft delete)
+export const deactivateGalleryPhoto = async (req, res) => {
+  try {
+    await db.query("UPDATE gallery SET status = 'INACTIVE' WHERE id = ?", [req.params.id]);
+    res.json({ message: "Photo deactivated" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Restore photo
+export const reactivateGalleryPhoto = async (req, res) => {
+  try {
+    await db.query("UPDATE gallery SET status = 'ACTIVE' WHERE id = ?", [req.params.id]);
+    res.json({ message: "Photo reactivated" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
