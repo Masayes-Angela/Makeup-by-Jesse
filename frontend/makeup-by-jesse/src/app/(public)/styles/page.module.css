@@ -224,49 +224,141 @@
 }
 
 /* Section 3 */
-.about {
+.aboutSection {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4rem 2rem;
-  background: linear-gradient(to right, #e0f7fa, #fff);
-  gap: 2rem;
+  background: linear-gradient(to right, #e0f7fa 5%, #fff 40%);
+  padding: 4rem 6rem;
+  gap: 8rem;
   flex-wrap: wrap;
 }
 
-.aboutImage {
-  width: 300px;
-  height: 300px;
-  border-radius: 20px;
-  overflow: hidden;
+.imageWrapper {
+  position: relative;
+  width: 400px;
+  height: 520px;
 }
 
-.aboutImage img {
+.profileImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 20px;
+  border-radius: 50% / 40%;
+  overflow: hidden;
 }
 
-.aboutText {
-  max-width: 500px;
+.experienceBadge {
+  position: absolute;
+  top: 300px;
+  right: -50px;
+  background: linear-gradient(to right, #8ad4d9, #6DC0C8);
+  color: white;
+  border-radius: 50% / 40%;
+  width: 120px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
 }
 
-.aboutText h2 {
-  font-size: 2rem;
-  color: #4ac7c5;
+.expContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.expNumber {
+  font-size: 2.4rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.expLabel {
+  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: .6px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.aboutContent {
+  max-width: 520px;
+}
+
+.tag {
+  font-size: .9rem;
+  font-weight: 400;
+  color: #6DC0C8;
+  letter-spacing: .8px;
   margin-bottom: 1rem;
+}
+
+.mainHeading {
+  font-size: 2.6rem;
+  font-weight: 700;
+  margin: 1rem 0;
+}
+
+.mainHeading span {
+  color: #6DC0C8;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #000000;
+  margin-bottom: 1.6rem;
+}
+
+.description {
+  line-height: 1.8;
+  margin-bottom: 2rem;
+  color: #000;
+}
+
+.aboutDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  font-size: 0.95rem;
+  color: #444;
 }
 
 /* Section 4 */
 .gallerySection {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4rem 6rem;
+  background-color: white;
+  padding: 8rem 6rem;
+  margin: 4rem 0;
   gap: 2rem;
   height: 100vh;
-  box-sizing: border-box;
+}
+
+.galleryLines {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 0;
+}
+
+.line {
+  width: 4px;
+  height: 40px;
+  background-color: #6DC0C8;
+  border-radius: 999px;
 }
 
 .galleryText {
@@ -346,7 +438,7 @@
 /* Section 5 */
 .reviewsSection {
   padding: 8rem 2rem;
-  background: linear-gradient(180deg, #F5FAFB 0%, #D6EDF0 100%);
+  background: linear-gradient(180deg, #fafefe 0%, #D6EDF0 100%);
   text-align: center;
 }
 

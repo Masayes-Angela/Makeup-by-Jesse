@@ -1,11 +1,12 @@
-'use client'
+// app/admin/layout.js
+'use client';
 
-import Sidebar from "@/app/admin/components/Sidebar";
-import { Provider } from "react-redux";
-import { store } from "@/rtk/store";
-import "../globals.css";
+import Sidebar from '@/app/admin/components/Sidebar';
+import { Provider } from 'react-redux';
+import { store } from '@/rtk/store';
+import '../globals.css';
 
-export default function RootLayout({ children }) {
+export default function AdminLayout({ children }) {
   return (
     <html lang="en">
       <body>
