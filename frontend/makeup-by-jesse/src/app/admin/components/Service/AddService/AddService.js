@@ -2,104 +2,116 @@
 
 import { useState } from "react"
 import { useAddServiceMutation } from "@/rtk/serviceApi"
+import styles from "../../../content/content.module.css"
 
-const AddServiceForm = () => {
+const AddService = ({ onServiceAdded }) => {
   const [name, setName] = useState("")
-  const [image, setImage] = useState(null)
-  const [addService, { isLoading }] = useAddServiceMutation()
+  const [imageFile, setImageFile] = useState(null)
+  const [previewImage, setPreviewImage] = useState(null)
+  const [error, setError] = useState(null)
+
+  const [addService, { isLoading: isSubmitting }] = useAddServiceMutation()
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    setImageFile(file)
+
+    // Create preview
+    const reader = new FileReader()
+    reader.onload = () => {
+      setPreviewImage(reader.result)
+    }
+    reader.readAsDataURL(file)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setError(null)
 
-    if (!name || !image) {
-      alert("Please provide both name and image!")
+    if (!name) {
+      setError("Please provide a service name!")
       return
     }
 
-    const reader = new FileReader()
-    reader.onloadend = async () => {
-      try {
-        await addService({
-          service_name: name,
-          image: reader.result,
-        })
-
-        // Reset form after successful submission
-        setName("")
-        setImage(null)
-        e.target.reset()
-        alert("Service added successfully!")
-      } catch (error) {
-        console.error("Error adding service:", error)
-        alert("Failed to add service. Please try again.")
-      }
+    if (!imageFile) {
+      setError("Please select an image!")
+      return
     }
 
-    reader.readAsDataURL(image)
-  }
+    try {
+      // Convert image to base64
+      const reader = new FileReader()
+      reader.readAsDataURL(imageFile)
 
-  const formStyle = {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-    marginTop: "20px",
-    padding: "20px",
-    backgroundColor: "#f9f9f9",
-    borderRadius: "12px",
-    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-    maxWidth: "400px",
-  }
+      reader.onload = async () => {
+        const base64Image = reader.result
 
-  const inputStyle = {
-    padding: "10px",
-    fontSize: "16px",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
-  }
+        try {
+          await addService({
+            name,
+            image: base64Image,
+          }).unwrap()
 
-  const buttonStyle = {
-    padding: "10px",
-    backgroundColor: "#4CAF50",
-    color: "#fff",
-    fontWeight: "bold",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-    transition: "background-color 0.3s ease",
-  }
+          // Reset form
+          setName("")
+          setImageFile(null)
+          setPreviewImage(null)
+          e.target.reset()
 
-  const buttonHoverStyle = {
-    backgroundColor: "#45a049",
+          // Notify parent component
+          if (onServiceAdded) onServiceAdded()
+        } catch (err) {
+          console.error("Error adding service:", err)
+          setError(`Failed to add service: ${err.message || "Unknown error"}`)
+        }
+      }
+
+      reader.onerror = (err) => {
+        setError("Failed to read the image file")
+        console.error("Reader error:", err)
+      }
+    } catch (err) {
+      console.error("Error processing image:", err)
+      setError(`Failed to process image: ${err.message || "Unknown error"}`)
+    }
   }
 
   return (
-    <form style={formStyle} onSubmit={handleSubmit}>
+    <form className={styles["add-service-form"]} onSubmit={handleSubmit}>
+      {error && <div className={styles.errorMessage}>{error}</div>}
+
+      {previewImage && (
+        <div className={styles["image-preview-container"]}>
+          <img src={previewImage || "/placeholder.svg"} alt="Preview" className={styles["image-preview"]} />
+        </div>
+      )}
+
       <input
         type="file"
         accept="image/*"
-        onChange={(e) => setImage(e.target.files[0])}
-        style={inputStyle}
-        disabled={isLoading}
+        name="serviceImage"
+        id="serviceImage"
+        onChange={handleImageChange}
+        disabled={isSubmitting}
       />
+
       <input
         type="text"
+        name="serviceName"
+        id="serviceName"
         placeholder="Service name"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        style={inputStyle}
-        disabled={isLoading}
+        disabled={isSubmitting}
       />
-      <button
-        type="submit"
-        style={buttonStyle}
-        onMouseOver={(e) => (e.target.style.backgroundColor = buttonHoverStyle.backgroundColor)}
-        onMouseOut={(e) => (e.target.style.backgroundColor = buttonStyle.backgroundColor)}
-        disabled={isLoading}
-      >
-        {isLoading ? "Adding..." : "Add Service"}
+
+      <button className={styles.addServiceButton} type="submit" disabled={isSubmitting || !name || !imageFile}>
+        {isSubmitting ? "Adding..." : "Add Service"}
       </button>
     </form>
   )
 }
 
-export default AddServiceForm
+export default AddService
