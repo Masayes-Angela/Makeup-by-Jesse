@@ -259,34 +259,88 @@
 }
 
 /* Section 4 */
-.gallery {
-  padding: 4rem 2rem;
-  text-align: center;
-}
-
-.galleryIntro h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  font-style: italic;
-  color: #000;
-}
-
-.galleryIntro p {
-  font-size: 0.9rem;
-  color: #333;
-  margin-bottom: 2rem;
-}
-
-.galleryPhotos {
+.gallerySection {
   display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4rem 6rem;
+  gap: 2rem;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
-.galleryImg {
-  border-radius: 20px;
-  object-fit: cover;
+.galleryText {
+  flex: 0 0 35%;
+  max-width: 500px; 
+  padding: 0 6rem 0 4rem;
+}
+
+.galleryText h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.galleryText p {
+  font-size: 1rem;
+  color: #333;
+  margin-top: 1.4rem;
+  line-height: 1.5;
+}
+
+.carouselWrapper {
+  position: relative;
+  width: 972px;
+}
+
+.carouselWindow {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carouselTrack {
+  display: flex;
+  transition: transform 0.4s ease-in-out;
+  gap: 24px;
+}
+
+.imageCard {
+  flex: 0 0 auto;
+  width: 310px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.navBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(to right, #98E2E9, #5BA9B1);
+  border: 2px solid #D6EDF0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+  padding: 0;
+  z-index: 2;
+}
+
+.leftBtn {
+  left: -24px;
+}
+
+.rightBtn {
+  right: -24px;
+}
+
+.navBtn:hover {
+  background: linear-gradient(to right, #a3e7ed, #6fb9c1);
 }
 
 /* Section 5 */
@@ -378,7 +432,7 @@
 }
 
 .seeMoreBtn:hover {
-  background-color: #80d4dc;
+  background-color: #7bcdd4;
 }
 
 
@@ -414,8 +468,8 @@
   background: white;
   border-radius: 20px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-  max-width: 1100px;
-  height: 480px;
+  max-width: 1170px;
+  height: 500px;
   margin: 0 auto;
   padding: 10px;
   gap: 2rem;
@@ -447,7 +501,7 @@
 }
 
 .contactInfoBox h3 {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 600;
   letter-spacing: .6px;
 }
@@ -456,7 +510,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 400;
   line-height: 2;
   margin-bottom: 2rem;
@@ -500,7 +554,7 @@
 .formGroup label {
   font-weight: 400;
   margin: 1rem 0 0.2rem 0;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: #848a8d;
 }
 
@@ -508,10 +562,11 @@
 .formGroup textarea {
   padding: 0.75rem 0;
   border: none;
-  border-bottom: 2px solid #b3bcbd; /* 👈 default gray */
+  border-bottom: 2px solid #b3bcbd;
   background-color: transparent;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-family: sans-serif;
+  line-height: 1.4;
   outline: none;
   resize: none;
   transition: border-color 0.3s ease;
@@ -532,6 +587,7 @@
   border: 2px solid rgba(255, 255, 255, 0.80);
   border-radius: 192px;
   font-weight: 600;
+  font-size: .9rem;
   cursor: pointer;
   box-shadow: 0px 30px 50px 0px #D6EDF0;
   transition: all 0.3s ease;
