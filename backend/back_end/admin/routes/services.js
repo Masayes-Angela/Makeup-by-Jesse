@@ -16,7 +16,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 // Ensure uploads directory exists
-const uploadsDir = path.join(__dirname, "../../../../uploads/services")
+const uploadsDir = path.join(__dirname, "../../../uploads/services")
 console.log("Services uploads directory:", uploadsDir)
 
 if (!fs.existsSync(uploadsDir)) {

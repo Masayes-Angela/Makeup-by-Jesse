@@ -4,7 +4,9 @@ import { useState } from "react"
 import styles from "./content.module.css"
 import { FaEdit } from "react-icons/fa"
 import { AddService, ServiceList } from "../components/Service"
+import { AddPackage } from "../components/Package"
 import { useGetServicesQuery } from "@/rtk/serviceApi"
+import { useGetPackagesQuery, useUpdatePackageMutation, useDeletePackageMutation } from "@/rtk/packageApi"
 
 // Modal Component
 const Modal = ({ isOpen, onClose, children }) => {
@@ -20,31 +22,49 @@ const Modal = ({ isOpen, onClose, children }) => {
     </div>
   )
 }
+
 const ManageWebsite = () => {
   const [activeTab, setActiveTab] = useState("services")
   const [isEditing, setIsEditing] = useState(false)
   const [isEditingPackages, setIsEditingPackages] = useState(false)
 
-  // Dummy packages data for initial UI
-  const [packages, setPackages] = useState([])
-
-  // Use RTK Query hook for services
+  // Use RTK Query hooks for services and packages
   const { refetch: refetchServices } = useGetServicesQuery(undefined, {
     refetchOnMountOrArgChange: true,
   })
 
-  // Package handlers (temporary implementation until we connect to backend)
-  const handleAddPackage = (newPackage) => {
-    setPackages([...packages, { ...newPackage, id: Date.now() }])
+  const {
+    data: packages = [],
+    isLoading: isLoadingPackages,
+    isError: isErrorPackages,
+    refetch: refetchPackages,
+  } = useGetPackagesQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  })
+
+  const [updatePackage] = useUpdatePackageMutation()
+  const [deletePackage, { isLoading: isDeleting }] = useDeletePackageMutation()
+
+  // Package handlers
+  const handleUpdatePackage = async (id, updatedPackage) => {
+    try {
+      await updatePackage({ id, ...updatedPackage }).unwrap()
+      await refetchPackages()
+    } catch (error) {
+      console.error("Failed to update package:", error)
+      alert(`Error updating package: ${error.message || "Unknown error"}`)
+    }
   }
 
-  const handleUpdatePackage = (id, updatedPackage) => {
-    setPackages(packages.map((pkg) => (pkg.id === id ? { ...updatedPackage, id } : pkg)))
-  }
-
-  const handleDeletePackage = (id) => {
+  const handleDeletePackage = async (id) => {
     if (window.confirm("Are you sure you want to delete this package?")) {
-      setPackages(packages.filter((pkg) => pkg.id !== id))
+      try {
+        await deletePackage(id).unwrap()
+        await refetchPackages()
+      } catch (error) {
+        console.error("Failed to delete package:", error)
+        alert(`Error deleting package: ${error.message || "Unknown error"}`)
+      }
     }
   }
 
@@ -107,22 +127,33 @@ const ManageWebsite = () => {
                 </div>
               </div>
 
-              {isEditingPackages && <AddPackageForm onAdd={handleAddPackage} />}
+              {isEditingPackages && <AddPackage onPackageAdded={refetchPackages} />}
 
               <div className={styles["services-scroll-container"]}>
                 <div className={styles["services-list"]}>
-                  {packages.length === 0 ? (
+                  {isLoadingPackages ? (
+                    <p>Loading packages...</p>
+                  ) : isErrorPackages ? (
+                    <div>
+                      <p>Error loading packages</p>
+                      <button onClick={refetchPackages}>Try Again</button>
+                    </div>
+                  ) : packages.length === 0 ? (
                     <p>No packages found. Add a package to get started.</p>
                   ) : (
-                    packages.map((pkg) => (
-                      <PackageItem
-                        key={pkg.id}
-                        package={pkg}
-                        isEditing={isEditingPackages}
-                        onUpdate={(updatedPackage) => handleUpdatePackage(pkg.id, updatedPackage)}
-                        onDelete={(updatedPackage) => handleDeletePackage(pkg.id)}
-                      />
-                    ))
+                    // Filter to only show active packages
+                    packages
+                      .filter((pkg) => pkg.status === "ACTIVE")
+                      .map((pkg) => (
+                        <PackageItem
+                          key={pkg.id}
+                          package={pkg}
+                          isEditing={isEditingPackages}
+                          onUpdate={(updatedPackage) => handleUpdatePackage(pkg.id, updatedPackage)}
+                          onDelete={() => handleDeletePackage(pkg.id)}
+                          isDeleting={isDeleting}
+                        />
+                      ))
                   )}
                 </div>
               </div>
@@ -187,130 +218,99 @@ const ManageWebsite = () => {
 
 export default ManageWebsite
 
-// Components
-
-const AddPackageForm = ({ onAdd }) => {
-  const [name, setName] = useState("")
-  const [price, setPrice] = useState("")
-  const [description, setDescription] = useState("")
-  const [image, setImage] = useState(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!name || !price || !description || !image) {
-      alert("Please fill in all fields!")
-      return
-    }
-
-    setIsSubmitting(true)
-    const reader = new FileReader()
-    reader.onload = () => {
-      onAdd({
-        name,
-        price: Number.parseFloat(price),
-        description,
-        image: reader.result,
-      })
-      setName("")
-      setPrice("")
-      setDescription("")
-      setImage(null)
-      e.target.reset()
-      setIsSubmitting(false)
-    }
-    reader.readAsDataURL(image)
-  }
-
-  return (
-    <form className={styles["add-package-form"]} onSubmit={handleSubmit}>
-      <input
-        type="file"
-        accept="image/*"
-        name="packageImage"
-        id="packageImage"
-        onChange={(e) => setImage(e.target.files[0])}
-        disabled={isSubmitting}
-      />
-      <input
-        type="text"
-        name="packageName"
-        id="packageName"
-        placeholder="Package name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        disabled={isSubmitting}
-      />
-      <label htmlFor="packagePrice" className={styles.label}>
-        Price (₱)
-      </label>
-      <input
-        type="number"
-        name="packagePrice"
-        id="packagePrice"
-        placeholder="Price"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-        disabled={isSubmitting}
-        min="0"
-        step="0.01"
-      />
-      <textarea
-        name="packageDescription"
-        id="packageDescription"
-        placeholder="Package description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        disabled={isSubmitting}
-        rows="3"
-      />
-      <button className={styles.addPackageButton} type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Adding..." : "Add Package"}
-      </button>
-    </form>
-  )
-}
-
-const PackageItem = ({ package: pkg, isEditing, onUpdate, onDelete }) => {
+// PackageItem Component
+const PackageItem = ({ package: pkg, isEditing, onUpdate, onDelete, isDeleting }) => {
   const [isUpdating, setIsUpdating] = useState(false)
   const [updatedName, setUpdatedName] = useState(pkg.name)
   const [updatedPrice, setUpdatedPrice] = useState(pkg.price)
   const [updatedDescription, setUpdatedDescription] = useState(pkg.description)
-  const [updatedImage, setUpdatedImage] = useState(pkg.image)
+  const [imageFile, setImageFile] = useState(null)
+  const [previewImage, setPreviewImage] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState(null)
 
   // Update local state when package prop changes
   useState(() => {
     setUpdatedName(pkg.name)
     setUpdatedPrice(pkg.price)
     setUpdatedDescription(pkg.description)
-    setUpdatedImage(pkg.image)
   }, [pkg])
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     if (!file) return
+
+    setImageFile(file)
+
+    // Create preview
     const reader = new FileReader()
-    reader.onload = () => setUpdatedImage(reader.result)
+    reader.onload = () => {
+      setPreviewImage(reader.result)
+    }
     reader.readAsDataURL(file)
   }
 
   const handleSave = () => {
+    setError(null)
+
+    if (!updatedName) {
+      setError("Package name is required")
+      return
+    }
+
+    if (!updatedPrice) {
+      setError("Price is required")
+      return
+    }
+
+    if (!updatedDescription) {
+      setError("Description is required")
+      return
+    }
+
     setIsSubmitting(true)
-    onUpdate({
+
+    const updateData = {
       name: updatedName,
       price: Number.parseFloat(updatedPrice),
       description: updatedDescription,
-      image: updatedImage,
-    })
-    setIsUpdating(false)
-    setIsSubmitting(false)
+    }
+
+    if (imageFile) {
+      const reader = new FileReader()
+      reader.onload = async () => {
+        try {
+          await onUpdate({
+            ...updateData,
+            image: reader.result,
+          })
+          setIsUpdating(false)
+        } catch (err) {
+          setError(`Failed to update package: ${err.message || "Unknown error"}`)
+        } finally {
+          setIsSubmitting(false)
+        }
+      }
+      reader.onerror = () => {
+        setError("Failed to read the image file")
+        setIsSubmitting(false)
+      }
+      reader.readAsDataURL(imageFile)
+    } else {
+      // No new image
+      onUpdate(updateData)
+        .then(() => setIsUpdating(false))
+        .catch((err) => setError(`Failed to update package: ${err.message || "Unknown error"}`))
+        .finally(() => setIsSubmitting(false))
+    }
   }
 
   return (
     <div className={styles["package-item"]}>
       {isUpdating ? (
         <div className={styles["package-update-form"]}>
+          {error && <div className={styles.errorMessage}>{error}</div>}
+
           <input
             type="file"
             accept="image/*"
@@ -319,6 +319,13 @@ const PackageItem = ({ package: pkg, isEditing, onUpdate, onDelete }) => {
             onChange={handleImageChange}
             disabled={isSubmitting}
           />
+
+          {previewImage && (
+            <div className={styles["image-preview-container"]}>
+              <img src={previewImage || "/placeholder.svg"} alt="Preview" className={styles["image-preview"]} />
+            </div>
+          )}
+
           <input
             type="text"
             name={`updatePackageName-${pkg.id}`}
@@ -359,10 +366,27 @@ const PackageItem = ({ package: pkg, isEditing, onUpdate, onDelete }) => {
         </div>
       ) : (
         <>
-          <img src={pkg.image || "/placeholder.svg"} alt={pkg.name} />
+          <div className={styles["service-image-container"]}>
+            {pkg.image_url ? (
+              <img
+                src={pkg.image_url || "/placeholder.svg"}
+                alt={pkg.name}
+                className={styles.packageImage}
+                onError={(e) => {
+                  console.error("Image failed to load:", pkg.image_url)
+                  e.target.src = "/placeholder.svg?height=200&width=300"
+                  e.target.onerror = null // Prevent infinite error loop
+                }}
+              />
+            ) : (
+              <div className={styles.imagePlaceholder}>
+                <span>No image available</span>
+              </div>
+            )}
+          </div>
           <div className={styles.packageDetails}>
             <h3 className={styles.packageName}>{pkg.name}</h3>
-            <div className={styles.packagePrice}>₱{pkg.price.toFixed(2)}</div>
+            <div className={styles.packagePrice}>₱{Number.parseFloat(pkg.price).toFixed(2)}</div>
             <p className={styles.packageDescription}>{pkg.description}</p>
 
             {isEditing && (
@@ -370,7 +394,7 @@ const PackageItem = ({ package: pkg, isEditing, onUpdate, onDelete }) => {
                 <button className={styles.updateButton} onClick={() => setIsUpdating(true)}>
                   Update
                 </button>
-                <button className={styles.deleteButton} onClick={onDelete}>
+                <button className={styles.deleteButton} onClick={onDelete} disabled={isDeleting}>
                   Delete
                 </button>
               </div>
