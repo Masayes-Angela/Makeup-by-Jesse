@@ -1,0 +1,70 @@
+.services {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.subheading {
+  font-size: .9rem;
+  font-weight: 400;
+  color: #6DC0C8;
+  letter-spacing: .8px;
+}
+
+.heading {
+  font-size: 2rem;
+  color: var(--dark-text);
+  margin: 0.5rem 0 2rem;
+}
+
+.serviceCards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card img {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.placeholder {
+  width: 150px;
+  height: 150px;
+  background: #eee;
+  border-radius: 12px;
+  margin: 0 auto 1rem;
+}
+
+.services_bookBtn {
+  border-radius: 192px;
+  border: 2px solid rgba(255, 255, 255, 0.80);
+  background: linear-gradient(97deg, #ACE1E3 -3.47%, #6DC0C8 108.43%);
+  box-shadow: 0px 30px 50px 0px #D6EDF0;
+  padding: 0.1rem 2rem;
+  font-weight: 600;
+  color: #fff;
+  font-size: 14px;
+  transition: 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  text-decoration: none;
+  margin: 0.2rem 0 0.6rem 0;
+}

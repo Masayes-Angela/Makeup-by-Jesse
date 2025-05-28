@@ -1,6 +1,6 @@
 'use client';
 
-import styles from '../styles/page.module.css';
+import styles from '../styles/Contact.module.css';
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 
 export default function ContactSection() {

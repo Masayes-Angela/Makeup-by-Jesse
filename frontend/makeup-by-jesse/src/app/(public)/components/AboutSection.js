@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import styles from '../styles/page.module.css';
+import styles from '../styles/About.module.css';
 
 const aboutData = {
   image: '/about/jesse.jpeg',
@@ -31,8 +31,8 @@ export default function AboutSection() {
       </div>
 
       <div className={styles.aboutContent}>
-        <p className={styles.tag}>About Me</p>
-        <h2 className={styles.mainHeading}>My Name is <span>Jesse</span></h2>
+        <p className={styles.subheading}>About Me</p>
+        <h2 className={styles.heading}>My Name is <span>Jesse</span></h2>
         <p className={styles.subtitle}>{aboutData.subtitle}</p>
         <p className={styles.description}>{aboutData.description}</p>
       </div>

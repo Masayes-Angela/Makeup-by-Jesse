@@ -1,90 +1,86 @@
-'use client';
-
-import styles from '../styles/page.module.css';
-import Image from 'next/image';
-import { useState } from 'react';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-
-const packagesData = [
-  {
-    title: 'Classic Wedding Package',
-    price: '₱10,900',
-    description: [
-      'Bridal Hair & HD Traditional Makeup (with 3D lashes)',
-      'Unlimited retouches until the reception',
-      'Pre-wedding, Ceremony & Reception looks',
-      'Groom’s basic makeup & hairstyling',
-      '2 complimentary hair & makeup sessions for guests (with lashes)',
-      '🎁 Bonus: Free post-makeup bridal portrait photos',
-    ],
-    inclusions: [
-      '✔ Skin prep for a flawless base',
-      '✔ 3D lashes for enhanced eyes',
-      '✔ Non-graded contact lenses',
-      '✔ Free use of hair extensions',
-      '✔ Free use of bridal hair accessories',
-    ],
-    additional: [
-      '💠 Hair & Makeup (ladies): ₱2,000/head (₱1,800 for 5+ heads)',
-      '💠 Flower Girls: ₱1,000',
-      '💠 Groomsmen: ₱1,000',
-    ],
-    images: ['/services/2.jpg', '/services/3.jpg'],
-  },
-];
+'use client'
+import { useState, useEffect, useRef } from 'react'
+import styles from '../styles/Packages.module.css'
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 
 export default function PackagesSection() {
-  const [currentIndex, setIndex] = useState(0);
+  const [packages, setPackages] = useState([])
+  const [activeIndex, setActiveIndex] = useState(0)
+  const tabListRef = useRef(null)
+
+  useEffect(() => {
+    const mockPackages = [
+      { package: 'SQUAD GOALS BEAUTY', description: 'hello', image: '/gallery/img1.jpg' },
+      { package: 'CLASSIC WEDDING', description: 'hi', image: '/gallery/img4.jpg' },
+      { package: 'BRIDAL MAKEUP', description: 'b0ss m4paGm@haL', image: '/gallery/img5.jpg' },
+      { package: 'PRENUP PHOTOSHOOT', description: 'wassup', image: '/gallery/img2.jpg' },
+    ]
+    setPackages(mockPackages)
+  }, [])
+
+  const scrollTabs = (direction) => {
+    if (tabListRef.current) {
+      tabListRef.current.scrollBy({
+        left: direction === 'left' ? -210 : 210,
+        behavior: 'smooth',
+      })
+    }
+  }
 
   return (
-    <section id="packages" className={styles.packages}>
-      <h2>Bridal Makeup Packages</h2>
-      {packagesData.map((pkg, i) => (
-        <div className={styles.packageContent} key={i}>
-          <div className={styles.packageImages}>
-            {pkg.images.length > 1 ? (
-              <>
-                <button
-                  className={`${styles.packageNavBtn} ${styles.left}`}
-                  onClick={() => setIndex((currentIndex - 1 + pkg.images.length) % pkg.images.length)}
-                >
-                  <FiChevronLeft />
-                </button>
-                <Image
-                  src={pkg.images[currentIndex]}
-                  width={280}
-                  height={350}
-                  alt="Package preview"
-                />
-                <button
-                  className={`${styles.packageNavBtn} ${styles.right}`}
-                  onClick={() => setIndex((currentIndex + 1) % pkg.images.length)}
-                >
-                  <FiChevronRight />
-                </button>
-              </>
-            ) : (
-              <Image
-                src={pkg.images[0]}
-                width={280}
-                height={350}
-                alt="Package preview"
-              />
-            )}
+    <section className={styles.packages}>
+      <p className={styles.subheading}>Choose Our Makeup Offer</p>
+      <h2 className={styles.heading}>SPECIAL PRICE PACKAGES</h2>
+
+      <div className={styles.tabCarousel}>
+        {packages.length > 5 && (
+          <button onClick={() => scrollTabs('left')} className={styles.navBtn}>
+            <FaChevronLeft />
+          </button>
+        )}
+
+        <div className={styles.tabsWrapper} ref={tabListRef}>
+          {packages.map((pkg, index) => (
+            <button
+              key={index}
+              className={`${styles.tab} ${index === activeIndex ? styles.activeTab : ''}`}
+              onClick={() => setActiveIndex(index)}
+            >
+              <span className={styles.title}>{pkg.package}</span>
+              <span className={styles.subtitle}>PACKAGE</span>
+            </button>
+          ))}
+        </div>
+
+        {packages.length > 5 && (
+          <button onClick={() => scrollTabs('right')} className={styles.navBtn}>
+            <FaChevronRight />
+          </button>
+        )}
+      </div>
+
+      {packages[activeIndex] && (
+        <div className={styles.packageContent}>
+          <div className={styles.imageBox}>
+            <img
+              src={packages[activeIndex].image}
+              alt={packages[activeIndex].package}
+              className={styles.image}
+            />
           </div>
-          <div className={styles.packageDetails}>
-            <h3>{pkg.title}</h3>
-            <h4>{pkg.price}</h4>
-            <ul>{pkg.description.map((line, j) => <li key={j}>{line}</li>)}</ul>
-            <h4>✨ Inclusions for the Bride:</h4>
-            <ul>{pkg.inclusions.map((line, j) => <li key={j}>{line}</li>)}</ul>
-            <h4>👰 Additional Services:</h4>
-            <ul>{pkg.additional.map((line, j) => <li key={j}>{line}</li>)}</ul>
-            <p>📍 Transportation & out-of-town fees apply.</p>
-            <p className={styles.bookNote}>💖 Book your bridal glam today! 💖</p>
+          <div className={styles.details}>
+            <h3 className={styles.packageTitle}>
+              <span className={styles.packageName}>{packages[activeIndex].package}</span>{' '}
+              <span className={styles.packageLabel}>PACKAGE</span>
+            </h3>
+          <div className={styles.descriptionText}>
+            {packages[activeIndex].description.split('\n').map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
+          </div>
           </div>
         </div>
-      ))}
+      )}
     </section>
-  );
+  )
 }

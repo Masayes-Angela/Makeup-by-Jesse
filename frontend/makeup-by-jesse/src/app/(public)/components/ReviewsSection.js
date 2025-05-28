@@ -1,6 +1,6 @@
 'use client';
 
-import styles from '../styles/page.module.css';
+import styles from '../styles/Reviews.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ImQuotesLeft } from 'react-icons/im';

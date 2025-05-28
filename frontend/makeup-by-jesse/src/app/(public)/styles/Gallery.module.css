@@ -1,0 +1,104 @@
+.gallerySection {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 8rem 6rem;
+  margin: 4rem 0;
+  gap: 2rem;
+  height: 100vh;
+}
+
+.galleryLines {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 0;
+}
+
+.line {
+  width: 4px;
+  height: 40px;
+  background-color: #6DC0C8;
+  border-radius: 999px;
+}
+
+.galleryText {
+  flex: 0 0 35%;
+  max-width: 500px; 
+  padding: 0 6rem 0 4rem;
+}
+
+.galleryText h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.galleryText p {
+  font-size: 1rem;
+  color: #333;
+  margin-top: 1.4rem;
+  line-height: 1.5;
+}
+
+.carouselWrapper {
+  position: relative;
+  width: 972px;
+}
+
+.carouselWindow {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carouselTrack {
+  display: flex;
+  transition: transform 0.4s ease-in-out;
+  gap: 24px;
+}
+
+.imageCard {
+  flex: 0 0 auto;
+  width: 310px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.navBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(to right, #98E2E9, #5BA9B1);
+  border: 2px solid #D6EDF0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+  padding: 0;
+  z-index: 2;
+}
+
+.leftBtn {
+  left: -24px;
+}
+
+.rightBtn {
+  right: -24px;
+}
+
+.navBtn:hover {
+  background: linear-gradient(to right, #a3e7ed, #6fb9c1);
+}

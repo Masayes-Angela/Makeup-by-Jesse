@@ -1,6 +1,6 @@
 'use client';
 
-import styles from '../styles/page.module.css';
+import styles from '../styles/Services.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -12,7 +12,8 @@ const servicesData = [
 export default function ServicesSection() {
   return (
     <section id="services" className={styles.services}>
-      <h2>Services</h2>
+      <p className={styles.subheading}>What We Offer</p>
+      <h2 className={styles.heading}>Our Services</h2>
       <div className={styles.serviceCards}>
         {servicesData.map((item, i) => (
           <div className={styles.card} key={i}>
