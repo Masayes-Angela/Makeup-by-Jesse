@@ -1,0 +1,50 @@
+.hero {
+  padding: 1rem 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, #F5FAFB 0%, #D6EDF0 100%);
+  min-height: 100vh;
+}
+
+.heroContent {
+  max-width: 500px;
+  text-align: left;
+}
+
+.hero h3 {
+  font-size: 1.2rem;
+  margin: 2.4rem 0;
+  color: var(--dark-text);
+}
+
+.bookBtn,
+.hero_bookBtn {
+  border-radius: 192px;
+  border: 2px solid rgba(255, 255, 255, 0.80);
+  background: linear-gradient(97deg, #ACE1E3 -3.47%, #6DC0C8 108.43%);
+  box-shadow: 0px 30px 50px 0px #D6EDF0;
+  padding: .4rem 3.2rem;
+  font-weight: 600;
+  color: #fff;
+  font-size: 14px;
+  transition: 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  text-decoration: none;
+  margin-top: 0.5rem;
+}
+
+.bookBtn:hover,
+.hero_bookBtn:hover {
+  opacity: 0.9;
+}
+
+.heroShape {
+  width: 300px;
+  height: 350px;
+  background: #5bc5cd;
+  border-radius: 40% / 30%;
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import styles from '../styles/page.module.css';
+import styles from '../styles/Contact.module.css';
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 
 export default function ContactSection() {
@@ -9,8 +9,8 @@ export default function ContactSection() {
       <div className={styles.contactHeader}>
         <h2>Get In Touch</h2>
         <p>
-          We’ll create high-quality linkable content and build at least 40 high-authority links to each asset,
-          paving the way for you to grow your rankings, improve brand.
+          Have questions about our services or need help deciding which service fits you best? We’re always happy to help.
+          Just leave us a message and we’ll get in touch with you shortly.
         </p>
       </div>
 

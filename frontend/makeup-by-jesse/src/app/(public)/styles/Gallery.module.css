@@ -1,0 +1,147 @@
+.gallerySection {
+  position: relative;
+  background-color: white;
+  padding: 10rem 4rem;
+}
+
+.galleryLines {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 0;
+}
+
+.line {
+  width: 3px;
+  height: 40px;
+  background-color: #6DC0C8;
+  border-radius: 999px;
+}
+
+.galleryContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 1300px;
+  margin: 0 auto;
+  gap: 2rem;
+}
+
+.galleryText {
+  flex: 1;
+  max-width: 420px;
+}
+
+.galleryText h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  font-style: italic;
+  color: var(--dark-text);
+}
+
+.galleryText p {
+  font-size: 1rem;
+  color: #333;
+  margin-top: 1.4rem;
+  line-height: 1.5;
+}
+
+.carouselWrapper {
+  flex: 1.5;
+  max-width: 780px;
+  position: relative;
+  width: 100%;
+}
+
+.carouselWindow {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carouselTrack {
+  display: flex;
+  transition: transform 0.4s ease-in-out;
+  gap: 30px;
+  will-change: transform;
+}
+
+.imageCard {
+  flex: 0 0 auto;
+  width: 240px;
+  height: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.navBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(to right, #98E2E9, #5BA9B1);
+  border: 2px solid #D6EDF0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+  padding: 0;
+  z-index: 2;
+}
+
+.leftBtn {
+  left: -24px;
+}
+
+.rightBtn {
+  right: -24px;
+}
+
+.navBtn:hover {
+  background: linear-gradient(to right, #a3e7ed, #6fb9c1);
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .galleryContent {
+    flex-direction: column;
+    align-items: center;
+    padding: 0 1rem;
+  }
+
+  .galleryText {
+    padding: 0 1rem;
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .carouselWrapper {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+
+  .imageCard {
+    width: 80%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+  }
+
+  .navBtn {
+    display: none;
+  }
+
+  .carouselTrack {
+    gap: 16px;
+  }
+}

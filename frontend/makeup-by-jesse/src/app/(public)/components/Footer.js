@@ -1,6 +1,6 @@
 'use client';
 
-import styles from '../styles/footer.module.css';
+import styles from '../styles/Footer.module.css';
 import { FaFacebookF, FaInstagram, FaTiktok } from 'react-icons/fa';
 import Link from 'next/link';
 
