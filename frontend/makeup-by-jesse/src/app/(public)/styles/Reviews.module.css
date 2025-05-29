@@ -1,13 +1,13 @@
 .reviewsSection {
   margin-top: 6rem;
-  padding: 4rem 2rem 10rem;
+  padding: 4rem 2rem 8rem;
   background: linear-gradient(180deg, #fafefe 0%, #D6EDF0 100%);
   text-align: center;
 }
 
 .reviewsTag {
   color: #71c5cd;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 400;
   letter-spacing: .8px;
 }
@@ -15,7 +15,7 @@
 .reviewsTitle {
   font-size: 2rem;
   font-weight: 700;
-  margin: 0.5rem 0 3rem;
+  margin: 0.5rem 0 4rem;
   color: var(--dark-text);
 }
 
@@ -88,4 +88,15 @@
 
 .seeMoreBtn:hover {
   background-color: #7bcdd4;
+}
+
+.reviewFadeUp {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reviewFadeUp.visible {
+  opacity: 1;
+  transform: translateY(0);
 }

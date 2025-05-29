@@ -7,6 +7,8 @@ export default function PackagesSection() {
   const [packages, setPackages] = useState([])
   const [activeIndex, setActiveIndex] = useState(0)
   const tabListRef = useRef(null)
+  const sectionRef = useRef(null)
+  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
     const mockPackages = [
@@ -18,19 +20,31 @@ export default function PackagesSection() {
     setPackages(mockPackages)
   }, [])
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true)
+      },
+      { threshold: 0.3 }
+    )
+
+    if (sectionRef.current) observer.observe(sectionRef.current)
+    return () => observer.disconnect()
+  }, [])
+
   const scrollTabs = (direction) => {
     if (tabListRef.current) {
       tabListRef.current.scrollBy({
-        left: direction === 'left' ? -208 : 208,
+        left: direction === 'left' ? -233 : 233,
         behavior: 'smooth',
       })
     }
   }
 
   return (
-    <section className={styles.packages}>
-      <p className={styles.subheading}>Our Beauty Sets</p>
-      <h2 className={styles.heading}>Special Price Packages</h2>
+    <section ref={sectionRef} className={`${styles.packages} ${styles.fadeInZoom} ${isVisible ? styles.visible : ''}`}>
+      <p className={`${styles.subheading}`}>Our Beauty Sets</p>
+      <h2 className={`${styles.heading}`}>Special Price Packages</h2>
 
       <div className={styles.tabCarousel}>
         {packages.length > 4 && (
@@ -73,11 +87,11 @@ export default function PackagesSection() {
               <span className={styles.packageName}>{packages[activeIndex].package}</span>{' '}
               <span className={styles.packageLabel}>PACKAGE</span>
             </h3>
-          <div className={styles.descriptionText}>
-            {packages[activeIndex].description.split('\n').map((line, i) => (
-              <p key={i}>{line}</p>
-            ))}
-          </div>
+            <div className={styles.descriptionText}>
+              {packages[activeIndex].description.split('\n').map((line, i) => (
+                <p key={i}>{line}</p>
+              ))}
+            </div>
           </div>
         </div>
       )}

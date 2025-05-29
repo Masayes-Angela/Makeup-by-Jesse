@@ -4,6 +4,7 @@ import styles from '../styles/Reviews.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ImQuotesLeft } from 'react-icons/im';
+import { useRef, useEffect, useState } from 'react';
 
 const reviews = [
   {
@@ -21,6 +22,32 @@ const reviews = [
 ];
 
 export default function ReviewsSection() {
+  const cardRefs = useRef([]);
+  const [visibleCards, setVisibleCards] = useState([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setVisibleCards(prev => {
+              const updated = [...prev];
+              updated[index] = true;
+              return updated;
+            });
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    cardRefs.current.forEach(ref => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section id="reviews" className={styles.reviewsSection}>
       <div className={styles.reviewsHeader}>
@@ -30,7 +57,11 @@ export default function ReviewsSection() {
 
       <div className={styles.reviewGrid}>
         {reviews.map((review, i) => (
-          <div className={styles.reviewCard} key={i}>
+          <div
+            key={i}
+            ref={el => (cardRefs.current[i] = el)}
+            className={`${styles.reviewCard} ${styles.reviewFadeUp} ${visibleCards[i] ? styles.visible : ''}`}
+          >
             <ImQuotesLeft className={styles.quoteIcon} />
             <p className={styles.reviewText}>{review.message}</p>
             <div className={styles.reviewer}>

@@ -4,16 +4,24 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import styles from '../styles/Navbar.module.css'
 import Image from 'next/image'
+import ScrollLink from '../components/NavLink'
+import { usePathname } from 'next/navigation'
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [activeLink, setActiveLink] = useState('')
   const [isMounted, setIsMounted] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     setIsMounted(true)
     const token = localStorage.getItem('token')
     setIsLoggedIn(!!token)
+
+    if (pathname !== '/') {
+      setActiveLink('') // Clear active scroll highlight on other pages
+      return
+    }
 
     const handleScroll = () => {
       const sections = ['hero', 'services', 'about', 'gallery', 'reviews', 'contact']
@@ -30,9 +38,9 @@ export default function Navbar() {
     }
 
     window.addEventListener('scroll', handleScroll)
-    handleScroll() // set initially
+    handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [pathname])
 
   if (!isMounted) return null
 
@@ -43,13 +51,32 @@ export default function Navbar() {
       </div>
 
       <ul className={styles.navLinks}>
-        <li><a href="#hero" className={activeLink === 'hero' ? styles.active : ''}>Home</a></li>
-        <li><a href="#services" className={activeLink === 'services' ? styles.active : ''}>Services</a></li>
-        <li><a href="#about" className={activeLink === 'about' ? styles.active : ''}>About Me</a></li>
-        <li><a href="#gallery" className={activeLink === 'gallery' ? styles.active : ''}>Gallery</a></li>
-        <li><a href="#reviews" className={activeLink === 'reviews' ? styles.active : ''}>Reviews</a></li>
-        <li><a href="#contact" className={activeLink === 'contact' ? styles.active : ''}>Contact</a></li>
-        <li><Link href="/faqs" className={styles.link}>FAQS</Link></li>
+        <li>
+          <ScrollLink id="hero" label="Home" activeClass={styles.active} currentActive={activeLink} />
+        </li>
+        <li>
+          <ScrollLink id="services" label="Services" activeClass={styles.active} currentActive={activeLink} />
+        </li>
+        <li>
+          <ScrollLink id="about" label="About Me" activeClass={styles.active} currentActive={activeLink} />
+        </li>
+        <li>
+          <ScrollLink id="gallery" label="Gallery" activeClass={styles.active} currentActive={activeLink} />
+        </li>
+        <li>
+          <ScrollLink id="reviews" label="Reviews" activeClass={styles.active} currentActive={activeLink} />
+        </li>
+        <li>
+          <ScrollLink id="contact" label="Contact" activeClass={styles.active} currentActive={activeLink} />
+        </li>
+        <li>
+          <Link
+            href="/faqs"
+            className={`${styles.link} ${pathname === '/faqs' ? styles.active : ''}`}
+          >
+            FAQS
+          </Link>
+        </li>
 
         {isLoggedIn ? (
           <li className={styles.authArea}>

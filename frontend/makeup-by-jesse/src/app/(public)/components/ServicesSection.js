@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import styles from '../styles/Services.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -15,14 +16,37 @@ const servicesData = [
     title: 'Debut Look',
     description: 'Celebrate your 18th with glowing, camera-ready beauty.',
   },
+  {
+    image: '/services/5.jpg',
+    title: 'Bridal Glam',
+    description: 'Get the perfect bridal look with soft elegance and long-lasting glam.',
+  },
 ];
 
 export default function ServicesSection() {
+  const sectionRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) observer.observe(sectionRef.current);
+
+    return () => {
+      if (sectionRef.current) observer.unobserve(sectionRef.current);
+    };
+  }, []);
+
   return (
-    <section id="services" className={styles.services}>
-      <p className={styles.subheading}>What We Offer</p>
-      <h2 className={styles.heading}>Our Services</h2>
-      <div className={styles.serviceCards}>
+    <section id="services" className={styles.services} ref={sectionRef}>
+      <p className={`${styles.subheading} ${styles.fadeInUp} ${isVisible ? styles.visible : ''}`}>What We Offer</p>
+      <h2 className={`${styles.heading} ${styles.fadeInUp} ${isVisible ? styles.visible : ''}`}>Our Services</h2>
+      <div className={`${styles.serviceCards} ${styles.fadeInUp} ${isVisible ? styles.visible : ''}`}>
         {servicesData.map((item, i) => (
           <div className={styles.card} key={i}>
             <Image
