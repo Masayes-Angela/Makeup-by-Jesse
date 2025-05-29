@@ -39,7 +39,7 @@
 }
 
 .galleryText h2 {
-  font-size: 2.2rem;
+  font-size: 2.6rem;
   font-weight: 800;
   font-style: italic;
   color: var(--dark-text);
@@ -48,7 +48,7 @@
 .galleryText p {
   font-size: 1rem;
   color: #333;
-  margin-top: 1.4rem;
+  margin: 1.4rem 2rem 0 0;
   line-height: 1.5;
 }
 
@@ -144,4 +144,15 @@
   .carouselTrack {
     gap: 16px;
   }
+}
+
+.lineFadeDown {
+  opacity: 0;
+  transform: translateY(-30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.lineFadeDown.visible {
+  opacity: 1;
+  transform: translateY(0);
 }

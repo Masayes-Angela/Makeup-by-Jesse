@@ -1,6 +1,6 @@
 'use client';
 import styles from '../styles/Gallery.module.css';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import Image from 'next/image';
 
@@ -14,6 +14,21 @@ const images = [
 
 export default function GallerySection() {
   const [startIndex, setStartIndex] = useState(0);
+  const [linesVisible, setLinesVisible] = useState(false);
+  const linesRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setLinesVisible(true);
+      },
+      { threshold: 0.2 }
+    );
+
+    if (linesRef.current) observer.observe(linesRef.current);
+
+    return () => observer.disconnect();
+  }, []);
 
   const slideLeft = () => {
     if (startIndex > 0) setStartIndex(startIndex - 1);
@@ -25,7 +40,10 @@ export default function GallerySection() {
 
   return (
     <section id='gallery' className={styles.gallerySection}>
-      <div className={styles.galleryLines}>
+      <div
+        ref={linesRef}
+        className={`${styles.galleryLines} ${styles.lineFadeDown} ${linesVisible ? styles.visible : ''}`}
+      >
         <div className={styles.line}></div>
         <div className={styles.line}></div>
       </div>
