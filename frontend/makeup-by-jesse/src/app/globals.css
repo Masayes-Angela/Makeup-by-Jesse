@@ -13,10 +13,12 @@
   --white: #ffffff;
   --navbg: #EEF1F3;
   --navtext: #BDCCD3;
+  --pink: #FF707F;
 
   --btn_lightgar: #ACE1E3;
 
   --font-source-sans: 'Source Sans 3', sans-serif;
+  --font-courgette: 'Courgette', cursive;
 }
 
 body {
@@ -36,4 +38,13 @@ body {
   margin-left: 21rem;
   padding: 1rem;
   flex-grow: 1;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 70px;
+}
+
+#gallery {
+  scroll-margin-top: 30px;
 }

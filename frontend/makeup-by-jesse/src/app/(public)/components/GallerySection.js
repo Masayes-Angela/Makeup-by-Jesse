@@ -30,44 +30,52 @@ export default function GallerySection() {
         <div className={styles.line}></div>
       </div>
 
-      <div className={styles.galleryText}>
-        <h2>Jesse’s Gallery</h2>
-        <p>A showcase of beauty, confidence, and creativity—powered by you.</p>
-      </div>
-
-      <div className={styles.carouselWrapper}>
-        <button className={`${styles.navBtn} ${styles.leftBtn}`} onClick={slideLeft} disabled={startIndex === 0}>
-          <FaChevronLeft />
-        </button>
-
-        <div className={styles.carouselWindow}>
-          <div
-            className={styles.carouselTrack}
-            style={{ transform: `translateX(-${startIndex * (310 + 24)}px)` }}
-          >
-            {images.map((src, i) => (
-              <div className={styles.imageCard} key={i}>
-                <Image
-                  src={src}
-                  alt={`Gallery ${i + 1}`}
-                  width={300}
-                  height={380}
-                  style={{
-                    objectFit: 'cover',
-                    objectPosition: 'top',
-                    borderRadius: '12px',
-                  }}
-                />
-              </div>
-            ))}
-          </div>
+      <div className={styles.galleryContent}>
+        <div className={styles.galleryText}>
+          <h2>Jesse’s Gallery</h2>
+          <p>A showcase of beauty, confidence, and creativity—powered by you.</p>
         </div>
 
-        <button className={`${styles.navBtn} ${styles.rightBtn}`} onClick={slideRight} disabled={startIndex >= images.length - 3}>
-          <FaChevronRight />
-        </button>
-      </div>
+        <div className={styles.carouselWrapper}>
+          <button
+            className={`${styles.navBtn} ${styles.leftBtn}`}
+            onClick={slideLeft}
+            disabled={startIndex === 0}
+          >
+            <FaChevronLeft />
+          </button>
 
+          <div className={styles.carouselWindow}>
+            <div
+              className={styles.carouselTrack}
+              style={{ transform: `translateX(-${startIndex * (240 + 30)}px)` }}
+            >
+              {images.map((src, i) => (
+                <div className={styles.imageCard} key={i}>
+                  <Image
+                    src={src}
+                    alt={`Gallery ${i + 1}`}
+                    fill
+                    style={{
+                      objectFit: 'cover',
+                      objectPosition: 'top',
+                      borderRadius: '12px',
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <button
+            className={`${styles.navBtn} ${styles.rightBtn}`}
+            onClick={slideRight}
+            disabled={startIndex >= images.length - 3}
+          >
+            <FaChevronRight />
+          </button>
+        </div>
+      </div>
     </section>
   );
 }

@@ -1,7 +1,6 @@
 .contactSection {
-  padding: 6rem 2rem;
+  padding: 4rem 2rem 6rem;
   background: linear-gradient(180deg, #F5FAFB 0%, #D6EDF0 100%);
-  font-family: sans-serif;
 }
 
 .contactHeader {
@@ -10,13 +9,13 @@
 }
 
 .contactHeader h2 {
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 700;
-  color: #1b1b1b;
+  color: var(--dark-text);
 }
 
 .contactHeader p {
-  color: #555;
+  color: #8e9aa5;
   font-size: 1rem;
   line-height: 1.6;
   max-width: 700px;
@@ -30,10 +29,10 @@
   border-radius: 20px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
   max-width: 1170px;
-  height: 500px;
   margin: 0 auto;
   padding: 10px;
   gap: 2rem;
+  height: auto;
 }
 
 .contactInfoBox {
@@ -83,12 +82,8 @@
   gap: 0.5rem;
   font-size: 0.95rem;
   font-weight: 600;
-  letter-spacing: .8px;
+  letter-spacing: .5px;
   margin-bottom: 2rem;
-}
-
-.contactForm {
-  flex: 2 1 600px;
 }
 
 .contactFormBox {
@@ -97,6 +92,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+}
+
+.contactForm {
+  width: 100%;
 }
 
 .formRow {
@@ -106,10 +106,16 @@
 }
 
 .formGroup {
-  flex: 1 1 48%;
+  flex: 1 1 100%;
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .formGroup {
+    flex: 1 1 48%;
+  }
 }
 
 .formGroup label {
@@ -121,11 +127,11 @@
 
 .formGroup input,
 .formGroup textarea {
-  padding: 0.75rem 0;
+  padding: 0.4rem 0;
   border: none;
   border-bottom: 2px solid #b3bcbd;
   background-color: transparent;
-  font-size: 1rem;
+  font-size: .9rem;
   font-family: sans-serif;
   line-height: 1.4;
   outline: none;
@@ -141,7 +147,7 @@
 }
 
 .sendBtn {
-  margin: .8rem 0;
+  margin: .6rem 0;
   background: linear-gradient(97deg, #ACE1E3 -3.47%, #6DC0C8 108.43%);
   color: white;
   padding: 1rem 2.2rem;

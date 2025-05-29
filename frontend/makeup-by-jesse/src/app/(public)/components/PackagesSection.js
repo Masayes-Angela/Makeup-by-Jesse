@@ -21,7 +21,7 @@ export default function PackagesSection() {
   const scrollTabs = (direction) => {
     if (tabListRef.current) {
       tabListRef.current.scrollBy({
-        left: direction === 'left' ? -210 : 210,
+        left: direction === 'left' ? -208 : 208,
         behavior: 'smooth',
       })
     }
@@ -29,11 +29,11 @@ export default function PackagesSection() {
 
   return (
     <section className={styles.packages}>
-      <p className={styles.subheading}>Choose Our Makeup Offer</p>
-      <h2 className={styles.heading}>SPECIAL PRICE PACKAGES</h2>
+      <p className={styles.subheading}>Our Beauty Sets</p>
+      <h2 className={styles.heading}>Special Price Packages</h2>
 
       <div className={styles.tabCarousel}>
-        {packages.length > 5 && (
+        {packages.length > 4 && (
           <button onClick={() => scrollTabs('left')} className={styles.navBtn}>
             <FaChevronLeft />
           </button>
@@ -52,7 +52,7 @@ export default function PackagesSection() {
           ))}
         </div>
 
-        {packages.length > 5 && (
+        {packages.length > 4 && (
           <button onClick={() => scrollTabs('right')} className={styles.navBtn}>
             <FaChevronRight />
           </button>

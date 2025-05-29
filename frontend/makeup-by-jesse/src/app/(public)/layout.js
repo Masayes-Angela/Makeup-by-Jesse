@@ -2,10 +2,18 @@ import '../globals.css'
 import NavTop from './components/Navbar'
 import Footer from './components/Footer'
 import { Source_Sans_3 } from 'next/font/google'
+import { Courgette } from 'next/font/google';
+
+const courgette = Courgette({
+  subsets: ['latin'],
+  weight: '400',
+  display: 'swap',
+  variable: '--font-courgette'
+});
 
 const sourceSans = Source_Sans_3({
   subsets: ['latin'],
-  weight: ['300', '400', '600', '700'],
+  weight: ['300', '400', '600', '700', '800'],
   display: 'swap',
   variable: '--font-source-sans'
 })

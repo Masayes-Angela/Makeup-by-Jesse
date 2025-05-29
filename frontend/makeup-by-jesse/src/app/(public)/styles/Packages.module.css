@@ -2,19 +2,21 @@
   height: 100vh;
   text-align: center;
   padding: 4rem 2rem;
+  background-color: #F1F9FA;
 }
 
 .subheading {
-  font-size: .9rem;
-  font-weight: 400;
-  color: #6DC0C8;
+  font-family: var(--font-courgette);
+  font-size: 1.1rem;
+  font-weight: lighter;
+  color: var(--primary);
   letter-spacing: .8px;
 }
 
 .heading {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   color: var(--dark-text);
-    margin: 0.5rem 0 2rem;
+  margin: 0.5rem 0 2.4rem;
 }
 
 .tabs {
@@ -34,25 +36,26 @@
 }
 
 .tab {
-  border: 1px solid #bfe3e5;
-  background: #f9fafa;
-  color: #b0c7cb;
-  padding: 1rem 1.5rem;
+  border: 1px solid var(--primary);
+  background: #fff;
+  color: var(--dark-text);
+  padding: 1rem;
   cursor: pointer;
   text-align: center;
   transition: background 0.4s ease, color 0.4s ease;
   min-width: 200px;
+  max-width: 200px;
   flex-shrink: 0;
   font-family: var(--font-source-sans);
 }
 
 .tab:hover:not(.activeTab) {
-  background: #93d7da;
+  background: #8FD2D7;
   color: white;
 }
 
 .activeTab {
-  background: #93d7da;
+  background: #8FD2D7;
   font-weight: bold;
 }
 
@@ -80,7 +83,7 @@
   flex-wrap: wrap;
   text-align: left;
 
-  max-width: 900px;
+  max-width: 880px;
   margin: 2rem auto 0;
   padding: 0 1rem;
 }
@@ -114,16 +117,15 @@
 .packageTitle {
   font-size: 1.4rem;
   margin-bottom: 1rem;
+  color: var(--dark-text);
 }
 
 .packageName {
   font-weight: 400;
-  color: var(--primary);
 }
 
 .packageLabel {
   font-weight: 400;
-  color: var(--dark-text);
   letter-spacing: 0.5px;
 }
 
@@ -140,10 +142,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: .8rem;
   margin-bottom: 2rem;
 
-  max-width: 1174px;
+  max-width: 980px;
   margin-left: auto;
   margin-right: auto;
   padding: 0 1rem;
@@ -158,7 +160,7 @@
 
   max-width: 100%;
   padding: 0.25rem;
-  gap: 6px;
+  gap: 8px;
 }
 
 .tabsWrapper::-webkit-scrollbar {
@@ -167,18 +169,18 @@
 
 .navBtn {
   border-radius: 50%;
-  background: linear-gradient(to right, #98E2E9, #5BA9B1);
-  border: 2px solid #D6EDF0;
-  color: white;
-  padding: 0.6rem;
+  background-color: transparent;
+  border: none;
+  color: var(--primary);
+  padding: 0.8rem;
   cursor: pointer;
   font-size: 1.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.5s ease;
+  transition: color 0.3s ease;
 }
 
 .navBtn:hover {
-  background: linear-gradient(to right, #a3e7ed, #6fb9c1);
+  color: #a2dde1;
 }
