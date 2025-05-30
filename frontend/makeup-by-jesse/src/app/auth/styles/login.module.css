@@ -77,16 +77,20 @@
   font-weight: 500;
 }
 
-.forgot {
+.forgotPassword {
+  margin-top: 0.8rem;
   font-size: 0.8rem;
   color: #9FA0A7;
   text-align: right;
-  margin-top: 0.8rem;
-  cursor: pointer;
+}
+
+.forgotPassword a {
+  text-decoration: none;
+  color: inherit;
   transition: color 0.2s ease;
 }
 
-.forgot:hover {
+.forgotPassword a:hover {
   color: #6DC0C8;
 }
 
@@ -197,7 +201,7 @@
 }
 
 .backLink {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: #6dc0c8;
   text-align: center;
   margin-top: -1rem;
@@ -221,4 +225,57 @@
 .arrowIcon {
   font-size: 1rem;
   margin-top: 1px;
+}
+
+/* Forgot Password added */
+.heading {
+  font-size: 2rem;
+  color: #6DC0C8;
+  font-weight: 700;
+  margin: 3rem auto 2rem;
+  text-align: left;
+}
+
+.subheading {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #8b8b93;
+  text-align: left;
+  margin-bottom: 2.6rem;
+  max-width: 380px;
+}
+
+.backLink2 {
+  font-size: 0.9rem;
+  color: #6dc0c8;
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.backLink2 a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #6dc0c8;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.backLink2 a:hover {
+  color: #8fd0d6;
+  transform: scale(1.02);
+}
+
+.successMessage {
+  padding: 1.5rem 1.6rem;
+  background-color: #f1fafb;
+  border: 2px solid #9cd6db;
+  border-radius: 12px;
+  text-align: center;
+  color: #66a0aa;
+  font-size: .95rem;
+  font-weight: 500;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+  margin-bottom: 1rem;
 }
