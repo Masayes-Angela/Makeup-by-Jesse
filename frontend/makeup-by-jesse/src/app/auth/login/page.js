@@ -100,7 +100,9 @@ export default function LoginPage() {
                   </span>
                 </div>
 
-                <p className={styles.forgot}>Forgot your password?</p>
+                <p className={styles.forgotPassword}>
+                  <Link href="/auth/forgot-password">Forgot Password?</Link>
+                </p>
               </div>
 
               <button type="submit" className={styles.loginBtn}>
@@ -117,7 +119,7 @@ export default function LoginPage() {
               <p className={styles.backLink}>
                 <Link href="/">
                   <TbArrowAutofitLeft className={styles.arrowIcon} />
-                  Go Back
+                  Back to Home
                 </Link>
               </p>
 
