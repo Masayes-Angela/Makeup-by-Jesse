@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 *{
     box-sizing: border-box;
     margin: 0;
@@ -30,6 +32,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 70px;
+}
+
 .app {
   display: flex;
 }
@@ -38,11 +45,6 @@ body {
   margin-left: 21rem;
   padding: 1rem;
   flex-grow: 1;
-}
-
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 70px;
 }
 
 #gallery {

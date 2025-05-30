@@ -182,7 +182,7 @@
   border-radius: 50%;
   background-color: transparent;
   border: none;
-  color: var(--primary);
+  color: #a2dde1;
   padding: 0.8rem;
   cursor: pointer;
   font-size: 1.2rem;
@@ -193,7 +193,7 @@
 }
 
 .navBtn:hover {
-  color: #a2dde1;
+  color: var(--primary);
 }
 
 .fadeInZoom {
