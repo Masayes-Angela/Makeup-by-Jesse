@@ -16,6 +16,8 @@ export default function PackagesSection() {
       { package: 'CLASSIC WEDDING', description: 'hi', image: '/gallery/img4.jpg' },
       { package: 'BRIDAL MAKEUP', description: 'b0ss m4paGm@haL', image: '/gallery/img5.jpg' },
       { package: 'PRENUP PHOTOSHOOT', description: 'wassup', image: '/gallery/img2.jpg' },
+      { package: 'BRIDAL MAKEUP', description: 'b0ss m4paGm@haL', image: '/gallery/img5.jpg' },
+      { package: 'PRENUP PHOTOSHOOT', description: 'wassup', image: '/gallery/img2.jpg' },
     ]
     setPackages(mockPackages)
   }, [])
