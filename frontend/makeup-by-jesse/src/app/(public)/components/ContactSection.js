@@ -1,9 +1,87 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import styles from '../styles/Contact.module.css';
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 
 export default function ContactSection() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const [contactInfo, setContactInfo] = useState({
+    phone: '',
+    email: '',
+    address: '',
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [successMsg, setSuccessMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const savedName = localStorage.getItem('userName');
+    const savedEmail = localStorage.getItem('userEmail');
+
+    if (token && savedName && savedEmail) {
+      setIsLoggedIn(true);
+      setName(savedName);
+      setEmail(savedEmail);
+    }
+
+    setContactInfo({
+      phone: '09123456789',
+      email: 'example@gmail.com',
+      address: 'New York, USA',
+    });
+  }, []);
+
+  const validateEmail = (email) => {
+    const regex = /^\S+@\S+\.\S+$/;
+    return regex.test(email);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSuccessMsg('');
+    setErrorMsg('');
+
+    if (!name || !email || !subject || !message) {
+      setErrorMsg('Please fill in all fields.');
+      setTimeout(() => setErrorMsg(''), 4000);
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setErrorMsg('Please enter a valid email.');
+      setTimeout(() => setErrorMsg(''), 4000);
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Simulated backend call — replace with actual fetch/axios
+      await new Promise((res) => setTimeout(res, 1500));
+
+      setSuccessMsg('Your message has been sent successfully!');
+      setTimeout(() => setSuccessMsg(''), 4000);
+
+      setName('');
+      setEmail('');
+      setSubject('');
+      setMessage('');
+    } catch (error) {
+      setErrorMsg('Something went wrong. Please try again.');
+      setTimeout(() => setErrorMsg(''), 4000);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <section id="contact" className={styles.contactSection}>
       <div className={styles.contactHeader}>
@@ -18,39 +96,81 @@ export default function ContactSection() {
         <div className={styles.contactInfoBox}>
           <h3>Contact Information</h3>
           <h4>We’ll create high-quality linkable content and build at least 40 high-authority.</h4>
-          <p><FaPhoneAlt style={{ width: '18px', height: '18px', marginRight: '8px' }}/> 09123456789</p>
-          <p><FaEnvelope style={{ width: '18px', height: '18px', marginRight: '8px' }}/> example@gmail.com</p>
-          <p><FaMapMarkerAlt style={{ width: '18px', height: '18px', marginRight: '8px' }}/> New York, USA</p>
+          <p><FaPhoneAlt style={{ width: '18px', height: '18px', marginRight: '8px' }} /> {contactInfo.phone}</p>
+          <p><FaEnvelope style={{ width: '18px', height: '18px', marginRight: '8px' }} /> {contactInfo.email}</p>
+          <p><FaMapMarkerAlt style={{ width: '18px', height: '18px', marginRight: '8px' }} /> {contactInfo.address}</p>
         </div>
 
         <div className={styles.contactFormBox}>
-          <form className={styles.contactForm}>
-            <div className={styles.formRow}>
-              <div className={styles.formGroup}>
-                <label>Name</label>
-                <input type="text" placeholder="Enter your name" />
+          <form className={styles.contactForm} onSubmit={handleSubmit}>
+            {!isLoggedIn && (
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label htmlFor="contactName">Name</label>
+                  <input
+                    id="contactName"
+                    type="text"
+                    name="name"
+                    placeholder="Enter your name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    autoComplete="name"
+                    required
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label htmlFor="contactEmail">Email</label>
+                  <input
+                    id="contactEmail"
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="email"
+                    required
+                  />
+                </div>
               </div>
-              <div className={styles.formGroup}>
-                <label>Email</label>
-                <input type="email" placeholder="Enter your email" />
-              </div>
+            )}
+
+            <div className={styles.formGroup}>
+              <label htmlFor="contactSubject">Subject</label>
+              <input
+                id="contactSubject"
+                type="text"
+                name="subject"
+                placeholder="Enter your subject"
+                autoComplete="off"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                required
+              />
             </div>
 
             <div className={styles.formGroup}>
-              <label>Subject</label>
-              <input type="text" placeholder="Enter your subject" />
+              <label htmlFor="contactMessage">Message</label>
+              <textarea
+                id="contactMessage"
+                name="message"
+                rows="4"
+                placeholder="Write your message here"
+                autoComplete="off"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                required
+              />
             </div>
 
-            <div className={styles.formGroup}>
-              <label>Message</label>
-              <textarea rows="4" placeholder="Write your message here" />
-            </div>
+            {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
+            {successMsg && <p style={{ color: 'green' }}>{successMsg}</p>}
 
-            <button type="submit" className={styles.sendBtn}>Send Message</button>
+            <button type="submit" className={styles.sendBtn} disabled={isLoading}>
+              {isLoading ? 'Sending...' : 'Send Message'}
+            </button>
           </form>
         </div>
       </div>
-
     </section>
   );
 }

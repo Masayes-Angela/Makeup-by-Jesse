@@ -1,0 +1,408 @@
+.profileWrapper {
+  padding: 8rem 12rem 2rem;
+  background: #f7fbfd;
+  font-family: 'Roboto', sans-serif;
+}
+
+.pageHeading {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.pageSubheading {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 2.4rem;
+}
+
+/* Top Info Card */
+.topCard {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: #fff;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.profileImage {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e0e0e0;
+}
+
+.userInfo h3 {
+  margin: 0 0 .2rem;
+  font-size: 18px;
+  font-weight: 600;
+  color: #6DC0C8;
+}
+
+.userInfo p {
+  margin: 0;
+  font-size: 14px;
+  color: #707280;
+}
+
+/* Card Grid */
+.cardWrapper {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.card {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  min-width: 280px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Card Header */
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.cardTitle {
+  color: #4ac7c5;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Action Buttons Container */
+.actionBtns {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Cancel Button Style */
+.cancelBtn {
+  min-width: 90px;
+  height: 34px;
+  padding: 0.5rem 0.8rem;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Roboto', sans-serif;
+  background: #fff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.cancelBtn:hover {
+  background: #eff0f3;
+}
+
+/* Edit Button */
+/* Default Edit Button Style (White with blue outline) */
+.editBtn,
+.saveBtn,
+.confirmBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Roboto', sans-serif;
+  padding: 0.5rem .6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editBtn {
+  min-width: 80px;
+  background: white;
+  border: 1px solid #CFDEE5;
+  color: #282C4B;
+}
+
+.saveBtn {
+  min-width: 130px;
+  background: #6DC0C8;
+  border: 1px solid #55B3BC;
+  color: white;
+  letter-spacing: .8px;
+}
+
+.confirmBtn {
+  min-width: 90px;
+  background: #6DC0C8;
+  border: 1px solid #55B3BC;
+  color: white;
+  letter-spacing: .8px;
+}
+
+.editBtn:hover {
+  background: #f7fafc;
+}
+
+.saveBtn:hover,
+.confirmBtn:hover {
+  background: #64b4bb;
+}
+
+/* Form Fields */
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cardContent label {
+  font-size: 14px;
+  color: #707280;
+}
+
+.inputField {
+  margin-bottom: .5rem;
+  padding: 0.6rem .8rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background: #fdfdfd;
+  transition: box-shadow 0.2s ease, border 0.2s ease;
+}
+
+.inputField:focus {
+  outline: none;
+  border: 1px solid #6DC0C8;
+  box-shadow: 0px 0px 0px 3px rgba(109, 192, 200, 0.25);
+}
+
+/* Status Messages */
+.successMsg {
+  margin-top: 1rem;
+  color: #2ecc71;
+  font-weight: 500;
+}
+
+.errorMsg {
+  color: #e74c3c;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.warningMsg {
+  margin-top: 1rem;
+  color: #b80000;
+  font-weight: 500;
+}
+
+/* Delete Account Section */
+.deleteBox {
+  background: #fff3f3;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  border: 1px solid #ffd6d6;
+  margin-bottom: 3rem;
+}
+
+.deleteBox h4 {
+  margin-bottom: 0.5rem;
+  color: #b80000;
+  font-weight: 600;
+}
+
+.deleteBox p {
+  font-size: 14px;
+  color: #b80000;
+  margin-bottom: 1rem;
+}
+
+.deleteBtn {
+  background: #e74c3c;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.deleteBtn:hover {
+  background: #d33426;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profileWrapper {
+    padding: 1.5rem;
+  }
+
+  .cardWrapper {
+    flex-direction: column;
+  }
+
+  .topCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .saveBtn {
+    width: 130px;
+    justify-content: center;
+    margin: 0 auto;
+  }
+
+  .editBtn{
+    width: 80px;
+    justify-content: center;
+    margin: 0 auto;
+  }
+
+  .confirmBtn {
+    width: 90px;
+    justify-content: center;
+    margin: 0 auto;
+  }
+}
+
+/* Confirmation Modal */
+.confirmationOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.confirmationBox {
+  background: #1e293b; /* dark blue-gray */
+  color: #fff;
+  padding: 2rem;
+  border-radius: 18px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.confirmationBox h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 0.8rem;
+}
+
+.confirmationBox p {
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e0faf9;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  box-shadow: 0 4px 8px rgba(103, 212, 207, 0.2);
+}
+
+.checkIcon {
+  font-size: 2.5rem;
+  color: #67d4cf;
+  animation: bounce 0.4s ease;
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: center;
+  gap: .6rem;
+}
+
+.confirm {
+  background-color: #67d4cf;
+  color: #1e293b;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.confirm:hover {
+  background-color: #4ac7c5;
+}
+
+.cancel {
+  background-color: #fff;
+  color: #1e293b;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.cancel:hover {
+  background-color: #f0f0f0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  } to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes bounce {
+  0%   { transform: scale(0.8); }
+  50%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.toastMsg {
+  color: #10b981;
+  font-size: 0.85rem;
+  margin-top: 0.2rem;
+  font-weight: 500;
+}

@@ -5,11 +5,11 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import Image from 'next/image';
 
 const images = [
-  '/gallery/img1.jpg',
-  '/gallery/img2.jpg',
-  '/gallery/img3.jpg',
-  '/gallery/img4.jpg',
-  '/gallery/img5.jpg',
+  { id: 1, src: '/gallery/img1.jpg' },
+  { id: 2, src: '/gallery/img2.jpg' },
+  { id: 3, src: '/gallery/img3.jpg' },
+  { id: 4, src: '/gallery/img4.jpg' },
+  { id: 5, src: '/gallery/img5.jpg' },
 ];
 
 export default function GallerySection() {
@@ -26,7 +26,6 @@ export default function GallerySection() {
     );
 
     if (linesRef.current) observer.observe(linesRef.current);
-
     return () => observer.disconnect();
   }, []);
 
@@ -68,12 +67,14 @@ export default function GallerySection() {
               className={styles.carouselTrack}
               style={{ transform: `translateX(-${startIndex * (240 + 30)}px)` }}
             >
-              {images.map((src, i) => (
-                <div className={styles.imageCard} key={i}>
+              {images.map(({ id, src }, index) => (
+                <div className={styles.imageCard} key={id}>
                   <Image
-                    src={src}
-                    alt={`Gallery ${i + 1}`}
+                    src={src || '/default.jpg'}
+                    alt={`Gallery ${index + 1}`}
                     fill
+                    sizes="(max-width: 1024px) 80vw, 240px"
+                    loading="lazy"
                     style={{
                       objectFit: 'cover',
                       objectPosition: 'top',
