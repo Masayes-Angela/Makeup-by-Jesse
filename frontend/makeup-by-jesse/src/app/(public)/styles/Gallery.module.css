@@ -78,6 +78,15 @@
   border-radius: 12px;
   overflow: hidden;
   position: relative;
+  cursor: pointer;
+}
+
+.imageCard :global(img) {
+  transition: transform 0.4s ease;
+}
+
+.imageCard:hover :global(img) {
+  transform: scale(1.05);
 }
 
 .navBtn {

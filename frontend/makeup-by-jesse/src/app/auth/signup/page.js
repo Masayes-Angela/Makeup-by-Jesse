@@ -22,34 +22,41 @@ export default function SignupPage() {
     return pw.length >= 8 && /[0-9!@#$%^&*]/.test(pw)
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+const handleSubmit = async (e) => {
+  e.preventDefault()
 
-    if (!fullName || !email || !contact || !password || !confirmPassword) {
-      setError('Please fill in all fields.')
-      return
-    }
+  if (!fullName || !email || !contact || !password || !confirmPassword) {
+    setError('Please fill in all fields.')
+    return
+  }
 
-    if (!validatePassword(password)) {
-      setError('Password must be at least 8 characters and include a number or symbol.')
-      return
-    }
+  if (!validatePassword(password)) {
+    setError('Password must be at least 8 characters and include a number or symbol.')
+    return
+  }
 
-    if (password !== confirmPassword) {
-      setError('Passwords do not match.')
-      return
-    }
+  if (password !== confirmPassword) {
+    setError('Passwords do not match.')
+    return
+  }
 
-    setError('')
+  // ✅ TEMPORARY MOCK RESPONSE BEFORE BACKEND IS READY
+  try {
+    // Simulate network delay
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
+    // Simulate successful signup
     setShowModal(true)
-
     setFullName('')
     setEmail('')
     setContact('')
     setPassword('')
     setConfirmPassword('')
+    setError('')
+  } catch (err) {
+    setError('Something went wrong. Please try again.')
   }
-
+}
 
   return (
     <div className={styles.outerWrapper}>
@@ -71,7 +78,10 @@ export default function SignupPage() {
                   className={styles.input}
                   autoComplete="name"
                   value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
+                  onChange={(e) => {
+                    setFullName(e.target.value)
+                    if (error) setError('')
+                  }}
                 />
               </div>
 
@@ -82,7 +92,10 @@ export default function SignupPage() {
                   className={styles.input}
                   autoComplete="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value)
+                    if (error) setError('')
+                  }}
                 />
               </div>
 
@@ -93,7 +106,10 @@ export default function SignupPage() {
                   className={styles.input}
                   autoComplete="tel"
                   value={contact}
-                  onChange={(e) => setContact(e.target.value)}
+                  onChange={(e) => {
+                    setContact(e.target.value)
+                    if (error) setError('')
+                  }}
                 />
               </div>
 
@@ -104,7 +120,10 @@ export default function SignupPage() {
                   className={styles.input}
                   autoComplete="new-password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value)
+                    if (error) setError('')
+                  }}
                 />
                 <span
                   className={styles.icon}
@@ -121,7 +140,10 @@ export default function SignupPage() {
                   className={styles.input}
                   autoComplete="new-password"
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value)
+                    if (error) setError('')
+                  }}
                 />
                 <span
                   className={styles.icon}
@@ -172,7 +194,6 @@ export default function SignupPage() {
           </div>
         </div>
       )}
-
     </div>
   )
 }
