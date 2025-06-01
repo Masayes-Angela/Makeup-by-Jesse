@@ -1,3 +1,4 @@
+//db table: packages
 import db from "../../db.js"
 
 // CREATE

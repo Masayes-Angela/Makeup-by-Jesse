@@ -1,4 +1,4 @@
-import db from "../../db.js";
+//db table: admin_profile
 import * as fs from "fs";
 
 // GET /profile/:id

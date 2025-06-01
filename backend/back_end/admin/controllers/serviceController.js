@@ -1,3 +1,4 @@
+//db table: tb_services
 import db from "../../db.js"
 
 // CREATE

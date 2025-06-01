@@ -16,6 +16,8 @@ import contactRoutes from "./back_end/admin/routes/contact.js"
 import messageRoutes from "./back_end/admin/routes/message.js"
 import socialRoutes from "./back_end/admin/routes/social.js"
 import packageRoutes from "./back_end/admin/routes/package.js"
+import faqRoutes from './back_end/admin/routes/faqRoutes.js';
+import reviewRoutes from './back_end/admin/routes/reviewRoutes.js';
 
 const app = express()
 const PORT = process.env.PORT || 8080
@@ -35,6 +37,8 @@ app.use("/api/contact", contactRoutes)
 app.use("/api/message", messageRoutes)
 app.use("/api/socials", socialRoutes)
 app.use("/api/packages", packageRoutes)
+app.use('/api/faqs', faqRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // Default route
 app.get("/", (req, res) => {

@@ -1,3 +1,4 @@
+//db table: social_links
 import db from "../../db.js";
 
 // GET all links
