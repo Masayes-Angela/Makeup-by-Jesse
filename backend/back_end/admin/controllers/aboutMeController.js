@@ -1,3 +1,4 @@
+//db table: about_me
 import db from "../../db.js";
 
 // Get about me info

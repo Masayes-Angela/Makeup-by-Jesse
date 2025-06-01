@@ -1,3 +1,4 @@
+//db table: contact_info
 import db from "../../db.js";
 
 // Get contact info (public)

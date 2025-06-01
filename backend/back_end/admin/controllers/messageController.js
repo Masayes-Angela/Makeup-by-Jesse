@@ -1,3 +1,4 @@
+//db table: messages
 import db from "../../db.js";
 
 // Save a new message from contact form

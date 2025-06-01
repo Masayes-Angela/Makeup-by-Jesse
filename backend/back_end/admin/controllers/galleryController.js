@@ -1,3 +1,4 @@
+//db table: gallery
 import db from "../../db.js";
 
 // Add new gallery photo
