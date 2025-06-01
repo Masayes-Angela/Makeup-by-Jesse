@@ -26,10 +26,13 @@ export default function ManageProfilePage() {
 
   const [infoError, setInfoError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [imageError, setImageError] = useState('');
   const [deleteMsg, setDeleteMsg] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [passwordToast, setPasswordToast] = useState(false);
+
+  const [profileImage, setProfileImage] = useState('/no-profile-pic.jpg');
 
   useEffect(() => {
     const defaultName = 'Angeline Masayes';
@@ -43,6 +46,10 @@ export default function ManageProfilePage() {
     setFormName(defaultName);
     setFormEmail(defaultEmail);
     setFormPhone(defaultPhone);
+
+    // ✅ Load saved image from localStorage
+    const savedImage = localStorage.getItem('userProfileImage');
+    setProfileImage(savedImage || '/no-profile-pic.jpg');
   }, []);
 
   useEffect(() => {
@@ -58,6 +65,37 @@ export default function ManageProfilePage() {
       return () => clearTimeout(timer);
     }
   }, [passwordToast]);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const validTypes = ['image/jpeg', 'image/png'];
+    const maxSize = 2 * 1024 * 1024; // 2MB
+
+    if (!validTypes.includes(file.type)) {
+      setImageError('Only JPEG and PNG files are allowed.');
+      return;
+    }
+
+    if (file.size > maxSize) {
+      setImageError('Image must be less than 2MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProfileImage(reader.result);
+      localStorage.setItem('userProfileImage', reader.result);
+      setImageError('');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemoveImage = () => {
+    setProfileImage('/no-profile-pic.jpg');
+    localStorage.removeItem('userProfileImage');
+  };
 
   const handleSaveInfo = () => {
     setInfoError('');
@@ -123,8 +161,6 @@ export default function ManageProfilePage() {
   const confirmDelete = () => {
     setDeleteMsg('Account deletion requested.');
     setShowDeleteModal(false);
-
-    // 🔁 Redirect to goodbye page after mock deletion
     setTimeout(() => {
       router.push('/goodbye');
     }, 500);
@@ -142,7 +178,27 @@ export default function ManageProfilePage() {
       </p>
 
       <div className={styles.topCard}>
-        <div className={styles.profileImage}></div>
+<div className={styles.profileImageBox}>
+  <div className={styles.imageContainer}>
+    <img src={profileImage} alt="Profile" className={styles.profileImage} />
+    <div className={styles.overlay}>
+      <label htmlFor="profileUpload" className={styles.overlayBtn}>Change</label>
+      {profileImage !== '/no-profile-pic.jpg' && (
+        <button className={styles.overlayBtn} onClick={handleRemoveImage}>Remove</button>
+      )}
+    </div>
+    <input
+      type="file"
+      accept="image/png, image/jpeg"
+      onChange={handleImageChange}
+      className={styles.fileInput}
+      id="profileUpload"
+    />
+  </div>
+  {imageError && <p className={styles.errorMsg}>{imageError}</p>}
+</div>
+
+
         <div className={styles.userInfo}>
           <h3>{name}</h3>
           <p>{email}</p>
@@ -150,7 +206,6 @@ export default function ManageProfilePage() {
       </div>
 
       <div className={styles.cardWrapper}>
-        {/* Personal Information */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
             <h3 className={styles.cardTitle}>Personal Information</h3>
@@ -166,9 +221,7 @@ export default function ManageProfilePage() {
             )}
           </div>
           <div className={styles.cardContent}>
-            {infoError && isEditingInfo && (
-              <p className={styles.errorMsg}>{infoError}</p>
-            )}
+            {infoError && isEditingInfo && <p className={styles.errorMsg}>{infoError}</p>}
             <label htmlFor="fullName">Full Name</label>
             <input
               id="fullName"
@@ -207,7 +260,6 @@ export default function ManageProfilePage() {
           </div>
         </div>
 
-        {/* Change Password */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
             <h3 className={styles.cardTitle}>Change Password</h3>
@@ -223,9 +275,7 @@ export default function ManageProfilePage() {
             )}
           </div>
           <div className={styles.cardContent}>
-            {passwordError && isEditingPassword && (
-              <p className={styles.errorMsg}>{passwordError}</p>
-            )}
+            {passwordError && isEditingPassword && <p className={styles.errorMsg}>{passwordError}</p>}
             <label htmlFor="currentPassword">Current Password</label>
             <input
               id="currentPassword"
@@ -265,7 +315,6 @@ export default function ManageProfilePage() {
         </div>
       </div>
 
-      {/* Delete Account Section */}
       <div className={styles.deleteBox}>
         <h4>Delete Account</h4>
         <p>Once you delete your account, there is no going back. Please be certain.</p>
@@ -275,7 +324,6 @@ export default function ManageProfilePage() {
         {deleteMsg && <p className={styles.warningMsg}>{deleteMsg}</p>}
       </div>
 
-      {/* Confirmation Modal */}
       {showModal && (
         <div className={styles.confirmationOverlay}>
           <div className={styles.confirmationBox}>
@@ -288,7 +336,6 @@ export default function ManageProfilePage() {
         </div>
       )}
 
-      {/* Delete Modal */}
       {showDeleteModal && (
         <div className={styles.confirmationOverlay}>
           <div className={styles.confirmationBox}>

@@ -1,45 +1,36 @@
 .hero {
-  padding: 1rem 6rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 1rem 6rem;
   background: linear-gradient(90deg, #F5FAFB 0%, #D6EDF0 100%);
   min-height: 100vh;
 }
 
+.heroLeft {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 3 / 2;
+  margin-bottom: 2rem;
+}
+
 .heroContent {
-  max-width: 500px;
+  max-width: 100%;
   text-align: left;
 }
 
-.hero h3 {
-  font-size: 1.2rem;
-  margin: 2.4rem 0;
-  color: var(--dark-text);
-}
-
-.bookBtn,
-.hero_bookBtn {
-  border-radius: 192px;
-  border: 2px solid rgba(255, 255, 255, 0.80);
-  background: linear-gradient(97deg, #ACE1E3 -3.47%, #6DC0C8 108.43%);
-  box-shadow: 0px 30px 50px 0px #D6EDF0;
-  padding: .4rem 3.2rem;
-  font-weight: 600;
-  color: #fff;
-  font-size: 14px;
-  transition: 0.3s;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 44px;
-  text-decoration: none;
-  margin-top: 0.5rem;
-}
-
-.bookBtn:hover,
-.hero_bookBtn:hover {
-  opacity: 0.9;
+.heroContent h3 {
+  font-size: 20px;
+  color: #282C4B;
+  margin: 1rem 0 2rem;
 }
 
 .heroShape {
@@ -47,4 +38,60 @@
   height: 350px;
   background: #5bc5cd;
   border-radius: 40% / 30%;
+}
+
+/* Button Styles */
+.bookBtn,
+.hero_bookBtn {
+  border-radius: 192px;
+  border: 2px solid rgba(255, 255, 255, 0.80);
+  background: linear-gradient(97deg, #ACE1E3 -3.47%, #6DC0C8 108.43%);
+  box-shadow: 0px 12px 24px rgba(145, 218, 225, 0.6);
+  padding: 0.4rem 2rem;
+  font-weight: 600;
+  color: #fff;
+  font-size: 16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  width: 100%;
+  max-width: 180px;
+  text-decoration: none;
+  margin-top: 0.5rem;
+}
+
+.bookBtn:hover,
+.hero_bookBtn:hover {
+  opacity: 1;
+  transform: translateY(-6px); /* lift up */
+  box-shadow: 0px 16px 32px rgba(145, 218, 225, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bookIcon {
+  font-size: 18px;
+  margin-right: 0.5rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+
+  .heroContent {
+    text-align: center;
+    align-items: center;
+  }
+
+  .heroShape {
+    display: none;
+  }
 }
