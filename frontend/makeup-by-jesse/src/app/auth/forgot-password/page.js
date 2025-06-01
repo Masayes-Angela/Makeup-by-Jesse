@@ -4,6 +4,7 @@ import '../../globals.css'
 import { useState } from 'react'
 import styles from '../styles/login.module.css'
 import Link from 'next/link'
+import { AiOutlineCheckCircle } from 'react-icons/ai'
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('')
@@ -29,13 +30,12 @@ export default function ForgotPasswordPage() {
             {submitted ? (
               <>
                 <div className={styles.successMessage}>
+                  <AiOutlineCheckCircle style={{ color: '#4ac7c5', fontSize: '1.4rem', marginRight: '0.4rem' }} />
                   If the email exists, you’ll get a reset link shortly.
                 </div>
 
                 <p className={styles.backLink2}>
-                  <Link href="/auth/login">
-                    Back to Login
-                  </Link>
+                  <Link href="/auth/login">Back to Login</Link>
                 </p>
               </>
             ) : (
@@ -47,9 +47,10 @@ export default function ForgotPasswordPage() {
                   </div>
                   <input
                     id="email"
+                    name="email"
                     type="email"
-                    placeholder="Email"
                     autoComplete="email"
+                    placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -57,12 +58,16 @@ export default function ForgotPasswordPage() {
                   />
                 </div>
 
-                <button type="submit" className={styles.loginBtn}>
+                <button
+                  type="submit"
+                  className={styles.loginBtn}
+                  disabled={submitted}
+                >
                   Send Reset Link
                 </button>
 
                 <p className={styles.backLink2}>
-                  <Link href="/auth/login">
+                  <Link href="/auth/login" prefetch={false}>
                     Back to Login
                   </Link>
                 </p>

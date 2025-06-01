@@ -1,7 +1,7 @@
 .outerWrapper {
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
   height: 100dvh;
   background-color: #F5F5F5;
 }
@@ -60,6 +60,7 @@
 .label {
   font-size: 0.85rem;
   font-weight: 400;
+  font-family: inherit;
   margin-bottom: 0.4rem;
   color: #9FA0A7;
 }
@@ -268,14 +269,16 @@
 }
 
 .successMessage {
-  padding: 1.5rem 1.6rem;
-  background-color: #f1fafb;
-  border: 2px solid #9cd6db;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: #f0fbfb;
+  color: #3dbac2;
+  padding: 1rem 1.2rem;
+  border: 2px solid #b5e5e6;
   border-radius: 12px;
-  text-align: center;
-  color: #66a0aa;
-  font-size: .95rem;
-  font-weight: 500;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
-  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: left;
+  max-width: 400px;
 }

@@ -5,25 +5,28 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import styles from '../styles/login.module.css'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
-import { TbArrowAutofitLeft } from "react-icons/tb";
+import { TbArrowAutofitLeft } from "react-icons/tb"
 import Link from 'next/link'
+
+// ✅ MOCK Data
+const mockUsers = [
+  { email: 'admin@example.com', password: 'Admin123', role: 'admin' },
+  { email: 'sofia@example.com', password: 'SofiaPass123', role: 'user' },
+]
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
 
-  // ✅ Mock user data
-  const mockUsers = [
-    { email: 'admin@example.com', password: 'Admin123', role: 'admin' },
-    { email: 'sofia@example.com', password: 'SofiaPass123', role: 'user' },
-  ]
+  const router = useRouter()
 
   const handleLogin = (e) => {
     e.preventDefault()
     setError('')
+    setIsLoading(true)
 
     const userFound = mockUsers.find(
       (user) => user.email === email && user.password === password
@@ -31,18 +34,21 @@ export default function LoginPage() {
 
     if (!userFound) {
       setError('Invalid email or password.')
+      setIsLoading(false)
       return
     }
 
-    // ✅ Use role to redirect
+    // ✅ Clear form first
+    setEmail('')
+    setPassword('')
+    setIsLoading(false)
+
+    // ✅ Redirect
     if (userFound.role === 'admin') {
       router.push('/admin')
     } else {
       router.push('/')
     }
-
-    setEmail('')
-    setPassword('')
   }
 
   const togglePassword = () => setShowPassword(!showPassword)
@@ -64,7 +70,9 @@ export default function LoginPage() {
                 </div>
                 <input
                   id="email"
+                  name="email"
                   type="email"
+                  autoComplete="email"
                   placeholder="Email"
                   value={email}
                   onChange={(e) => {
@@ -85,7 +93,9 @@ export default function LoginPage() {
                 <div className={styles.passwordWrapper}>
                   <input
                     id="password"
+                    name="password"
                     type={showPassword ? 'text' : 'password'}
+                    autoComplete="current-password"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => {
@@ -101,12 +111,14 @@ export default function LoginPage() {
                 </div>
 
                 <p className={styles.forgotPassword}>
-                  <Link href="/auth/forgot-password">Forgot Password?</Link>
+                  <Link href="/auth/forgot-password" prefetch={false}>
+                    Forgot Password?
+                  </Link>
                 </p>
               </div>
 
-              <button type="submit" className={styles.loginBtn}>
-                Log In
+              <button type="submit" className={styles.loginBtn} disabled={isLoading}>
+                {isLoading ? 'Logging in...' : 'Log In'}
               </button>
 
               <p className={styles.signup}>
@@ -122,7 +134,6 @@ export default function LoginPage() {
                   Back to Home
                 </Link>
               </p>
-
             </form>
           </div>
         </div>

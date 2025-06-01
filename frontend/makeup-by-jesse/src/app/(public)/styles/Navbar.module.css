@@ -3,16 +3,13 @@
   top: 0;
   left: 0;
   width: 100%;
-  max-width: 100vw;
-  box-sizing: border-box;
-  background: #ffffff;
-  padding: 1.4rem 2rem 0.4rem 6rem;
+  background: #fff;
+  padding: 1.4rem 2rem 1.4rem 4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   z-index: 1000;
-  overflow: visible;
 }
 
 .logo {
@@ -20,6 +17,7 @@
   font-weight: bold;
   color: #e55f72;
   font-style: italic;
+  flex-shrink: 0;
 }
 
 .logo span {
@@ -27,19 +25,27 @@
   font-style: normal;
 }
 
+/* Centered nav (desktop only) */
+.centerNav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
 .navLinks {
-  list-style: none;
   display: flex;
   gap: 4rem;
-  align-items: center;
-  margin: 0;
+  list-style: none;
   padding: 0;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
 }
 
 .navItem {
   display: flex;
   align-items: center;
-  height: 100%;
 }
 
 .navItem a {
@@ -51,7 +57,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
 }
 
 .navItem a:hover:not(.active) {
@@ -77,53 +82,70 @@
   border-radius: 2px;
 }
 
-/* Auth Buttons (Sign Up / Log In) */
-.authBtns {
+/* Right side: auth + hamburger */
+.rightSide {
   display: flex;
-  gap: 0.8rem;
   align-items: center;
+  gap: 1rem;
+  z-index: 2;
+}
+
+/* Auth buttons */
+.authBtn {
+  border-radius: 192px;
+  box-shadow: 0px 6px 12px 0px #D6EDF0;
+  padding: 0.5rem 1.4rem;
+  font-weight: 600;
+  font-size: 13px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(1);
+}
+
+.authBtn:hover {
+  opacity: 0.9;
+  transform: scale(1.03);
 }
 
 .signupBtn {
-  border-radius: 192px;
+  composes: authBtn;
   border: 2px solid rgba(255, 255, 255, 0.80);
   background: linear-gradient(97deg, #ACE1E3 -3.47%, #6DC0C8 108.43%);
-  box-shadow: 0px 6px 12px 0px #D6EDF0;
-  padding: 0.5rem 1.4rem;
-  font-weight: 600;
   color: #fff;
-  font-size: 13px;
-  transition: 0.3s;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 2rem;
-}
-
-.signupBtn:hover {
-  opacity: 0.9;
+  margin-right: 0.5rem;
 }
 
 .loginBtn {
-  border-radius: 192px;
+  composes: authBtn;
   border: 2px solid #6DC0C8;
   background: #fff;
-  box-shadow: 0px 6px 12px 0px #D6EDF0;
   color: #6DC0C8;
-  padding: 0.5rem 1.4rem;
-  font-weight: 600;
-  font-size: 13px;
-  transition: 0.3s;
-  display: inline-flex;
-  align-items: center;
+}
+
+/* Hamburger */
+.menuToggle {
+  display: none;
+  flex-direction: column;
   justify-content: center;
+  gap: 4px;
+  width: 30px;
+  height: 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-.loginBtn:hover {
-  opacity: 0.9;
+.bar {
+  height: 3px;
+  width: 100%;
+  background: #4ac7c5;
+  border-radius: 5px;
+  transition: 0.3s ease;
 }
 
-/* Track Appointment Button */
+/* Track button + Profile */
 .trackBtn {
   display: flex;
   align-items: center;
@@ -136,12 +158,9 @@
   color: #6b6c7e;
   text-decoration: none;
   transition: color 0.3s ease;
-  line-height: 1;
 }
 
 .trackBtn:hover {
-  opacity: 0.95;
-  transform: none !important; 
   color: #282C4B;
 }
 
@@ -159,20 +178,16 @@
   transition: all 0.3s ease;
 }
 
-.trackIconCircle:hover {
-  transform: scale(1.04);
-}
-
 .trackIcon {
   font-size: 16px;
   color: #f17380;
 }
 
-/* Profile Icon and Dropdown */
 .authArea {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  flex-wrap: nowrap;
 }
 
 .profileWrapper {
@@ -181,15 +196,19 @@
 }
 
 .userIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
   font-size: 37px;
   color: #6DC0C8;
-  cursor: pointer;
   border-radius: 50%;
   transition: transform 0.2s;
+  cursor: pointer;
 }
 
 .userIcon:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
 .dropdown {
@@ -202,7 +221,6 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
   padding: 0.5rem 0;
   z-index: 999;
-  overflow: hidden;
   border: 1px solid #d9f1f0;
 }
 
@@ -229,7 +247,6 @@
   min-width: 18px;
 }
 
-/* Used on the <Link> inside the dropdown to remove inherited nav styles */
 .dropdownLink {
   all: unset;
   font-size: 0.95rem;
@@ -239,4 +256,65 @@
   flex: 1;
   cursor: pointer;
   text-decoration: none;
+}
+
+/* Slide-down wrapper (mobile only) */
+.navWrapper {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .navbar {
+  padding: 1.4rem 2rem;
+  }
+
+  .centerNav {
+    display: none;
+  }
+
+  .menuToggle {
+    display: flex;
+  }
+
+  .navWrapper {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease-in-out;
+    background: #fff;
+    box-shadow: 0 8px 12px rgba(0,0,0,0.04);
+    z-index: 999;
+  }
+
+  .navWrapper.open {
+    max-height: 600px;
+  }
+
+  .navLinks {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.2rem;
+    padding: 1.5rem 2rem;
+  }
+
+  .navLinks.open {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .rightSide {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: flex-end;
+  }
+
+  .authBtns,
+  .authArea {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
 }

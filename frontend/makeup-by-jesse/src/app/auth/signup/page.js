@@ -73,10 +73,11 @@ const handleSubmit = async (e) => {
             <form className={styles.form} onSubmit={handleSubmit}>
               <div className={styles.inputGroup}>
                 <input
+                  name="fullName"
+                  autoComplete="name"
                   type="text"
                   placeholder="Full Name"
                   className={styles.input}
-                  autoComplete="name"
                   value={fullName}
                   onChange={(e) => {
                     setFullName(e.target.value)
@@ -87,10 +88,11 @@ const handleSubmit = async (e) => {
 
               <div className={styles.inputGroup}>
                 <input
+                  name="email"
+                  autoComplete="email"
                   type="email"
                   placeholder="Email Address"
                   className={styles.input}
-                  autoComplete="email"
                   value={email}
                   onChange={(e) => {
                     setEmail(e.target.value)
@@ -101,10 +103,11 @@ const handleSubmit = async (e) => {
 
               <div className={styles.inputGroup}>
                 <input
+                  name="contact"
+                  autoComplete="tel"
                   type="tel"
                   placeholder="Contact Number"
                   className={styles.input}
-                  autoComplete="tel"
                   value={contact}
                   onChange={(e) => {
                     setContact(e.target.value)
@@ -115,6 +118,7 @@ const handleSubmit = async (e) => {
 
               <div className={styles.passwordWrapper}>
                 <input
+                  name="password"
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Password"
                   className={styles.input}
@@ -135,6 +139,7 @@ const handleSubmit = async (e) => {
 
               <div className={styles.passwordWrapper}>
                 <input
+                  name="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
                   placeholder="Confirm Password"
                   className={styles.input}
