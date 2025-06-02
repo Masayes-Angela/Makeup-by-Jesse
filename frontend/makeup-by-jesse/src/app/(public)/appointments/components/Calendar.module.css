@@ -1,0 +1,140 @@
+.title {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #000;
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+.calendar {
+  background: #F3FEFF;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  user-select: none;
+}
+
+.header {
+  background: #FFF;
+  box-shadow: 4px 4px 20px 0px rgba(186, 186, 186, 0.50);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.2rem;
+  border-radius: 4px 4px 0 0;
+}
+
+.header h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  user-select: text;
+}
+
+.navBtn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #0C1338;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  transition: color 0.2s ease;
+}
+
+.navBtn:hover {
+  color: #6dc0c8;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* Updated to fix spacing */
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.dayLabels {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* Updated to fix spacing */
+  gap: 0.75rem;
+  padding: 0 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.dayLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #B3BCBD;
+  text-align: center;
+  margin-top: 1.6rem;
+}
+
+.day {
+  width: 44px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s ease;
+  border-radius: 2px;
+  border: 3px solid transparent;
+  background: transparent;
+  color: #000;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  transition: none;
+}
+
+.day:hover:not(.selected) {
+  border: 3px solid #dae8e9;
+}
+
+/* Booking Status */
+.none {
+  background: transparent;
+}
+
+.full {
+  background: #6dc0c8;
+  color: white;
+}
+
+.half {
+  position: relative;
+  background: white;
+  overflow: hidden;
+}
+
+.half::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #6dc0c8;
+  border-radius: 2px 0 0 2px;
+  z-index: 0;
+}
+
+/* Today */
+.day.today {
+  color: #6dc0c8;
+  font-weight: 700;
+}
+
+/* Selected */
+.selected {
+  border: 3px solid #1D7D86;
+  border-radius: 2px;
+  filter: drop-shadow(0px 6px 6px rgba(143, 199, 205, 0.50));
+}
+
+.half.selected::before {
+  border-radius: 0;
+}

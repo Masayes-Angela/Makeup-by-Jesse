@@ -1,0 +1,47 @@
+.pageWrapper {
+  padding: 7rem 2rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100dvh;
+}
+
+.headingSection {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #282C4B;
+  margin-bottom: 0.5rem;
+}
+
+.subtext {
+  font-size: 0.95rem;
+  color: #374151;
+}
+
+/* Main layout container */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 👈 ensure vertical top alignment */
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  padding: 0;
+}
+
+/* Responsive size control for calendar and time selector */
+.calendarWrap,
+.timeWrap {
+  flex: 1;
+  min-width: 320px;
+  max-width: 480px;
+}
+
+.timeWrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* align to top */
+}

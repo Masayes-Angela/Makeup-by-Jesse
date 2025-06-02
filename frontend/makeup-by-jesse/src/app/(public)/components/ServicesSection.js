@@ -46,7 +46,7 @@ function ServiceCard({ image, title, description }) {
       <div className={styles.cardContent}>
         <h3 className={styles.cardTitle}>{title}</h3>
         <p className={styles.cardDescription}>{description}</p>
-        <Link className={styles.bookBtn} href="/book">Book Now</Link>
+        <Link className={styles.bookBtn} href="/appointments">Book Now</Link>
       </div>
     </div>
   );
