@@ -21,7 +21,7 @@ export default function HeroSection() {
         </div>
         <div className={styles.heroContent}>
           <h3>Hair & Makeup Artist (HMUA)</h3>
-          <Link href="/book" className={styles.hero_bookBtn}>
+          <Link href="/appointments" className={styles.hero_bookBtn}>
             <RiBookFill className={styles.bookIcon} />
             Book Now
           </Link>

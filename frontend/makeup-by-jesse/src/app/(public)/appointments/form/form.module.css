@@ -1,0 +1,245 @@
+/* Section Wrapper */
+.wrapper {
+  padding: 7rem 2rem 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Top Row */
+.fullTopRowWrapper {
+  position: relative;
+}
+
+.topRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  height: 80px;
+}
+
+.headingGroup {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.heading {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1f2937;
+  margin-bottom: 0.2rem;
+}
+
+.subheading {
+  font-size: 0.95rem;
+  color: #374151;
+  margin: 0;
+}
+
+/* Go Back Button */
+.goBackBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  background: linear-gradient(97deg, #ACE1E3 -3.47%, #6DC0C8 108.43%);
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  white-space: nowrap;
+}
+
+.iconLeft {
+  font-size: 0.9rem;
+}
+
+.goBackBtn:hover {
+    opacity: 0.9;
+}
+
+/* Form Card */
+.formWrapper {
+  background: #fff;
+  border-radius: 20px;
+  padding: 2rem;
+  border: 2px solid #e0e7ff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Date & Time Display */
+.datetimeDisplay {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.dateBox {
+  padding: 0.6rem 1.2rem;
+  border: 2px solid #0C1338;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 6px;
+}
+
+.timeText {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #0C1338;
+}
+
+/* Form Layout */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.row {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.input {
+  flex: 1;
+  padding: 0.9rem 1rem;
+  border: 1.8px solid #e0e7ff;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.input:focus {
+  border-color: #6DC0C8;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(109, 192, 200, 0.2);
+}
+
+.textarea {
+  flex: 1;
+  padding: 0.9rem 1rem;
+  border: 1.8px solid #e0e7ff;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  min-height: 150px;
+  resize: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.textarea:focus {
+  border-color: #6DC0C8;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(109, 192, 200, 0.2);
+}
+
+/* Custom Dropdown */
+.dropdown {
+  position: relative;
+  flex: 1;
+  font-family: inherit;
+}
+
+.selectBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1rem;
+  border: 1.8px solid #e0e7ff;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.2s ease;
+}
+
+.selectBox:hover {
+  border-color: #6DC0C8;
+}
+
+.placeholder {
+  color: #a0a0a0;
+}
+
+.icon {
+  font-size: 0.8rem;
+  color: #374151;
+  margin-left: 0.6rem;
+}
+
+.options {
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #e0e7ff;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  max-height: 180px;
+  overflow-y: auto;
+  margin-top: 0.4rem;
+}
+
+.options li {
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.3s ease;
+}
+
+.options li:hover {
+  background-color: #e8f0f1;
+}
+
+/* Submit Button */
+.centerBtn {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.submitBtn {
+  border-radius: 6px;
+  border: 2px solid #5BA9B1;
+  background: #6DC0C8;
+  color: white;
+  padding: 0.75rem 2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 180px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  box-shadow: 0px 4px 10px rgba(109, 192, 200, 0.35);
+}
+
+.submitBtn:hover {
+  background: #58b3b9;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .topRow {
+    justify-content: center;
+  }
+
+  .goBackBtn {
+    margin: 0 auto 1rem;
+  }
+}
