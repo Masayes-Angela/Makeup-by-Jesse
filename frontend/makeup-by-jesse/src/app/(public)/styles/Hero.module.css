@@ -2,9 +2,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 6rem;
-  background: linear-gradient(90deg, #F5FAFB 0%, #D6EDF0 100%);
+  padding: 1rem 6rem 1rem 8rem;
+  background: linear-gradient(180deg, #f9fcfd 0%, #D6EDF0 100%);
   min-height: 100vh;
+  flex-wrap: wrap;
 }
 
 .heroLeft {
@@ -12,14 +13,17 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 1.5rem;
+  z-index: 1;
 }
 
-.imageWrapper {
-  position: relative;
+.logoWrapper {
+  max-width: 400px;
+}
+
+.logoImage {
   width: 100%;
-  max-width: 420px;
-  aspect-ratio: 3 / 2;
-  margin-bottom: 2rem;
+  height: auto;
 }
 
 .heroContent {
@@ -28,19 +32,40 @@
 }
 
 .heroContent h3 {
-  font-size: 20px;
+  font-size: 24px;
   color: #282C4B;
   margin: 1rem 0 2rem;
 }
 
-.heroShape {
-  width: 300px;
-  height: 350px;
-  background: #5bc5cd;
-  border-radius: 40% / 30%;
+.heroRight {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Button Styles */
+.framedImage {
+  margin-top: 4rem;
+  width: 540px;
+  height: 620px;
+  background-color: rgba(109, 192, 200, 0.24);
+  padding: 14px;
+  border-radius: 48% 48% 10% 10% / 48% 48% 10% 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 48% 48% 10% 10% / 48% 48% 10% 10%;
+  display: block;
+}
+
+/* Book Now Button */
 .bookBtn,
 .hero_bookBtn {
   border-radius: 192px;
@@ -64,26 +89,35 @@
 
 .bookBtn:hover,
 .hero_bookBtn:hover {
-  opacity: 1;
-  transform: translateY(-6px); /* lift up */
+  transform: translateY(-6px);
   box-shadow: 0px 16px 32px rgba(145, 218, 225, 0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .bookIcon {
   font-size: 18px;
   margin-right: 0.5rem;
-  display: inline-block;
-  vertical-align: middle;
 }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 768px) {
   .hero {
     flex-direction: column;
-    gap: 2rem;
     padding: 2rem 1.5rem;
     text-align: center;
+  }
+
+  .heroRight {
+    display: none;
+  }
+
+  .heroLeft {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logoWrapper {
+    max-width: 280px;
   }
 
   .heroContent {
@@ -91,7 +125,7 @@
     align-items: center;
   }
 
-  .heroShape {
-    display: none;
+  .heroContent h3 {
+    font-size: 18px;
   }
 }

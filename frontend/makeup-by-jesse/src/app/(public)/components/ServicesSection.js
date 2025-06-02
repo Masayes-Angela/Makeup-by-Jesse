@@ -21,6 +21,13 @@ const servicesData = [
     slug: 'debut-look',
     description: 'Celebrate your 18th with glowing, camera-ready beauty.',
   },
+  {
+    id: 3,
+    image: '/services/5.jpg',
+    title: 'Bridal Glam',
+    slug: 'bridal-glam',
+    description: 'Get the perfect bridal look with soft elegance and long-lasting glam.',
+  },
 ];
 
 // Reusable card component
