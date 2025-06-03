@@ -56,49 +56,23 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
     }
 
     try {
-      const updateData = {
-        id: pkg.id,
-        name: updatedName,
-        price: Number.parseFloat(updatedPrice),
-        description: updatedDescription,
-        status: pkg.status || "ACTIVE",
-      }
-
+      // Create form data
+      const formData = new FormData()
+      formData.append("name", updatedName)
+      formData.append("price", updatedPrice)
+      formData.append("description", updatedDescription)
+      formData.append("status", pkg.status || "ACTIVE")
+      
       if (imageFile) {
-        // Convert image to base64
-        const reader = new FileReader()
-        reader.readAsDataURL(imageFile)
-
-        reader.onload = async () => {
-          updateData.image = reader.result
-
-          try {
-            await updatePackage(updateData).unwrap()
-            if (refetchPackages) await refetchPackages()
-            setIsUpdating(false)
-          } catch (error) {
-            console.error("Error updating package:", error)
-            setError(`Failed to update package: ${error.message || "Unknown error"}`)
-          }
-        }
-
-        reader.onerror = () => {
-          setError("Failed to read the image file")
-        }
-      } else {
-        // No new image, just update the other fields
-        try {
-          await updatePackage(updateData).unwrap()
-          if (refetchPackages) await refetchPackages()
-          setIsUpdating(false)
-        } catch (error) {
-          console.error("Error updating package:", error)
-          setError(`Failed to update package: ${error.message || "Unknown error"}`)
-        }
+        formData.append("image", imageFile)
       }
+
+      await updatePackage({ id: pkg.id, formData }).unwrap()
+      if (refetchPackages) await refetchPackages()
+      setIsUpdating(false)
     } catch (error) {
-      console.error("Error processing update:", error)
-      setError(`Failed to process update: ${error.message || "Unknown error"}`)
+      console.error("Error updating package:", error)
+      setError(`Failed to update package: ${error.message || "Unknown error"}`)
     }
   }
 
@@ -119,7 +93,7 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
 
           {previewImage && (
             <div className={styles["image-preview-container"]}>
-              <img src={previewImage || "/placeholder.svg"} alt="Preview" className={styles["image-preview"]} />
+              <img src={previewImage} alt="Preview" className={styles["image-preview"]} />
             </div>
           )}
 
@@ -169,12 +143,12 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
           <div className={styles["service-image-container"]}>
             {pkg.image_url ? (
               <img
-                src={pkg.image_url || "/placeholder.svg"}
+                src={`http://localhost:8080${pkg.image_url}`}
                 alt={pkg.name}
                 className={styles.packageImage}
                 onError={(e) => {
                   console.error("Image failed to load:", pkg.image_url)
-                  e.target.src = "/placeholder.svg?height=200&width=300"
+                  e.target.src = "/images/placeholder-package.jpg"
                   e.target.onerror = null // Prevent infinite error loop
                 }}
               />

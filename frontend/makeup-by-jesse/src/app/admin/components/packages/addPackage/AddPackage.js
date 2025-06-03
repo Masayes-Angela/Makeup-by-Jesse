@@ -53,47 +53,29 @@ const AddPackage = ({ onPackageAdded }) => {
     }
 
     try {
-      // Convert image to base64
-      const reader = new FileReader()
-      reader.readAsDataURL(imageFile)
+      // Create form data
+      const formData = new FormData()
+      formData.append("name", name)
+      formData.append("price", price)
+      formData.append("description", description)
+      formData.append("image", imageFile)
 
-      reader.onload = async () => {
-        const base64Image = reader.result
-        console.log("Processing image for package:", name)
+      const response = await addPackage(formData).unwrap()
+      console.log("Package added successfully")
 
-        try {
-          const response = await addPackage({
-            name,
-            price: Number.parseFloat(price),
-            description,
-            image: base64Image,
-          }).unwrap()
+      // Reset form
+      setName("")
+      setPrice("")
+      setDescription("")
+      setImageFile(null)
+      setPreviewImage(null)
+      e.target.reset()
 
-          console.log("Package added successfully")
-
-          // Reset form
-          setName("")
-          setPrice("")
-          setDescription("")
-          setImageFile(null)
-          setPreviewImage(null)
-          e.target.reset()
-
-          // Notify parent component
-          if (onPackageAdded) onPackageAdded()
-        } catch (err) {
-          console.error("Error adding package:", err)
-          setError(`Failed to add package: ${err.message || "Unknown error"}`)
-        }
-      }
-
-      reader.onerror = (err) => {
-        setError("Failed to read the image file")
-        console.error("Reader error:", err)
-      }
+      // Notify parent component
+      if (onPackageAdded) onPackageAdded()
     } catch (err) {
-      console.error("Error processing image:", err)
-      setError(`Failed to process image: ${err.message || "Unknown error"}`)
+      console.error("Error adding package:", err)
+      setError(`Failed to add package: ${err.message || "Unknown error"}`)
     }
   }
 
@@ -103,7 +85,7 @@ const AddPackage = ({ onPackageAdded }) => {
 
       {previewImage && (
         <div className={styles["image-preview-container"]}>
-          <img src={previewImage || "/placeholder.svg"} alt="Preview" className={styles["image-preview"]} />
+          <img src={previewImage} alt="Preview" className={styles["image-preview"]} />
         </div>
       )}
 

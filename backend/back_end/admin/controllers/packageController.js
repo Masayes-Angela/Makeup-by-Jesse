@@ -1,10 +1,35 @@
 //db table: packages
 import db from "../../db.js"
+import fs from "fs"
+import path from "path"
+
+const uploadsDir = "C:\\Users\\princ\\OneDrive\\AppData\\Desktop\\MakeUp by Jesse\\Makeup-by-Jesse\\backend\\uploads\\packages"
+
+// Helper function to save base64 image
+const saveBase64Image = (base64Data, packageId) => {
+  // Extract the file extension from base64 data
+  const matches = base64Data.match(/^data:image\/([A-Za-z]+);base64,(.+)$/)
+  if (!matches) {
+    throw new Error('Invalid base64 image data')
+  }
+
+  const extension = matches[1].toLowerCase()
+  const imageData = matches[2]
+  const fileName = `package-${packageId}-${Date.now()}.${extension}`
+  const filePath = path.join(uploadsDir, fileName)
+
+  // Save the file
+  fs.writeFileSync(filePath, imageData, 'base64')
+  
+  // Return the URL path that will be used to serve the image
+  return `/uploads/packages/${fileName}`
+}
 
 // CREATE
 export const addPackage = async (req, res) => {
   try {
-    const { name, price, description, image } = req.body
+    const { name, price, description } = req.body
+    const image = req.file ? `/uploads/packages/${req.file.filename}` : null
 
     if (!name || !price || !description) {
       return res.status(400).json({ error: "Name, price, and description are required" })
@@ -72,7 +97,8 @@ export const getPackageById = async (req, res) => {
 // UPDATE
 export const updatePackage = async (req, res) => {
   try {
-    const { name, price, description, image, status } = req.body
+    const { name, price, description, status } = req.body
+    const image = req.file ? `/uploads/packages/${req.file.filename}` : null
 
     if (!name || !price || !description) {
       return res.status(400).json({ error: "Name, price, and description are required" })
