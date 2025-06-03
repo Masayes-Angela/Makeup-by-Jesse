@@ -1,11 +1,22 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import styles from '../styles/Hero.module.css';
 import Image from 'next/image';
-import Link from 'next/link';
 import { RiBookFill } from 'react-icons/ri';
 
 export default function HeroSection() {
+  const router = useRouter();
+
+  const handleBookNowClick = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/auth/login'); // Redirect to login first
+    } else {
+      router.push('/appointments'); // Proceed to booking
+    }
+  };
+
   return (
     <section id="hero" className={styles.hero}>
       <div className={styles.heroLeft}>
@@ -21,10 +32,10 @@ export default function HeroSection() {
         </div>
         <div className={styles.heroContent}>
           <h3>Hair & Makeup Artist (HMUA)</h3>
-          <Link href="/appointments" className={styles.hero_bookBtn}>
+          <button onClick={handleBookNowClick} className={styles.hero_bookBtn}>
             <RiBookFill className={styles.bookIcon} />
             Book Now
-          </Link>
+          </button>
         </div>
       </div>
 
