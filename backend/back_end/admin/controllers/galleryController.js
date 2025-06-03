@@ -4,10 +4,10 @@ import db from "../../db.js";
 // Add new gallery photo
 export const addGalleryPhoto = async (req, res) => {
   try {
-    const { image_url, caption, status } = req.body;
+    const { title, image_url, caption, status } = req.body;
     const [result] = await db.query(
-      "INSERT INTO gallery (image_url, caption, status) VALUES (?, ?, ?)",
-      [image_url, caption, status || 'ACTIVE']
+      "INSERT INTO gallery (title, image_path, caption, status) VALUES (?, ?, ?, ?)",
+      [title || '', image_url, caption || '', status || 'ACTIVE']
     );
     res.status(201).json({ message: "Photo added", id: result.insertId });
   } catch (err) {
