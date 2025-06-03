@@ -4,17 +4,16 @@ import db from "../../db.js"
 // CREATE
 export const createService = async (req, res) => {
   try {
-    const { name, image } = req.body
+    const { name, image, description } = req.body
 
     if (!name) {
       return res.status(400).json({ error: "Service name is required" })
     }
 
-    const [result] = await db.query("INSERT INTO tb_services (service_name, inspo, status) VALUES (?, ?, ?)", [
-      name,
-      image,
-      "ACTIVE",
-    ])
+    const [result] = await db.query(
+      "INSERT INTO tb_services (service_name, service_description, inspo, status) VALUES (?, ?, ?, ?)",
+      [name, description || "", image, "ACTIVE"]
+    )
 
     res.status(201).json({
       message: "Service added successfully",
@@ -22,6 +21,7 @@ export const createService = async (req, res) => {
       service: {
         id: result.insertId,
         service_name: name,
+        service_description: description || "",
         inspo: image,
         status: "ACTIVE",
       },
@@ -62,32 +62,29 @@ export const fetchServiceById = async (req, res) => {
 // UPDATE
 export const modifyService = async (req, res) => {
   try {
-    const { name, image, status } = req.body
+    const { name, image, status, description } = req.body
 
     if (!name) {
       return res.status(400).json({ error: "Service name is required" })
     }
 
-    // Check if service exists
     const [existingService] = await db.query("SELECT * FROM tb_services WHERE id = ?", [req.params.id])
-
     if (existingService.length === 0) {
       return res.status(404).json({ message: "Service not found" })
     }
 
-    let sql = "UPDATE tb_services SET service_name = ?, status = ?"
-    const params = [name, status || existingService[0].status, req.params.id]
+    let sql = "UPDATE tb_services SET service_name = ?, service_description = ?, status = ?"
+    const params = [name, description || "", status || existingService[0].status, req.params.id]
 
     if (image) {
-      sql = "UPDATE tb_services SET service_name = ?, inspo = ?, status = ? WHERE id = ?"
-      params.splice(1, 0, image)
+      sql = "UPDATE tb_services SET service_name = ?, service_description = ?, inspo = ?, status = ? WHERE id = ?"
+      params.splice(2, 0, image) // insert image at index 2
     } else {
       sql += " WHERE id = ?"
     }
 
     await db.query(sql, params)
 
-    // Get updated service
     const [updatedService] = await db.query("SELECT * FROM tb_services WHERE id = ?", [req.params.id])
 
     res.json({
@@ -103,14 +100,12 @@ export const modifyService = async (req, res) => {
 // DELETE (Deactivate)
 export const deleteService = async (req, res) => {
   try {
-    // Check if service exists
     const [existingService] = await db.query("SELECT * FROM tb_services WHERE id = ?", [req.params.id])
 
     if (existingService.length === 0) {
       return res.status(404).json({ message: "Service not found" })
     }
 
-    // Instead of deleting, update status to INACTIVE
     await db.query("UPDATE tb_services SET status = 'INACTIVE' WHERE id = ?", [req.params.id])
 
     res.json({
