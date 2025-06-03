@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useUpdateServiceMutation } from "@/rtk/serviceApi"
-import styles from "../../../content/content.module.css"
+import styles from "../../../manage-content/content.module.css"
 
 const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices }) => {
   const [isUpdating, setIsUpdating] = useState(false)

@@ -1,7 +1,7 @@
 "use client"
 
 import { useGetPackagesQuery, useDeletePackageMutation } from "@/rtk/packageApi"
-import styles from "../../../content/content.module.css"
+import styles from "../../../manage-content/content.module.css"
 import PackageItem from "../PackageItem/PackageItem"
 
 const PackageList = ({ isEditing, refetchPackages }) => {

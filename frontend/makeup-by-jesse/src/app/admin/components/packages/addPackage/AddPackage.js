@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useAddPackageMutation } from "@/rtk/packageApi"
-import styles from "../../../content/content.module.css"
+import styles from "../../../manage-content/content.module.css"
 
 const AddPackage = ({ onPackageAdded }) => {
   const [name, setName] = useState("")
