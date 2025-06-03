@@ -124,8 +124,7 @@
 
 /* Today */
 .day.today {
-  color: #6dc0c8;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 /* Selected */

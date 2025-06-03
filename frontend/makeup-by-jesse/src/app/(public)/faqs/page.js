@@ -6,7 +6,7 @@ import { MdArrowOutward } from "react-icons/md";
 const faqs = [
   {
     question: 'Ridiculus adipiscing netus erat mi sodales pellentesque ?',
-    answer: 'Sit massa habitant nec aliquet congue vehicula feugiat enim pretium lobortis pede tincidunt turpis arcu posuere cursus diam sodales nunc malesuada.',
+    answer: 'Sit massa habitant nec aliquet congue vehicula feugiat enim pretium lobortis pede tincidunt turpis arcu posuere cursus diam sodales nunc malesuada .',
   },
   { question: 'Cursus aenean et si accumsan maximus maecenas ?', answer: 'secret' },
   { question: 'Commodo etiam aptent pellentesque si sit consectetur ?', answer: 'secret' },
@@ -27,12 +27,10 @@ export default function FaqSection() {
     <>
       {/* Hero Section */}
       <section className={styles.hero}>
-        <div className={styles.heroOverlay}>
-          <h1 className={styles.heroTitle}>FAQs</h1>
-          <p className={styles.heroSubtitle}>
-            Got questions? We’ve got the answers.
-          </p>
-        </div>
+        <h1 className={styles.heroTitle}>FAQs</h1>
+        <p className={styles.heroSubtitle}>
+          Got questions? We’ve got the answers.
+        </p>
       </section>
 
       {/* FAQs Section */}

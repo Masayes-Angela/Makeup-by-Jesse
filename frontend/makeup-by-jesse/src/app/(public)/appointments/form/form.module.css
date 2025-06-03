@@ -233,6 +233,59 @@
   background: #58b3b9;
 }
 
+/* Submission Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal {
+  background: white;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modalTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #6DC0C8;
+}
+
+.modalText {
+  font-size: 1rem;
+  color: #4b5563;
+  margin-bottom: 1.5rem;
+}
+
+.closeBtn {
+  padding: 0.45rem 1.4rem;
+  background: #eaf9f9;
+  color: #6DC0C8;
+  border: 2px solid #6DC0C8;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.closeBtn:hover {
+  background: #fff;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .topRow {
