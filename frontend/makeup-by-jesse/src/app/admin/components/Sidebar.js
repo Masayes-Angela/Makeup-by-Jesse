@@ -34,7 +34,7 @@ export default function Sidebar() {
             <FaRegCalendar className={styles.icon}/> Schedule
           </Link>
         </li>
-        <li className={pathname === '/admin/content' ? styles.active : ''}>
+        <li className={pathname === '/admin/manage-content' ? styles.active : ''}>
           <Link href="/admin/content">
             <LuPencilLine className={styles.icon}/> Manage Website Content
           </Link>

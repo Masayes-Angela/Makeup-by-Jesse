@@ -1,7 +1,7 @@
 "use client"
 
 import { useGetServicesQuery, useDeleteServiceMutation } from "@/rtk/serviceApi"
-import styles from "../../../content/content.module.css"
+import styles from "../../../manage-content/content.module.css"
 import ServiceItem from "../ServiceItem/ServiceItem"
 
 const ServiceList = ({ isEditing, refetchServices }) => {

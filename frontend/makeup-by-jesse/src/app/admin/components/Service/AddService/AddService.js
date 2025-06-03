@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useAddServiceMutation } from "@/rtk/serviceApi"
-import styles from "../../../content/content.module.css"
+import styles from "../../../manage-content/content.module.css"
 
 const AddService = ({ onServiceAdded }) => {
   const [name, setName] = useState("")

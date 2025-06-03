@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useUpdatePackageMutation } from "@/rtk/packageApi"
-import styles from "../../../content/content.module.css"
+import styles from "../../../manage-content/content.module.css"
 
 const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPackages }) => {
   const [isUpdating, setIsUpdating] = useState(false)
