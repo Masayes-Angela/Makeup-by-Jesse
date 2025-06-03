@@ -21,6 +21,7 @@ export default function AppointmentFormPage() {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const router = useRouter();
 
@@ -54,7 +55,7 @@ export default function AppointmentFormPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('Appointment submitted!');
+    setShowModal(true);
   };
 
   return (
@@ -163,14 +164,14 @@ export default function AppointmentFormPage() {
           <div className={styles.row}>
             <textarea
               name="addressNote"
-              placeholder="Address Note"
+              placeholder="Address Note (Optional)"
               value={formData.addressNote}
               onChange={handleChange}
               className={styles.textarea}
             />
             <textarea
               name="message"
-              placeholder="Additional Message"
+              placeholder="Additional Message (Optional)"
               value={formData.message}
               onChange={handleChange}
               className={styles.textarea}
@@ -184,6 +185,25 @@ export default function AppointmentFormPage() {
           </div>
         </form>
       </div>
+
+      {showModal && (
+      <div className={styles.modalOverlay}>
+        <div className={styles.modal}>
+          <h3 className={styles.modalTitle}>Appointment Submitted!</h3>
+          <p className={styles.modalText}>We’ve received your details. We’ll contact you soon.</p>
+          <button
+            className={styles.closeBtn}
+            onClick={() => {
+              setShowModal(false);
+              router.push('/'); // or another page
+            }}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
+
     </section>
   );
 }
