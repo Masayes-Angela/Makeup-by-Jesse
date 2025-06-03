@@ -4,7 +4,7 @@ import { useState } from "react"
 import styles from "./content.module.css"
 import { FaEdit } from "react-icons/fa"
 import { AddService, ServiceList } from "../components/Service"
-import { AddPackage } from "../components/Package"
+import { AddPackage } from "../components/packages"
 import { useGetServicesQuery } from "@/rtk/serviceApi"
 import { useGetPackagesQuery, useUpdatePackageMutation, useDeletePackageMutation } from "@/rtk/packageApi"
 

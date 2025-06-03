@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from '../styles/Services.module.css';
 import Image from 'next/image';
-import Link from 'next/link';
 
 // Mock service data (can be replaced with API later)
 const servicesData = [
@@ -32,6 +32,17 @@ const servicesData = [
 
 // Reusable card component
 function ServiceCard({ image, title, description }) {
+  const router = useRouter();
+
+  const handleBookClick = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/auth/login');
+    } else {
+      router.push('/appointments');
+    }
+  };
+
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
@@ -46,7 +57,9 @@ function ServiceCard({ image, title, description }) {
       <div className={styles.cardContent}>
         <h3 className={styles.cardTitle}>{title}</h3>
         <p className={styles.cardDescription}>{description}</p>
-        <Link className={styles.bookBtn} href="/appointments">Book Now</Link>
+        <button className={styles.bookBtn} onClick={handleBookClick}>
+          Book Now
+        </button>
       </div>
     </div>
   );
@@ -74,8 +87,12 @@ export default function ServicesSection() {
   return (
     <section id="services" className={styles.services} ref={sectionRef}>
       <div className={styles.servicesWrapper}>
-        <p className={`${styles.subheading} ${styles.fadeInUp} ${isVisible ? styles.visible : ''}`}>What We Offer</p>
-        <h2 className={`${styles.heading} ${styles.fadeInUp} ${isVisible ? styles.visible : ''}`}>Our Services</h2>
+        <p className={`${styles.subheading} ${styles.fadeInUp} ${isVisible ? styles.visible : ''}`}>
+          What We Offer
+        </p>
+        <h2 className={`${styles.heading} ${styles.fadeInUp} ${isVisible ? styles.visible : ''}`}>
+          Our Services
+        </h2>
         <div className={`${styles.serviceCards} ${styles.fadeInUp} ${isVisible ? styles.visible : ''}`}>
           {servicesData.length > 0 ? (
             servicesData.map((item) => (
