@@ -34,20 +34,22 @@ export const packagesApi = createApi({
 
     // Add a package
     addPackage: builder.mutation({
-      query: (packageData) => ({
+      query: (formData) => ({
         url: "/packages",
         method: "POST",
-        body: packageData,
+        body: formData,
+        formData: true,
       }),
       invalidatesTags: [{ type: "Packages", id: "LIST" }],
     }),
 
     // Update a package
     updatePackage: builder.mutation({
-      query: ({ id, ...packageData }) => ({
+      query: ({ id, formData }) => ({
         url: `/packages/${id}`,
         method: "PUT",
-        body: packageData,
+        body: formData,
+        formData: true,
       }),
       invalidatesTags: (result, error, { id }) => [
         { type: "Packages", id },

@@ -28,6 +28,11 @@ app.use(cors())
 app.use(express.json({ limit: "50mb" }))
 app.use(express.urlencoded({ extended: true, limit: "50mb" }))
 
+// Serve static files from uploads directory
+app.use("/uploads", express.static("uploads"))
+// Serve static files from the specific packages directory
+app.use("/uploads/packages", express.static("C:\\Users\\princ\\OneDrive\\AppData\\Desktop\\MakeUp by Jesse\\Makeup-by-Jesse\\backend\\uploads\\packages"))
+
 // Route mounting
 app.use("/api/about", aboutMeRoutes)
 app.use("/api/services", serviceRoutes)
