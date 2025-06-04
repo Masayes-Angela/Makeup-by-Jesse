@@ -3,11 +3,7 @@
 import { useState } from 'react'
 import styles from './content.module.css'
 import { BiSolidEditAlt } from 'react-icons/bi'
-
-// Import each tab section component
 import ServicesAndPackages from './components/ServicesAndPackages'
-// You will create these next:
-import AboutSection from './components/AboutSection'
 import GallerySection from './components/GallerySection'
 import ReviewsSection from './components/ReviewsSection'
 import ContactSection from './components/ContactSection'
@@ -19,8 +15,6 @@ export default function ManageWebsite() {
     switch (activeTab) {
       case 'services':
         return <ServicesAndPackages />
-      case 'about':
-        return <AboutSection />
       case 'gallery':
         return <GallerySection />
       case 'reviews':
@@ -42,9 +36,6 @@ export default function ManageWebsite() {
       <nav className={styles['mw-nav']}>
         <button onClick={() => setActiveTab('services')} className={activeTab === 'services' ? styles.active : ''}>
           Services & Packages
-        </button>
-        <button onClick={() => setActiveTab('about')} className={activeTab === 'about' ? styles.active : ''}>
-          About Me
         </button>
         <button onClick={() => setActiveTab('gallery')} className={activeTab === 'gallery' ? styles.active : ''}>
           Gallery

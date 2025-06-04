@@ -45,9 +45,10 @@ export default function LoginPage() {
 
     // ✅ Redirect
     if (userFound.role === 'admin') {
-      router.push('/admin')
+      localStorage.setItem('adminToken', 'mock-token'); // 🔐 Save token
+      router.push('/admin');
     } else {
-      router.push('/')
+      router.push('/');
     }
   }
 

@@ -232,10 +232,7 @@
 }
 
 @media (max-width: 600px) {
-  .welcomeBox h2,
-  .card1 h2,
-  .card2 h2,
-  .monthlyBox h2 {
+  .welcomeBox h2 {
     font-size: 20px;
   }
 
@@ -247,7 +244,7 @@
   .card2,
   .monthlyBox,
   .welcomeBox {
-    padding: 1rem;
+    padding: 2rem;
   }
 
   .iconCircle {

@@ -1,96 +1,496 @@
-.container {
-    background-color: #f8f9fa;
-    border-radius: 12px;
-    padding: 24px;
-    max-width: 1200px;
-    margin: 0 auto;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+.bookingsWrapper {
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.bookings-heading {
+  padding-left: 0;
+  font-family: 'Roboto', sans-serif;
+  min-height: auto;
+}
+
+.bookings-heading .container {
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+  margin-bottom: 2rem;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.bookings-heading .icon-container {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #A7EFF6 0%, #76C9D1 100%);
+  box-shadow: 0px 4px 16px 0px rgba(206, 214, 220, 0.80);
+  color: #fff;
+  padding: 10px;
+  margin-right: 18px;
+}
+
+.bookings-heading .icon-container svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1px;
+}
+
+.bookings-heading h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--primary);
+  margin: 0;
+}
+
+/* Quick Stats */
+.statsHeading {
+  font-size: 14px;
+  font-weight: 700;
+  color: #282C4B;
+  margin-bottom: 1rem;
+  margin-left: 2px;
+}
+
+.statsContainer {
+  display: flex;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  max-width: 400px;
+  width: 100%;
+}
+
+.statBox {
+  flex: 1;
+  height: 100px;
+  min-width: 140px;
+  max-width: 200px;
+  border-radius: 8px;
+  background: #FFF;
+  box-shadow: 0px 4px 16px 0px rgba(229, 229, 229, 0.50);
+  padding: 1.2rem 1.5rem;
+}
+
+.statLabel {
+  font-size: 14px;
+  color: #282C4B;
+  margin-bottom: 0.2rem;
+  font-weight: 600;
+}
+
+.statValue {
+  font-size: 28px;
+  font-weight: 700;
+  color: #282C4B;
+}
+
+.pending {
+  color: #EF4A5B;
+}
+
+/* Tabs */
+.tabsContainer {
+  display: flex;
+  border-bottom: 1px solid #eaeaea;
+  margin-bottom: 24px;
+}
+
+.tabButton {
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  margin-right: 32px;
+  color: #CED6DC;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.tabButton:hover {
+  color: #282C4B;
+}
+
+.activeTab {
+  color: #282C4B;
+  font-weight: 700;
+  position: relative;
+}
+
+.activeTab::after {
+  content: '';
+  position: absolute;
+  bottom: -1.8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  height: 3px;
+  border-radius: 999px;
+  background-color: #93E0E7;
+}
+
+.count {
+  font-size: 14px;
+  color: #79cbca;
+  margin-left: 4px;
+  opacity: 0.9;
+}
+
+/* Booking Card */
+.card {
+  padding: 1.2rem 1.4rem;
+  border-radius: 12px;
+  background: #FFF;
+  box-shadow: 0px 2px 12px 0px rgba(206, 214, 220, 0.25);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+  position: relative;
+  width: 300px;
+  flex-shrink: 0;
+}
+
+/* Card Grid */
+.cardsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
+  max-width: 100%;
+  margin: 0;
+}
+
+.cardHeader {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.clientName {
+  color: #282C4B;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.metaLabel {
+  font-size: 12px;
+  color: #A7B6BD;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.metaValue {
+  font-size: 14px;
+  color: #282C4B;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.detailsBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border-radius: 4px;
+  background: #282C4B;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.label {
+  font-size: 13px;
+  color: #A7B6BD;
+  font-weight: 500;
+}
+
+.dateTime {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0.75rem;
+  gap: 2rem;
+}
+
+.actions {
+  margin-top: 1rem;
+  border-top: 1px solid #EDF1F3;
+  padding-top: 0.85rem;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.accept {
+  background: none;
+  border: none;
+  color: #93E0E7;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.decline {
+  background: none;
+  border: none;
+  color: #BDCCD3;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Modal Overlay */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Modal Box */
+.modal {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  padding: 2rem 2.4rem;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  text-align: center;
+
+  /* ✨ Animation */
+  opacity: 0;
+  transform: scale(0.96);
+  animation: fadeInModal 0.25s ease-out forwards;
+}
+
+/* Modal Title */
+.modal h3 {
+  margin-top: 0;
+  font-size: 20px;
+  margin-bottom: 1.6rem;
+  color: #282C4B;
+  font-weight: 700;
+}
+
+/* Modal Paragraphs */
+.modal p {
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: .5rem;
+  color: #2e3254;
+}
+
+.modal p strong {
+  font-weight: 700;
+}
+
+/* Top-right Close Icon */
+.closeIcon {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  font-weight: 500;
+  color: #c4c4ca;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+/* Button Container */
+.modalActions {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: .8rem;
+  margin-top: 1.8rem;
+  width: 100%;
+}
+
+.closeBtn,
+.confirmBtn {
+  padding: 0.5rem 1.4rem;
+  font-size: 14px;
+  font-weight: 600;
+  height: 42px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Cancel Button */
+.closeBtn {
+  background: transparent;
+  color: #282C4B;
+  border: 2px solid #282C4B;
+}
+
+/* Confirm/Proceed Button */
+.confirmBtn {
+  background-color: #282C4B;
+  color: white;
+  border: 2px solid #282C4B;
+}
+
+.detailsContent {
+  text-align: left;
+}
+
+.detailsContent:has(+ .closeIcon),
+.detailsContent {
+  max-width: 480px;
+}
+
+.modal:has(.detailsContent) {
+  max-width: 480px;
+}
+
+/* Horizontal Card */
+.horizontalCard {
+  display: flex;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0px 2px 12px 0px rgba(206, 214, 220, 0.25);
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  width: 100%;
+}
+
+.sideBar {
+  width: 6px;
+  background-color: #93E0E7;
+  border-radius: 12px 0 0 12px;
+}
+
+.cardBody {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  padding: 1.4rem 1.6rem;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+
+/* Time + Date Section */
+.timeDate {
+  min-width: 100px;
+  text-align: left;
+}
+
+.timeDate strong {
+  display: block;
+  font-size: 16px;
+  color: #282C4B;
+}
+
+.timeDate p {
+  color: #93E0E7;
+  font-weight: 600;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+/* Client Info Section */
+.clientInfo {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  min-width: 300px;
+}
+
+/* Left Column: Full Name + Email */
+.columnLeft {
+  min-width: 180px;
+  flex: 1;
+}
+
+.clientName {
+  font-weight: 700;
+  color: #282C4B;
+  margin-bottom: 12px;
+}
+
+.email {
+  font-size: 13px;
+  color: #91A1A8;
+}
+
+/* Right Column: Event + Location */
+.columnRight {
+  min-width: 180px;
+  flex: 2;
+}
+
+.event,
+.location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #282C4B;
+  margin-bottom: 12px;
+}
+
+.event {
+  color: #93E0E7;
+  font-weight: 600;
+}
+
+.icon {
+  font-size: 16px;
+  color: #93E0E7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* View Button on Right */
+.actionRight {
+  min-width: 100px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.viewBtn {
+  background-color: #f1f4f7;
+  color: #2e3254;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.viewBtn:hover {
+  background-color: #e3e9ef;
+}
+
+@keyframes fadeInModal {
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 32px;
-  }
-  
-  .iconContainer {
-    margin-right: 14px;
-  }
-  
-  .icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background-color: rgba(121, 203, 202, 0.15);
-    border-radius: 10px;
-  }
-  
-  .iconSymbol {
-    color: #79cbca;
-    font-size: 20px;
-  }
-  
-  .title {
-    color: #79cbca;
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    margin: 0;
-  }
-  
-  .tabsContainer {
-    display: flex;
-    border-bottom: 1px solid #eaeaea;
-    margin-bottom: 24px;
-  }
-  
-  .tabButton {
-    background: none;
-    border: none;
-    padding: 12px 16px;
-    margin-right: 32px;
-    font-size: 15px;
-    color: #adb5bd;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.2s ease;
-    font-weight: 500;
-    letter-spacing: 0.01em;
-  }
-  
-  .tabButton:hover {
-    color: #79cbca;
-  }
-  
-  .activeTab {
-    color: #79cbca;
-    font-weight: 600;
-  }
-  
-  .activeTab::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #79cbca;
-  }
-  
-  .count {
-    font-size: 14px;
-    color: #79cbca;
-    margin-left: 4px;
-    opacity: 0.9;
-  }
-  
-  .contentContainer {
-    min-height: 300px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.03);
-    padding: 8px 4px;
-  }
+}
