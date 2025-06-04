@@ -18,8 +18,6 @@ export const packagesApi = createApi({
         // Ensure all packages have the required fields
         return response.map((pkg) => ({
           ...pkg,
-          // Ensure price is a number
-          price: typeof pkg.price === "string" ? Number.parseFloat(pkg.price) : pkg.price,
           // Ensure image_url exists
           image_url: pkg.image_url || null,
         }))

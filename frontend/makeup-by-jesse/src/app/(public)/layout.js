@@ -3,6 +3,7 @@ import NavTop from './components/Navbar';
 import Footer from './components/Footer';
 import { Source_Sans_3 } from 'next/font/google';
 import { Courgette } from 'next/font/google';
+import { Providers } from '../providers';
 
 export const metadata = {
   title: 'Makeup by Jesse',
@@ -30,9 +31,11 @@ export default function PublicLayout({ children }) {
   return (
     <html lang="en" className={sourceSans.variable}>
       <body>
-        <NavTop />
-        {children}
-        <Footer />
+        <Providers>
+          <NavTop />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

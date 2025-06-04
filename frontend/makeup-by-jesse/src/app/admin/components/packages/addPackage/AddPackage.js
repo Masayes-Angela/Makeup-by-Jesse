@@ -6,7 +6,6 @@ import styles from "../../../manage-content/content.module.css"
 
 const AddPackage = ({ onPackageAdded }) => {
   const [name, setName] = useState("")
-  const [price, setPrice] = useState("")
   const [description, setDescription] = useState("")
   const [imageFile, setImageFile] = useState(null)
   const [previewImage, setPreviewImage] = useState(null)
@@ -37,11 +36,6 @@ const AddPackage = ({ onPackageAdded }) => {
       return
     }
 
-    if (!price) {
-      setError("Please provide a price!")
-      return
-    }
-
     if (!description) {
       setError("Please provide a description!")
       return
@@ -56,7 +50,6 @@ const AddPackage = ({ onPackageAdded }) => {
       // Create form data
       const formData = new FormData()
       formData.append("name", name)
-      formData.append("price", price)
       formData.append("description", description)
       formData.append("image", imageFile)
 
@@ -65,7 +58,6 @@ const AddPackage = ({ onPackageAdded }) => {
 
       // Reset form
       setName("")
-      setPrice("")
       setDescription("")
       setImageFile(null)
       setPreviewImage(null)
@@ -108,21 +100,6 @@ const AddPackage = ({ onPackageAdded }) => {
         disabled={isSubmitting}
       />
 
-      <label htmlFor="packagePrice" className={styles.label}>
-        Price (₱)
-      </label>
-      <input
-        type="number"
-        name="packagePrice"
-        id="packagePrice"
-        placeholder="Price"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-        disabled={isSubmitting}
-        min="0"
-        step="0.01"
-      />
-
       <textarea
         name="packageDescription"
         id="packageDescription"
@@ -136,7 +113,7 @@ const AddPackage = ({ onPackageAdded }) => {
       <button
         className={styles.addPackageButton}
         type="submit"
-        disabled={isSubmitting || !name || !price || !description || !imageFile}
+        disabled={isSubmitting || !name || !description || !imageFile}
       >
         {isSubmitting ? "Adding..." : "Add Package"}
       </button>

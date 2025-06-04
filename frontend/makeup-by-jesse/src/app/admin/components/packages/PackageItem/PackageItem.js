@@ -7,7 +7,6 @@ import styles from "../../../manage-content/content.module.css"
 const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPackages }) => {
   const [isUpdating, setIsUpdating] = useState(false)
   const [updatedName, setUpdatedName] = useState(pkg.name)
-  const [updatedPrice, setUpdatedPrice] = useState(pkg.price)
   const [updatedDescription, setUpdatedDescription] = useState(pkg.description)
   const [imageFile, setImageFile] = useState(null)
   const [previewImage, setPreviewImage] = useState(null)
@@ -18,7 +17,6 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
   // Update local state when package prop changes
   useEffect(() => {
     setUpdatedName(pkg.name)
-    setUpdatedPrice(pkg.price)
     setUpdatedDescription(pkg.description)
     setPreviewImage(null)
   }, [pkg])
@@ -40,26 +38,22 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
   const handleSave = async () => {
     setError(null)
 
-    if (!updatedName) {
-      setError("Package name is required")
+    if (!updatedName || !updatedDescription) {
+      setError('All fields are required.')
       return
     }
 
-    if (!updatedPrice) {
-      setError("Price is required")
-      return
-    }
+    setIsSubmitting(true)
 
-    if (!updatedDescription) {
-      setError("Description is required")
-      return
+    const updateData = {
+      name: updatedName,
+      description: updatedDescription,
     }
 
     try {
       // Create form data
       const formData = new FormData()
       formData.append("name", updatedName)
-      formData.append("price", updatedPrice)
       formData.append("description", updatedDescription)
       formData.append("status", pkg.status || "ACTIVE")
       
@@ -99,29 +93,13 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
 
           <input
             type="text"
-            name={`updateName-${pkg.id}`}
-            id={`updateName-${pkg.id}`}
             value={updatedName}
             onChange={(e) => setUpdatedName(e.target.value)}
             disabled={isSubmitting}
             placeholder="Package name"
           />
 
-          <input
-            type="number"
-            name={`updatePrice-${pkg.id}`}
-            id={`updatePrice-${pkg.id}`}
-            value={updatedPrice}
-            onChange={(e) => setUpdatedPrice(e.target.value)}
-            disabled={isSubmitting}
-            placeholder="Price"
-            min="0"
-            step="0.01"
-          />
-
           <textarea
-            name={`updateDescription-${pkg.id}`}
-            id={`updateDescription-${pkg.id}`}
             value={updatedDescription}
             onChange={(e) => setUpdatedDescription(e.target.value)}
             disabled={isSubmitting}
@@ -160,17 +138,12 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
           </div>
           <div className={styles.packageDetails}>
             <h3 className={styles.packageName}>{pkg.name}</h3>
-            <div className={styles.packagePrice}>₱{Number.parseFloat(pkg.price).toFixed(2)}</div>
             <p className={styles.packageDescription}>{pkg.description}</p>
 
             {isEditing && (
-              <div className={styles["package-actions"]}>
-                <button className={styles.updateButton} onClick={() => setIsUpdating(true)}>
-                  Update
-                </button>
-                <button className={styles.deleteButton} onClick={onDelete} disabled={isDeleting}>
-                  Delete
-                </button>
+              <div className={styles['package-actions']}>
+                <button onClick={() => setIsUpdating(true)}>Update</button>
+                <button onClick={onDelete} disabled={isDeleting}>Delete</button>
               </div>
             )}
           </div>

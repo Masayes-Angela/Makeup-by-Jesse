@@ -55,6 +55,7 @@ const ServiceList = ({ isEditing, refetchServices }) => {
               service={{
                 id: service.id,
                 name: service.service_name,
+                description: service.service_description,
                 inspo: service.inspo,
                 status: service.status,
               }}
