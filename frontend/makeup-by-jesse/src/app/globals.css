@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 *{
     box-sizing: border-box;
@@ -19,6 +20,7 @@
 
   --btn_lightgar: #ACE1E3;
 
+  --font-inter: 'Inter', sans-serif;
   --font-source-sans: 'Source Sans 3', sans-serif;
   --font-courgette: 'Courgette', cursive;
 }
@@ -42,11 +44,18 @@ html {
 }
 
 .main-content {
-  margin-left: 21rem;
-  padding: 1rem;
+  margin-left: 19rem;
+  padding: 1rem 3rem;
   flex-grow: 1;
 }
 
 #gallery {
   scroll-margin-top: 30px;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 5rem;
+    padding: 1rem 2rem;
+  }
 }

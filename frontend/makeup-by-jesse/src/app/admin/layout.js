@@ -11,7 +11,7 @@ export default function AdminLayout({ children }) {
     <html lang="en">
       <body>
         <Provider store={store}>
-          <div className="app">
+          <div className="app" style={{ backgroundColor: '#f9fcff' }}>
             <Sidebar />
             <main className="main-content">{children}</main>
           </div>
