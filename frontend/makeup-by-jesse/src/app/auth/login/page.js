@@ -118,7 +118,11 @@ export default function LoginPage() {
               </div>
 
               <button type="submit" className={styles.loginBtn} disabled={isLoading}>
-                {isLoading ? 'Logging in...' : 'Log In'}
+                {isLoading ? (
+                  <div className={styles.skeletonButton}></div>
+                ) : (
+                  'Log In'
+                )}
               </button>
 
               <p className={styles.signup}>

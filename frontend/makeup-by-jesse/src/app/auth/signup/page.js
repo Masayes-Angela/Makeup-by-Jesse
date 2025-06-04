@@ -3,7 +3,12 @@
 import '../../globals.css'
 import { useState } from 'react'
 import styles from '../styles/signup.module.css'
-import { AiOutlineClose, AiOutlineCheck, AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
+import {
+  AiOutlineClose,
+  AiOutlineCheck,
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+} from 'react-icons/ai'
 import Link from 'next/link'
 
 export default function SignupPage() {
@@ -17,159 +22,153 @@ export default function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [showModal, setShowModal] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const validatePassword = (pw) => {
     return pw.length >= 8 && /[0-9!@#$%^&*]/.test(pw)
   }
 
-const handleSubmit = async (e) => {
-  e.preventDefault()
-
-  if (!fullName || !email || !contact || !password || !confirmPassword) {
-    setError('Please fill in all fields.')
-    return
-  }
-
-  if (!validatePassword(password)) {
-    setError('Password must be at least 8 characters and include a number or symbol.')
-    return
-  }
-
-  if (password !== confirmPassword) {
-    setError('Passwords do not match.')
-    return
-  }
-
-  // ✅ TEMPORARY MOCK RESPONSE BEFORE BACKEND IS READY
-  try {
-    // Simulate network delay
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Simulate successful signup
-    setShowModal(true)
-    setFullName('')
-    setEmail('')
-    setContact('')
-    setPassword('')
-    setConfirmPassword('')
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     setError('')
-  } catch (err) {
-    setError('Something went wrong. Please try again.')
+    setIsSubmitting(true)
+
+    if (!fullName || !email || !contact || !password || !confirmPassword) {
+      setError('Please fill in all fields.')
+      setIsSubmitting(false)
+      return
+    }
+
+    if (!validatePassword(password)) {
+      setError('Password must be at least 8 characters and include a number or symbol.')
+      setIsSubmitting(false)
+      return
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.')
+      setIsSubmitting(false)
+      return
+    }
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000)) // mock delay
+      setShowModal(true)
+      setFullName('')
+      setEmail('')
+      setContact('')
+      setPassword('')
+      setConfirmPassword('')
+      setError('')
+    } catch (err) {
+      setError('Something went wrong. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
-}
 
   return (
     <div className={styles.outerWrapper}>
       <div className={styles.container}>
-        {/* Left Panel */}
         <div className={styles.left}></div>
 
-        {/* Right Panel */}
         <div className={styles.right}>
           <h2 className={styles.welcome}>Create Account</h2>
 
           <div className={styles.formWrapper}>
             <p className={styles.subtextTop}>Sign up to continue</p>
-            <form className={styles.form} onSubmit={handleSubmit}>
-              <div className={styles.inputGroup}>
-                <input
-                  name="fullName"
-                  autoComplete="name"
-                  type="text"
-                  placeholder="Full Name"
-                  className={styles.input}
-                  value={fullName}
-                  onChange={(e) => {
-                    setFullName(e.target.value)
-                    if (error) setError('')
-                  }}
-                />
-              </div>
 
-              <div className={styles.inputGroup}>
-                <input
-                  name="email"
-                  autoComplete="email"
-                  type="email"
-                  placeholder="Email Address"
-                  className={styles.input}
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value)
-                    if (error) setError('')
-                  }}
-                />
-              </div>
+            {isSubmitting ? (
+              <>
+                <div className={styles.skeletonInput}></div>
+                <div className={styles.skeletonInput}></div>
+                <div className={styles.skeletonInput}></div>
+                <div className={styles.skeletonInput}></div>
+                <div className={styles.skeletonInput}></div>
+                <div className={styles.skeletonButton}></div>
+              </>
+            ) : (
+              <form className={styles.form} onSubmit={handleSubmit}>
+                <div className={styles.inputGroup}>
+                  <input
+                    name="fullName"
+                    autoComplete="name"
+                    type="text"
+                    placeholder="Full Name"
+                    className={styles.input}
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                  />
+                </div>
 
-              <div className={styles.inputGroup}>
-                <input
-                  name="contact"
-                  autoComplete="tel"
-                  type="tel"
-                  placeholder="Contact Number"
-                  className={styles.input}
-                  value={contact}
-                  onChange={(e) => {
-                    setContact(e.target.value)
-                    if (error) setError('')
-                  }}
-                />
-              </div>
+                <div className={styles.inputGroup}>
+                  <input
+                    name="email"
+                    autoComplete="email"
+                    type="email"
+                    placeholder="Email Address"
+                    className={styles.input}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
 
-              <div className={styles.passwordWrapper}>
-                <input
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="Password"
-                  className={styles.input}
-                  autoComplete="new-password"
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value)
-                    if (error) setError('')
-                  }}
-                />
-                <span
-                  className={styles.icon}
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
-                </span>
-              </div>
+                <div className={styles.inputGroup}>
+                  <input
+                    name="contact"
+                    autoComplete="tel"
+                    type="tel"
+                    placeholder="Contact Number"
+                    className={styles.input}
+                    value={contact}
+                    onChange={(e) => setContact(e.target.value)}
+                  />
+                </div>
 
-              <div className={styles.passwordWrapper}>
-                <input
-                  name="confirmPassword"
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  placeholder="Confirm Password"
-                  className={styles.input}
-                  autoComplete="new-password"
-                  value={confirmPassword}
-                  onChange={(e) => {
-                    setConfirmPassword(e.target.value)
-                    if (error) setError('')
-                  }}
-                />
-                <span
-                  className={styles.icon}
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  {showConfirmPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
-                </span>
-              </div>
+                <div className={styles.passwordWrapper}>
+                  <input
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Password"
+                    className={styles.input}
+                    autoComplete="new-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <span className={styles.icon} onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                  </span>
+                </div>
 
-              {!error && (
-                <p className={styles.passwordNote}>
-                  Password must contain at least 8 characters, including one number or symbol.
-                </p>
-              )}
+                <div className={styles.passwordWrapper}>
+                  <input
+                    name="confirmPassword"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    placeholder="Confirm Password"
+                    className={styles.input}
+                    autoComplete="new-password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                  <span
+                    className={styles.icon}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                  </span>
+                </div>
 
-              {error && <p className={styles.error}>{error}</p>}
+                {!error && (
+                  <p className={styles.passwordNote}>
+                    Password must contain at least 8 characters, including one number or symbol.
+                  </p>
+                )}
 
-              <button type="submit" className={styles.signupBtn}>
-                Sign Up
-              </button>
-            </form>
+                {error && <p className={styles.error}>{error}</p>}
+
+                <button type="submit" className={styles.signupBtn}>Sign Up</button>
+              </form>
+            )}
 
             <p className={styles.login}>
               Already have an Account?{' '}
