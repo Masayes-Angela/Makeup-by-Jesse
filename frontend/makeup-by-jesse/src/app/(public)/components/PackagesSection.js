@@ -2,25 +2,19 @@
 import { useState, useEffect, useRef } from 'react'
 import styles from '../styles/Packages.module.css'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import { useGetPackagesQuery } from '@/rtk/packageApi'
 
 export default function PackagesSection() {
-  const [packages, setPackages] = useState([])
   const [activeIndex, setActiveIndex] = useState(0)
   const tabListRef = useRef(null)
   const sectionRef = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
 
-  useEffect(() => {
-    const mockPackages = [
-      { package: 'SQUAD GOALS BEAUTY', description: 'hello', image: '/gallery/img1.jpg' },
-      { package: 'CLASSIC WEDDING', description: 'hi', image: '/gallery/img4.jpg' },
-      { package: 'BRIDAL MAKEUP', description: 'b0ss m4paGm@haL', image: '/gallery/img5.jpg' },
-      { package: 'PRENUP PHOTOSHOOT', description: 'wassup', image: '/gallery/img2.jpg' },
-      { package: 'BRIDAL MAKEUP', description: 'b0ss m4paGm@haL', image: '/gallery/img5.jpg' },
-      { package: 'PRENUP PHOTOSHOOT', description: 'wassup', image: '/gallery/img2.jpg' },
-    ]
-    setPackages(mockPackages)
-  }, [])
+  // Fetch packages from API instead of using mock data
+  const { data: packages = [], isLoading, isError } = useGetPackagesQuery()
+  
+  // Filter only active packages
+  const activePackages = packages.filter(pkg => pkg.status === 'ACTIVE')
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -43,54 +37,97 @@ export default function PackagesSection() {
     }
   }
 
+  // Show loading state
+  if (isLoading) {
+    return (
+      <section ref={sectionRef} className={`${styles.packages} ${styles.fadeInZoom} ${isVisible ? styles.visible : ''}`}>
+        <p className={`${styles.subheading}`}>Our Beauty Sets</p>
+        <h2 className={`${styles.heading}`}>Special Price Packages</h2>
+        <div className={styles.packageContent}>
+          <p>Loading packages...</p>
+        </div>
+      </section>
+    )
+  }
+
+  // Show error state
+  if (isError) {
+    return (
+      <section ref={sectionRef} className={`${styles.packages} ${styles.fadeInZoom} ${isVisible ? styles.visible : ''}`}>
+        <p className={`${styles.subheading}`}>Our Beauty Sets</p>
+        <h2 className={`${styles.heading}`}>Special Price Packages</h2>
+        <div className={styles.packageContent}>
+          <p>Error loading packages. Please try again later.</p>
+        </div>
+      </section>
+    )
+  }
+
+  // Show no packages state
+  if (activePackages.length === 0) {
+    return (
+      <section ref={sectionRef} className={`${styles.packages} ${styles.fadeInZoom} ${isVisible ? styles.visible : ''}`}>
+        <p className={`${styles.subheading}`}>Our Beauty Sets</p>
+        <h2 className={`${styles.heading}`}>Special Price Packages</h2>
+        <div className={styles.packageContent}>
+          <p>No packages available at the moment.</p>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section ref={sectionRef} className={`${styles.packages} ${styles.fadeInZoom} ${isVisible ? styles.visible : ''}`}>
       <p className={`${styles.subheading}`}>Our Beauty Sets</p>
       <h2 className={`${styles.heading}`}>Special Price Packages</h2>
 
       <div className={styles.tabCarousel}>
-        {packages.length > 4 && (
+        {activePackages.length > 4 && (
           <button onClick={() => scrollTabs('left')} className={styles.navBtn}>
             <FaChevronLeft />
           </button>
         )}
 
         <div className={styles.tabsWrapper} ref={tabListRef}>
-          {packages.map((pkg, index) => (
+          {activePackages.map((pkg, index) => (
             <button
-              key={index}
+              key={pkg.id}
               className={`${styles.tab} ${index === activeIndex ? styles.activeTab : ''}`}
               onClick={() => setActiveIndex(index)}
             >
-              <span className={styles.title}>{pkg.package}</span>
+              <span className={styles.title}>{pkg.name}</span>
               <span className={styles.subtitle}>PACKAGE</span>
             </button>
           ))}
         </div>
 
-        {packages.length > 4 && (
+        {activePackages.length > 4 && (
           <button onClick={() => scrollTabs('right')} className={styles.navBtn}>
             <FaChevronRight />
           </button>
         )}
       </div>
 
-      {packages[activeIndex] && (
+      {activePackages[activeIndex] && (
         <div className={styles.packageContent}>
           <div className={styles.imageBox}>
             <img
-              src={packages[activeIndex].image}
-              alt={packages[activeIndex].package}
+              src={activePackages[activeIndex].image_url ? `http://localhost:8080${activePackages[activeIndex].image_url}` : '/placeholder.svg?height=360&width=400'}
+              alt={activePackages[activeIndex].name}
               className={styles.image}
+              onError={(e) => {
+                e.target.src = '/placeholder.svg?height=360&width=400'
+                e.target.onerror = null
+              }}
             />
           </div>
           <div className={styles.details}>
             <h3 className={styles.packageTitle}>
-              <span className={styles.packageName}>{packages[activeIndex].package}</span>{' '}
+              <span className={styles.packageName}>{activePackages[activeIndex].name}</span>{' '}
               <span className={styles.packageLabel}>PACKAGE</span>
             </h3>
             <div className={styles.descriptionText}>
-              {packages[activeIndex].description.split('\n').map((line, i) => (
+              {activePackages[activeIndex].description.split('\n').map((line, i) => (
                 <p key={i}>{line}</p>
               ))}
             </div>
