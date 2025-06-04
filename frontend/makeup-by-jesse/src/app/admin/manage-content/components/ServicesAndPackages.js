@@ -36,7 +36,15 @@ export default function ServicesAndPackages() {
 
   const handleUpdatePackage = async (id, updatedPackage) => {
     try {
-      await updatePackage({ id, ...updatedPackage }).unwrap()
+      // Create FormData object
+      const formData = new FormData()
+      formData.append('name', updatedPackage.name)
+      formData.append('description', updatedPackage.description)
+      if (updatedPackage.image) {
+        formData.append('image', updatedPackage.image)
+      }
+      
+      await updatePackage({ id, formData }).unwrap()
       await refetchPackages()
     } catch (error) {
       alert(`Error updating package: ${error.message || 'Unknown error'}`)
@@ -134,7 +142,6 @@ export default function ServicesAndPackages() {
 function PackageItem({ package: pkg, isEditing, onUpdate, onDelete, isDeleting }) {
   const [isUpdating, setIsUpdating] = useState(false)
   const [updatedName, setUpdatedName] = useState(pkg.name)
-  const [updatedPrice, setUpdatedPrice] = useState(pkg.price)
   const [updatedDescription, setUpdatedDescription] = useState(pkg.description)
   const [imageFile, setImageFile] = useState(null)
   const [previewImage, setPreviewImage] = useState(null)
@@ -157,26 +164,21 @@ function PackageItem({ package: pkg, isEditing, onUpdate, onDelete, isDeleting }
   const handleSave = () => {
     setError(null)
 
-    if (!updatedName || !updatedPrice || !updatedDescription) {
+    if (!updatedName || !updatedDescription) {
       setError('All fields are required.')
       return
     }
 
     setIsSubmitting(true)
 
-    const updateData = {
-      name: updatedName,
-      price: Number.parseFloat(updatedPrice),
-      description: updatedDescription,
-    }
-
     if (imageFile) {
       const reader = new FileReader()
       reader.onload = async () => {
         try {
           await onUpdate({
-            ...updateData,
-            image: reader.result,
+            name: updatedName,
+            description: updatedDescription,
+            image: imageFile // Send the actual file instead of base64
           })
           setIsUpdating(false)
         } catch (err) {
@@ -185,13 +187,12 @@ function PackageItem({ package: pkg, isEditing, onUpdate, onDelete, isDeleting }
           setIsSubmitting(false)
         }
       }
-      reader.onerror = () => {
-        setError('Failed to read image')
-        setIsSubmitting(false)
-      }
-      reader.readAsDataURL(imageFile)
+      reader.readAsDataURL(imageFile) // Still create preview
     } else {
-      onUpdate(updateData)
+      onUpdate({
+        name: updatedName,
+        description: updatedDescription
+      })
         .then(() => setIsUpdating(false))
         .catch((err) => setError(`Failed to update package: ${err.message || 'Unknown error'}`))
         .finally(() => setIsSubmitting(false))
@@ -217,33 +218,57 @@ function PackageItem({ package: pkg, isEditing, onUpdate, onDelete, isDeleting }
             </div>
           )}
 
+          <div style={{ color: '#6B7280', fontSize: '16px', marginBottom: '8px' }}>Package Name</div>
           <input
             type="text"
             value={updatedName}
             onChange={(e) => setUpdatedName(e.target.value)}
             disabled={isSubmitting}
             placeholder="Package name"
+            className={styles.serviceName}
           />
-          <input
-            type="number"
-            value={updatedPrice}
-            onChange={(e) => setUpdatedPrice(e.target.value)}
-            disabled={isSubmitting}
-            placeholder="Price"
-            min="0"
-            step="0.01"
-          />
+
+          <div style={{ color: '#6B7280', fontSize: '16px', marginBottom: '8px', marginTop: '16px' }}>Description</div>
           <textarea
             value={updatedDescription}
             onChange={(e) => setUpdatedDescription(e.target.value)}
             disabled={isSubmitting}
             placeholder="Description"
             rows="3"
+            className={styles.serviceDescription}
           />
+
           <div className={styles['update-actions']}>
-            <button onClick={() => setIsUpdating(false)} disabled={isSubmitting}>Cancel</button>
-            <button onClick={handleSave} disabled={isSubmitting}>
-              {isSubmitting ? 'Saving...' : 'Save'}
+            <button 
+              style={{ 
+                padding: '8px 24px', 
+                backgroundColor: 'transparent',
+                color: '#1e1b4b',
+                border: '2px solid #1e1b4b',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                marginRight: '8px',
+                fontWeight: '600'
+              }} 
+              onClick={() => setIsUpdating(false)} 
+              disabled={isSubmitting}
+            >
+              Cancel
+            </button>
+            <button 
+              style={{ 
+                padding: '8px 24px', 
+                backgroundColor: '#1e1b4b',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontWeight: '600'
+              }} 
+              onClick={handleSave} 
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
         </div>
@@ -252,27 +277,58 @@ function PackageItem({ package: pkg, isEditing, onUpdate, onDelete, isDeleting }
           <div className={styles['service-image-container']}>
             {pkg.image_url ? (
               <img
-                src={pkg.image_url}
+                src={`http://localhost:8080${pkg.image_url}`}
                 alt={pkg.name}
                 className={styles.packageImage}
                 onError={(e) => {
-                  e.target.src = '/placeholder.svg'
-                  e.target.onerror = null
+                  console.error("Image failed to load:", pkg.image_url)
+                  e.target.src = "/images/placeholder-package.jpg"
+                  e.target.onerror = null // Prevent infinite error loop
                 }}
               />
             ) : (
-              <div className={styles.imagePlaceholder}><span>No image</span></div>
+              <div className={styles.imagePlaceholder}><span>No image available</span></div>
             )}
           </div>
           <div className={styles.packageDetails}>
-            <h3 className={styles.packageName}>{pkg.name}</h3>
-            <div className={styles.packagePrice}>₱{Number.parseFloat(pkg.price).toFixed(2)}</div>
-            <p className={styles.packageDescription}>{pkg.description}</p>
+            <div style={{ color: '#6B7280', fontSize: '16px', marginBottom: '8px' }}>Package Name</div>
+            <div className={styles.serviceName}>
+              {pkg.name}
+            </div>
+            <div style={{ color: '#6B7280', fontSize: '16px', marginBottom: '8px', marginTop: '16px' }}>Description</div>
+            <div className={styles.serviceDescription}>
+              {pkg.description}
+            </div>
 
             {isEditing && (
-              <div className={styles['package-actions']}>
-                <button onClick={() => setIsUpdating(true)}>Update</button>
-                <button onClick={onDelete} disabled={isDeleting}>Delete</button>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '16px' }}>
+                <button 
+                  style={{ 
+                    padding: '8px 24px', 
+                    backgroundColor: '#1e1b4b', 
+                    color: 'white', 
+                    border: 'none', 
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }} 
+                  onClick={() => setIsUpdating(true)}
+                >
+                  Update
+                </button>
+                <button 
+                  style={{ 
+                    padding: '8px 24px', 
+                    backgroundColor: '#1e1b4b', 
+                    color: 'white', 
+                    border: 'none', 
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }} 
+                  onClick={onDelete} 
+                  disabled={isDeleting}
+                >
+                  Delete
+                </button>
               </div>
             )}
           </div>

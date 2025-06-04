@@ -7,6 +7,7 @@ import styles from "../../../manage-content/content.module.css"
 const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices }) => {
   const [isUpdating, setIsUpdating] = useState(false)
   const [updatedName, setUpdatedName] = useState(service.name)
+  const [updatedDescription, setUpdatedDescription] = useState(service.description || "")
   const [imageFile, setImageFile] = useState(null)
   const [previewImage, setPreviewImage] = useState(null)
   const [error, setError] = useState(null)
@@ -16,8 +17,16 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
   // Update local state when service prop changes
   useEffect(() => {
     setUpdatedName(service.name)
+    setUpdatedDescription(service.description || "")
     setPreviewImage(null)
   }, [service])
+
+  // Set preview image when entering update mode
+  useEffect(() => {
+    if (isUpdating && service.inspo) {
+      setPreviewImage(service.inspo)
+    }
+  }, [isUpdating, service.inspo])
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
@@ -45,6 +54,7 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
       const updateData = {
         id: service.id,
         name: updatedName,
+        description: updatedDescription,
         status: service.status || "ACTIVE",
       }
 
@@ -89,7 +99,7 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
   return (
     <div className={styles["service-item"]}>
       {isUpdating ? (
-        <>
+        <div className={styles['package-update-form']}>
           {error && <div className={styles.errorMessage}>{error}</div>}
 
           <input
@@ -102,11 +112,12 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
           />
 
           {previewImage && (
-            <div className={styles["image-preview-container"]}>
-              <img src={previewImage || "/placeholder.svg"} alt="Preview" className={styles["image-preview"]} />
+            <div className={styles['image-preview-container']}>
+              <img src={previewImage || "/placeholder.svg"} alt="Preview" className={styles['image-preview']} />
             </div>
           )}
 
+          <div style={{ color: '#6B7280', fontSize: '16px', marginBottom: '8px' }}>Service Name</div>
           <input
             type="text"
             name={`updateName-${service.id}`}
@@ -114,17 +125,56 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
             value={updatedName}
             onChange={(e) => setUpdatedName(e.target.value)}
             disabled={isSubmitting}
+            placeholder="Service name"
+            className={styles.serviceName}
           />
 
-          <div className={styles["button-group"]}>
-            <button className={styles.cancelButton} onClick={() => setIsUpdating(false)} disabled={isSubmitting}>
+          <div style={{ color: '#6B7280', fontSize: '16px', marginBottom: '8px', marginTop: '16px' }}>Description</div>
+          <textarea
+            name={`updateDescription-${service.id}`}
+            id={`updateDescription-${service.id}`}
+            value={updatedDescription}
+            onChange={(e) => setUpdatedDescription(e.target.value)}
+            placeholder="Service description"
+            disabled={isSubmitting}
+            rows="3"
+            className={styles.serviceDescription}
+          />
+
+          <div className={styles['update-actions']}>
+            <button 
+              style={{ 
+                padding: '8px 24px', 
+                backgroundColor: 'transparent',
+                color: '#1e1b4b',
+                border: '2px solid #1e1b4b',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                marginRight: '8px',
+                fontWeight: '600'
+              }} 
+              onClick={() => setIsUpdating(false)} 
+              disabled={isSubmitting}
+            >
               Cancel
             </button>
-            <button className={styles.saveButton} onClick={handleSave} disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : "Save"}
+            <button 
+              style={{ 
+                padding: '8px 24px', 
+                backgroundColor: '#1e1b4b',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontWeight: '600'
+              }} 
+              onClick={handleSave} 
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
-        </>
+        </div>
       ) : (
         <>
           <div className={styles["service-image-container"]}>
@@ -150,6 +200,11 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
               Service Name
             </label>
             <p className={styles.serviceName}>{service.name}</p>
+
+            <label htmlFor="service-description" className={styles.serviceNameLabel}>
+              Description
+            </label>
+            <p className={styles.serviceDescription}>{service.description || "No description available"}</p>
 
             {isEditing && (
               <div className={styles["service-actions"]}>

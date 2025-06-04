@@ -9,6 +9,7 @@ const AddService = ({ onServiceAdded }) => {
   const [imageFile, setImageFile] = useState(null)
   const [previewImage, setPreviewImage] = useState(null)
   const [error, setError] = useState(null)
+  const [description, setDescription] = useState("")
 
   const [addService, { isLoading: isSubmitting }] = useAddServiceMutation()
 
@@ -52,12 +53,14 @@ const AddService = ({ onServiceAdded }) => {
           await addService({
             name,
             image: base64Image,
+            description,
           }).unwrap()
 
           // Reset form
           setName("")
           setImageFile(null)
           setPreviewImage(null)
+          setDescription("")
           e.target.reset()
 
           // Notify parent component
@@ -105,6 +108,16 @@ const AddService = ({ onServiceAdded }) => {
         value={name}
         onChange={(e) => setName(e.target.value)}
         disabled={isSubmitting}
+      />
+
+      <textarea
+        name="serviceDescription"
+        id="serviceDescription"
+        placeholder="Service description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        disabled={isSubmitting}
+        rows="3"
       />
 
       <button className={styles.addServiceButton} type="submit" disabled={isSubmitting || !name || !imageFile}>

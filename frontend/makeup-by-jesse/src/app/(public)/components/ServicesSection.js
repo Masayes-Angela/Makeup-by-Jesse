@@ -4,31 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../styles/Services.module.css';
 import Image from 'next/image';
-
-// Mock service data (can be replaced with API later)
-const servicesData = [
-  {
-    id: 1,
-    image: '/services/5.jpg',
-    title: 'Bridal Glam',
-    slug: 'bridal-glam',
-    description: 'Get the perfect bridal look with soft elegance and long-lasting glam.',
-  },
-  {
-    id: 2,
-    image: '/services/6.jpg',
-    title: 'Debut Look',
-    slug: 'debut-look',
-    description: 'Celebrate your 18th with glowing, camera-ready beauty.',
-  },
-  {
-    id: 3,
-    image: '/services/5.jpg',
-    title: 'Bridal Glam',
-    slug: 'bridal-glam',
-    description: 'Get the perfect bridal look with soft elegance and long-lasting glam.',
-  },
-];
+import { useGetServicesQuery } from '@/rtk/serviceApi';
 
 // Reusable card component
 function ServiceCard({ image, title, description }) {
@@ -69,6 +45,12 @@ export default function ServicesSection() {
   const sectionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
+  // Fetch services using RTK Query
+  const { data: services = [], isLoading, isError } = useGetServicesQuery();
+
+  // Filter only active services
+  const activeServices = services.filter(service => service.status === 'ACTIVE');
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -94,9 +76,18 @@ export default function ServicesSection() {
           Our Services
         </h2>
         <div className={`${styles.serviceCards} ${styles.fadeInUp} ${isVisible ? styles.visible : ''}`}>
-          {servicesData.length > 0 ? (
-            servicesData.map((item) => (
-              <ServiceCard key={item.id} {...item} />
+          {isLoading ? (
+            <p>Loading services...</p>
+          ) : isError ? (
+            <p>Error loading services. Please try again later.</p>
+          ) : activeServices.length > 0 ? (
+            activeServices.map((service) => (
+              <ServiceCard
+                key={service.id}
+                image={service.inspo}
+                title={service.service_name}
+                description={service.service_description}
+              />
             ))
           ) : (
             <p className={styles.noServices}>No services available at the moment.</p>
