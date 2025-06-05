@@ -18,6 +18,8 @@ import socialRoutes from "./back_end/admin/routes/social.js"
 import packageRoutes from "./back_end/admin/routes/package.js"
 import faqRoutes from './back_end/admin/routes/faqRoutes.js';
 import reviewRoutes from './back_end/admin/routes/reviewRoutes.js';
+import authRoutes from "./back_end/admin/routes/auth.js";
+import appointmentRoutes from "./back_end/admin/routes/appointment.js";
 
 const app = express()
 const PORT = process.env.PORT || 8080
@@ -44,6 +46,8 @@ app.use("/api/socials", socialRoutes)
 app.use("/api/packages", packageRoutes)
 app.use('/api/faqs', faqRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/appointments", appointmentRoutes);
 
 // Default route
 app.get("/", (req, res) => {
