@@ -5,27 +5,8 @@ import styles from '../styles/reviews.module.css';
 import { GoSortAsc } from "react-icons/go";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
-const mockReviews = [
-  {
-    id: 1,
-    name: 'Angeline Ladylyn D. Masayes',
-    email: 'teamBa.programmers@gmail.com',
-    review: 'I really like the team for example, a relationship-focused performance expectation might be that the employee sustain collegial working relationships with her peers, subordinates and customers.',
-    status: 'Published',
-    submittedAt: '2024-06-01T12:00:00Z'
-  },
-  {
-    id: 2,
-    name: 'Jennie Ruby Jane Kim',
-    email: 'blackpink.in.your.area@gmail.com',
-    review: 'I really like the team for example, a relationship-focused performance expectation might be that the employee sustain collegial working relationships with her peers, subordinates and customers.',
-    status: 'Pending',
-    submittedAt: '2024-06-04T09:00:00Z'
-  },
-];
-
 export default function AdminReviews() {
-  const [reviews, setReviews] = useState(mockReviews);
+  const [reviews, setReviews] = useState([]);
   const [sortOrder, setSortOrder] = useState('');
   const [open, setOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
@@ -33,14 +14,29 @@ export default function AdminReviews() {
   const [expandedId, setExpandedId] = useState(null);
   const dropdownRef = useRef(null);
 
+  // Fetch real reviews from backend
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const res = await fetch('http://localhost:8080/api/reviews');
+        const data = await res.json();
+        setReviews(data);
+      } catch (err) {
+        console.error('Error fetching reviews:', err);
+      }
+    };
+
+    fetchReviews();
+  }, []);
+
   const handleSelect = (value) => {
     setSortOrder(value);
     setOpen(false);
 
     const sorted = [...reviews].sort((a, b) => {
       return value.toLowerCase() === 'newest'
-        ? new Date(b.submittedAt) - new Date(a.submittedAt)
-        : new Date(a.submittedAt) - new Date(b.submittedAt);
+        ? new Date(b.submitted_at) - new Date(a.submitted_at)
+        : new Date(a.submitted_at) - new Date(b.submitted_at);
     });
 
     setReviews(sorted);
@@ -49,22 +45,37 @@ export default function AdminReviews() {
   const openModal = (review) => setSelectedReview(review);
   const closeModal = () => setSelectedReview(null);
 
-  const confirmPublish = () => {
+  const confirmPublish = async () => {
+    if (!selectedReview) return;
+
     setIsPublishing(true);
-    setTimeout(() => {
+
+    try {
+      const res = await fetch(`http://localhost:8080/api/reviews/${selectedReview.id}/publish`, {
+        method: 'PATCH'
+      });
+
+      if (!res.ok) throw new Error('Failed to publish');
+
       const updated = reviews.map(r =>
-        r.id === selectedReview.id ? { ...r, status: 'Published' } : r
+        r.id === selectedReview.id ? { ...r, status: 'PUBLISHED' } : r
       );
+
       setReviews(updated);
-      setIsPublishing(false);
       closeModal();
-    }, 1000);
+    } catch (err) {
+      console.error('Publish error:', err);
+      alert('Failed to publish review.');
+    } finally {
+      setIsPublishing(false);
+    }
   };
 
   const toggleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
+  // Close dropdown if clicked outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -104,7 +115,7 @@ export default function AdminReviews() {
         <thead>
           <tr>
             <th>Received By</th>
-            <th>Email</th>
+            <th>Avatar</th>
             <th>Review</th>
             <th>Action</th>
           </tr>
@@ -112,19 +123,19 @@ export default function AdminReviews() {
         <tbody>
           {reviews.map((r) => {
             const isExpanded = expandedId === r.id;
-            const isPublished = r.status.toLowerCase() === 'published';
+            const isPublished = r.status === 'PUBLISHED';
             const reviewText = isExpanded
-              ? r.review
-              : r.review.slice(0, 120) + (r.review.length > 120 ? '...' : '');
+              ? r.message
+              : r.message.slice(0, 120) + (r.message.length > 120 ? '...' : '');
 
             return (
               <tr key={r.id}>
                 <td>{r.name}</td>
-                <td>{r.email}</td>
+                <td>{r.avatar_url}</td>
                 <td>
                   <div className={styles.reviewContent}>
                     {reviewText}
-                    {r.review.length > 120 && (
+                    {r.message.length > 120 && (
                       <button className={styles.readMoreBtn} onClick={() => toggleExpand(r.id)}>
                         {isExpanded ? 'Show less' : 'Read more'}
                       </button>

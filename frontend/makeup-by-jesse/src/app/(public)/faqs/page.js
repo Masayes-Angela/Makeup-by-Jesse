@@ -5,13 +5,29 @@ import { MdArrowOutward } from "react-icons/md";
 
 const faqs = [
   {
-    question: 'Ridiculus adipiscing netus erat mi sodales pellentesque ?',
-    answer: 'Sit massa habitant nec aliquet congue vehicula feugiat enim pretium lobortis pede tincidunt turpis arcu posuere cursus diam sodales nunc malesuada .',
+    question: 'How do I book an appointment?',
+    answer: 'Just click "Book Now" button, choose your preferred date and time, and fill out the form with your details. If the slot is available, we’ll confirm your booking through email or SMS!',
   },
-  { question: 'Cursus aenean et si accumsan maximus maecenas ?', answer: 'secret' },
-  { question: 'Commodo etiam aptent pellentesque si sit consectetur ?', answer: 'secret' },
-  { question: 'Semper inceptos consectetuer tortor adipiscing sit eu ?', answer: 'secret' },
-  { question: 'Augue venenatis vestibulum nibh letius torquent tempor ?', answer: 'secret' },
+  {
+    question: 'Do I need to pay a deposit to confirm my booking?',
+    answer: 'Nope! No upfront payment is required. Just show up on time for your appointment and pay after your glam session — easy and stress-free.'
+  },
+  {
+    question: 'What happens if I need to cancel or reschedule?',
+    answer: 'We totally understand! You can reschedule or cancel your appointment through your confirmation email, or just send us a message at least 24 hours in advance.'
+  },
+  {
+    question: 'What should I do before my makeup session?',
+    answer: 'Arrive with a clean, moisturized face. Avoid using heavy skincare or SPF right before the session to help the makeup stick better and last longer!'
+  },
+  {
+    question: 'Do you offer makeup services for out-of-town events?',
+    answer: 'Yes, we do!'
+  },
+  {
+    question: 'Can I bring a companion during my appointment?',
+    answer: 'Of course! Just let us know ahead so we can accommodate them in our studio space — we want everyone to be comfy during your glam time.'
+  },
 ];
 
 export default function FaqSection() {

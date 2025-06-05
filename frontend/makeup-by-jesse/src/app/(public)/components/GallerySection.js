@@ -6,10 +6,10 @@ import Image from 'next/image';
 
 const images = [
   { id: 1, src: '/gallery/img1.jpg' },
-  { id: 2, src: '/gallery/img2.jpg' },
-  { id: 3, src: '/gallery/img3.jpg' },
-  { id: 4, src: '/gallery/img4.jpg' },
-  { id: 5, src: '/gallery/img5.jpg' },
+  { id: 2, src: '/gallery/img4.jpg' },
+  { id: 3, src: '/gallery/img11.jpg' },
+  { id: 4, src: '/gallery/img8.jpg' },
+  { id: 5, src: '/gallery/img10.jpg' },
 ];
 
 export default function GallerySection() {

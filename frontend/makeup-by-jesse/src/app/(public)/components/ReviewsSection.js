@@ -19,23 +19,22 @@ export default function ReviewsSection() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Improved with unique IDs
-  const [reviews, setReviews] = useState([
-    {
-      id: 'rev001',
-      name: 'Angela Beatrice',
-      message:
-        'I really like the team for example, a relationship-focused performance expectation might be that the employee sustain collegial working relationships with her peers, subordinates and customers.',
-      avatar: '/id/id1.jpg',
-    },
-    {
-      id: 'rev002',
-      name: 'Sofia Mercado',
-      message:
-        'I really like the team for example, a relationship-focused performance expectation might be that the employee sustain collegial working relationships with her peers, subordinates and customers.',
-      avatar: '/id/id2.jpg',
-    },
-  ]);
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const res = await fetch('http://localhost:8080/api/reviews/published');
+        const data = await res.json();
+        console.log('Published reviews:', data);
+        setReviews(data);
+        setVisibleCards(new Array(data.length).fill(false)); // initialize animation state
+      } catch (err) {
+        console.error('Failed to fetch reviews:', err);
+      }
+    };
+    fetchReviews();
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -47,7 +46,8 @@ export default function ReviewsSection() {
           if (entry.isIntersecting) {
             setVisibleCards(prev => {
               const updated = [...prev];
-              updated[index] = true;
+              const targetIndex = cardRefs.current.findIndex(el => el === entry.target);
+              if (targetIndex !== -1) updated[targetIndex] = true;
               return updated;
             });
           }
@@ -61,7 +61,7 @@ export default function ReviewsSection() {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [reviews]);
 
   const handleNextStep = () => {
     if (reviewText.length > 500) {
@@ -82,7 +82,7 @@ export default function ReviewsSection() {
         {reviews.length === 0 ? (
           <p className={styles.emptyMsg}>No reviews yet. Be the first to share your experience!</p>
         ) : (
-          reviews.map((review, i) => (
+          reviews.slice(0, 2).map((review, i) => (
             <div
               key={review.id}
               ref={el => (cardRefs.current[i] = el)}
@@ -92,7 +92,7 @@ export default function ReviewsSection() {
               <p className={styles.reviewText}>{review.message}</p>
               <div className={styles.reviewer}>
                 <Image
-                  src={review.avatar}
+                  src={review.avatar_url || '/default.jpg'}
                   alt={review.name}
                   width={40}
                   height={40}
@@ -114,7 +114,6 @@ export default function ReviewsSection() {
           <button
             className={styles.writeReviewBtn}
             onClick={() => setShowModal(true)}
-            aria-label="Open Write a Review modal"
           >
             <LuPencil className={styles.writeIcon} />
             Write a Review
@@ -123,45 +122,28 @@ export default function ReviewsSection() {
       )}
 
       {showModal && createPortal(
-        <div className={styles.modalOverlay} role="dialog" aria-modal="true" aria-label="Review Modal">
+        <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
             <h3>{step === 1 ? 'Write a Review' : 'Review Summary'}</h3>
-
             {step === 1 && (
               <p className={styles.subheading}>
                 Thank you for letting me be part of your special moment. I’d love to hear how you felt!
               </p>
             )}
-
             {step === 1 ? (
               <>
-                  <textarea
-                    id="userReview"
-                    name="userReview"
-                    rows="5"
-                    maxLength={500}
-                    placeholder="Share your experience..."
-                    value={reviewText}
-                    onChange={(e) => setReviewText(e.target.value)}
-                    className={styles.modalTextarea}
-                    aria-label="Review input"
-                    autoComplete="off"
-                  />
+                <textarea
+                  rows="5"
+                  maxLength={500}
+                  placeholder="Share your experience..."
+                  value={reviewText}
+                  onChange={(e) => setReviewText(e.target.value)}
+                  className={styles.modalTextarea}
+                />
                 <div className={styles.charCount}>{reviewText.length} / 500</div>
                 <div className={styles.modalActions}>
-                  <button
-                    onClick={() => setShowModal(false)}
-                    className={styles.cancelBtn}
-                    aria-label="Cancel review"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleNextStep}
-                    className={styles.nextBtn}
-                    disabled={!reviewText.trim()}
-                    aria-label="Go to preview"
-                  >
+                  <button onClick={() => setShowModal(false)} className={styles.cancelBtn}>Cancel</button>
+                  <button onClick={handleNextStep} className={styles.nextBtn} disabled={!reviewText.trim()}>
                     Next
                   </button>
                 </div>
@@ -170,26 +152,40 @@ export default function ReviewsSection() {
               <>
                 <p className={styles.previewText}>{reviewText}</p>
                 <div className={styles.modalActions}>
-                  <button
-                    onClick={() => setStep(1)}
-                    className={styles.cancelBtn}
-                    aria-label="Back to edit"
-                  >
-                    Back
-                  </button>
+                  <button onClick={() => setStep(1)} className={styles.cancelBtn}>Back</button>
                   <button
                     className={styles.submitBtn}
                     onClick={async () => {
                       setIsSubmitting(true);
-                      await new Promise(res => setTimeout(res, 1500));
-                      setIsSubmitting(false);
-                      setShowModal(false);
-                      setShowSuccess(true);
-                      setReviewText('');
-                      setStep(1);
+
+                      try {
+                        const res = await fetch('http://localhost:8080/api/reviews', {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json'
+                          },
+                          body: JSON.stringify({
+                            name: 'Anonymous',
+                            avatar_url: '/default.jpg',
+                            message: reviewText
+                          })
+                        });
+
+                        if (!res.ok) {
+                          throw new Error('Failed to submit review');
+                        }
+
+                        setShowModal(false);
+                        setShowSuccess(true);
+                        setReviewText('');
+                        setStep(1);
+                      } catch (err) {
+                        alert('Something went wrong: ' + err.message);
+                      } finally {
+                        setIsSubmitting(false);
+                      }
                     }}
                     disabled={isSubmitting}
-                    aria-label="Submit review"
                   >
                     {isSubmitting ? 'Submitting...' : 'Submit'}
                   </button>
@@ -202,15 +198,9 @@ export default function ReviewsSection() {
       )}
 
       {showSuccess && createPortal(
-        <div className={styles.successOverlay} role="dialog" aria-modal="true" aria-label="Success Message">
+        <div className={styles.successOverlay}>
           <div className={styles.successBox}>
-            <button
-              className={styles.closeBtn}
-              onClick={() => setShowSuccess(false)}
-              aria-label="Close success message"
-            >
-              ✕
-            </button>
+            <button className={styles.closeBtn} onClick={() => setShowSuccess(false)}>✕</button>
             <div className={styles.iconWrapper}>
               <BsCheckCircle className={styles.checkIcon} />
             </div>
