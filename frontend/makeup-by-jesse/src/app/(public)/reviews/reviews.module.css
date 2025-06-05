@@ -24,6 +24,13 @@
 }
 
 /* Reviews content */
+.reviewWrapper {
+  background-color: #fff;
+  margin: 0 auto;
+  padding-bottom: 6rem;
+  min-height: 60vh;
+}
+
 .reviewsSection {
   padding: 2rem 1rem;
   display: flex;

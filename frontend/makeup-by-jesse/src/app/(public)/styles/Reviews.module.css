@@ -33,14 +33,14 @@
   border-radius: 12px;
   padding: 2rem 3rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  max-width: 500px;
-  min-width: 400px;      /* 👈 NEW: minimum width */
-  min-height: 260px;     /* 👈 NEW: minimum height */
+  max-width: 440px;
+  min-width: 440px;
+  min-height: 280px;
   text-align: left;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;  /* 👈 Centers vertically */
+  justify-content: center;
   gap: 1rem;
 }
 
