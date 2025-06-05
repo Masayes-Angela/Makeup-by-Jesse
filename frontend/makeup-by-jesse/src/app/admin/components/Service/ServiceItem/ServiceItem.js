@@ -99,7 +99,7 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
   return (
     <div className={styles["service-item"]}>
       {isUpdating ? (
-        <div className={styles["package-update-form"]}>
+        <div className={styles["service-update-form"]}>
           {error && <div className={styles.errorMessage}>{error}</div>}
 
           <input
@@ -196,7 +196,7 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
             )}
           </div>
 
-          <div className={styles.packageDetails}>
+          <div className={styles.serviceDetails}>
             <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px" }}>Service Name</div>
             <div className={styles.serviceName}>{service.name}</div>
 

@@ -66,8 +66,8 @@ export default function Sidebar() {
           <div className={styles.modal}>
             <p className={styles.modalText}>Are you sure you want to log out?</p>
             <div className={styles.modalActions}>
-              <button className={styles.modalBtn} onClick={confirmLogout}>Yes</button>
-              <button className={styles.modalBtn} onClick={() => setShowModal(false)}>No</button>
+              <button className={styles.yesBtn} onClick={confirmLogout}>Yes</button>
+              <button className={styles.cancelBtn} onClick={() => setShowModal(false)}>No</button>
             </div>
           </div>
         </div>

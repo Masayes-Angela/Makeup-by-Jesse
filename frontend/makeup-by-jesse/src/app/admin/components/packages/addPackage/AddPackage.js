@@ -92,7 +92,7 @@ const AddPackage = ({ onPackageAdded }) => {
           </div>
         )}
 
-        <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px" }}>Package Name</div>
+        <div style={{ color: "#6B7280", fontSize: "14px" }}>Package Name</div>
         <input
           type="text"
           name="packageName"
@@ -101,10 +101,10 @@ const AddPackage = ({ onPackageAdded }) => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           disabled={isSubmitting}
-          className={styles.serviceName}
+          className={styles.packageName}
         />
 
-        <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px", marginTop: "16px" }}>Description</div>
+        <div style={{ color: "#6B7280", fontSize: "14px" }}>Description</div>
         <textarea
           name="packageDescription"
           id="packageDescription"
@@ -113,7 +113,7 @@ const AddPackage = ({ onPackageAdded }) => {
           onChange={(e) => setDescription(e.target.value)}
           disabled={isSubmitting}
           rows="3"
-          className={styles.serviceDescription}
+          className={styles.packageDescription}
         />
 
         <button
@@ -128,7 +128,7 @@ const AddPackage = ({ onPackageAdded }) => {
             borderRadius: "4px",
             cursor: "pointer",
             fontWeight: "600",
-            marginTop: "16px",
+            marginTop: "10px",
           }}
         >
           {isSubmitting ? "Adding..." : "Add Package"}
