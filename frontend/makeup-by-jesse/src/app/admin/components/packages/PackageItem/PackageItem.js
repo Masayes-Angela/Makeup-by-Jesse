@@ -99,7 +99,7 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
             onChange={(e) => setUpdatedName(e.target.value)}
             disabled={isSubmitting}
             placeholder="Package name"
-            className={styles.serviceName}
+            className={styles.packageName}
           />
 
           <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px", marginTop: "16px" }}>Description</div>
@@ -109,7 +109,7 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
             disabled={isSubmitting}
             placeholder="Description"
             rows="3"
-            className={styles.serviceDescription}
+            className={styles.packageDescription}
           />
 
           <div className={styles["update-actions"]}>
@@ -148,7 +148,7 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
         </div>
       ) : (
         <>
-          <div className={styles["service-image-container"]}>
+          <div className={styles["package-image-container"]}>
             {pkg.image_url ? (
               <img
                 src={`http://localhost:8080${pkg.image_url}`}
@@ -168,12 +168,12 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
           </div>
           <div className={styles.packageDetails}>
             <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px" }}>Package Name</div>
-            <div className={styles.serviceName}>{pkg.name}</div>
+            <div className={styles.packageName}>{pkg.name}</div>
 
             <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px", marginTop: "16px" }}>
               Description
             </div>
-            <div className={styles.serviceDescription}>{pkg.description}</div>
+            <div className={styles.packageDescription}>{pkg.description}</div>
 
             {isEditing && (
               <div style={{ display: "flex", gap: "8px", marginTop: "16px" }}>

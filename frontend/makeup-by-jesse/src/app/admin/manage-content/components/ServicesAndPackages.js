@@ -88,7 +88,7 @@ export default function ServicesAndPackages() {
 
       {/* Packages */}
       <div className={styles['content-section']}>
-        <div className={styles['services-header']}>
+        <div className={styles['package-header']}>
           <h2 className={styles['section-title']}>Packages</h2>
           <div>
             {isEditingPackages ? (
@@ -106,8 +106,8 @@ export default function ServicesAndPackages() {
         </div>
 
         {isEditingPackages && <AddPackage onPackageAdded={refetchPackages} />}
-        <div className={styles['services-scroll-container']}>
-          <div className={styles['services-list']}>
+        <div className={styles['package-scroll-container']}>
+          <div className={styles['package-list']}>
             {isLoadingPackages ? (
               <p>Loading packages...</p>
             ) : isErrorPackages ? (
@@ -178,7 +178,7 @@ function PackageItem({ package: pkg, isEditing, onUpdate, onDelete, isDeleting }
           await onUpdate({
             name: updatedName,
             description: updatedDescription,
-            image: imageFile // Send the actual file instead of base64
+            image: imageFile
           })
           setIsUpdating(false)
         } catch (err) {
@@ -187,7 +187,7 @@ function PackageItem({ package: pkg, isEditing, onUpdate, onDelete, isDeleting }
           setIsSubmitting(false)
         }
       }
-      reader.readAsDataURL(imageFile) // Still create preview
+      reader.readAsDataURL(imageFile)
     } else {
       onUpdate({
         name: updatedName,
@@ -225,7 +225,7 @@ function PackageItem({ package: pkg, isEditing, onUpdate, onDelete, isDeleting }
             onChange={(e) => setUpdatedName(e.target.value)}
             disabled={isSubmitting}
             placeholder="Package name"
-            className={styles.serviceName}
+            className={styles.packageName}
           />
 
           <div style={{ color: '#6B7280', fontSize: '16px', marginBottom: '8px', marginTop: '16px' }}>Description</div>
@@ -235,7 +235,7 @@ function PackageItem({ package: pkg, isEditing, onUpdate, onDelete, isDeleting }
             disabled={isSubmitting}
             placeholder="Description"
             rows="3"
-            className={styles.serviceDescription}
+            className={styles.packageDescription}
           />
 
           <div className={styles['update-actions']}>
@@ -274,7 +274,7 @@ function PackageItem({ package: pkg, isEditing, onUpdate, onDelete, isDeleting }
         </div>
       ) : (
         <>
-          <div className={styles['service-image-container']}>
+          <div className={styles['package-image-container']}>
             {pkg.image_url ? (
               <img
                 src={`http://localhost:8080${pkg.image_url}`}
@@ -283,7 +283,7 @@ function PackageItem({ package: pkg, isEditing, onUpdate, onDelete, isDeleting }
                 onError={(e) => {
                   console.error("Image failed to load:", pkg.image_url)
                   e.target.src = "/images/placeholder-package.jpg"
-                  e.target.onerror = null // Prevent infinite error loop
+                  e.target.onerror = null
                 }}
               />
             ) : (
@@ -292,11 +292,11 @@ function PackageItem({ package: pkg, isEditing, onUpdate, onDelete, isDeleting }
           </div>
           <div className={styles.packageDetails}>
             <div style={{ color: '#6B7280', fontSize: '16px', marginBottom: '8px' }}>Package Name</div>
-            <div className={styles.serviceName}>
+            <div className={styles.packageName}>
               {pkg.name}
             </div>
             <div style={{ color: '#6B7280', fontSize: '16px', marginBottom: '8px', marginTop: '16px' }}>Description</div>
-            <div className={styles.serviceDescription}>
+            <div className={styles.packageDescription}>
               {pkg.description}
             </div>
 

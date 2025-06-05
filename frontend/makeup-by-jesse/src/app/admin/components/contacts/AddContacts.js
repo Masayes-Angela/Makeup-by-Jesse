@@ -150,7 +150,9 @@ export default function AddContacts({ isEditing = false }) {
                 border: "none",
                 borderRadius: "4px",
                 cursor: "pointer",
-                fontWeight: "600",
+                fontWeight: "500",
+                fontFamily: "Roboto",
+                letterSpacing: ".5px",
               }}
             >
               {isSubmitting || isAdding ? "Saving..." : "Save Changes"}
@@ -185,7 +187,9 @@ export default function AddContacts({ isEditing = false }) {
                   border: "none",
                   borderRadius: "4px",
                   cursor: "pointer",
-                  fontWeight: "600",
+                  fontWeight: "500",
+                  fontFamily: "Roboto",
+                  letterSpacing: ".5px",
                 }}
               >
                 Edit Contact Info

@@ -85,7 +85,7 @@ const AddService = ({ onServiceAdded }) => {
     <form className={styles["add-service-form"]} onSubmit={handleSubmit}>
       {error && <div className={styles.errorMessage}>{error}</div>}
 
-      <div className={styles["package-update-form"]}>
+      <div className={styles["service-update-form"]}>
         <input
           type="file"
           accept="image/*"
@@ -102,7 +102,7 @@ const AddService = ({ onServiceAdded }) => {
           </div>
         )}
 
-        <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px" }}>Service Name</div>
+        <div style={{ color: "#6B7280", fontSize: "14px" }}>Service Name</div>
         <input
           type="text"
           name="serviceName"
@@ -114,7 +114,7 @@ const AddService = ({ onServiceAdded }) => {
           className={styles.serviceName}
         />
 
-        <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px", marginTop: "16px" }}>Description</div>
+        <div style={{ color: "#6B7280", fontSize: "14px" }}>Description</div>
         <textarea
           name="serviceDescription"
           id="serviceDescription"
@@ -138,7 +138,7 @@ const AddService = ({ onServiceAdded }) => {
             borderRadius: "4px",
             cursor: "pointer",
             fontWeight: "600",
-            marginTop: "16px",
+            marginTop: "10px",
           }}
         >
           {isSubmitting ? "Adding..." : "Add Service"}
