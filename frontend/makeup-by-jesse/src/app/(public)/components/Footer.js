@@ -5,9 +5,9 @@ import { FaFacebookF, FaInstagram, FaTiktok } from 'react-icons/fa';
 import Link from 'next/link';
 
 const socialUrls = {
-  facebook: 'https://facebook.com/yourpage',
-  instagram: 'https://instagram.com/yourpage',
-  tiktok: 'https://tiktok.com/@yourpage',
+  facebook: 'https://www.facebook.com/jessecamillemua',
+  instagram: 'https://www.instagram.com/jessecamille.mua?fbclid=IwY2xjawKunxFleHRuA2FlbQIxMABicmlkETFIQXNRb0hHakdPME1vbFZZAR5cujPKFdV00UCU7w012Z6v-WIZnaKdWuT_QM943i74SvAiXKkRi4hA7GWsZw_aem_ATG3AH_8Bf1EubxtqSCDRA',
+  tiktok: 'https://www.tiktok.com/@jessecamille.mua?is_from_webapp=1&sender_device=pc',
 };
 
 export default function Footer() {
