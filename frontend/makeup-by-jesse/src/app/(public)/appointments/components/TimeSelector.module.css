@@ -1,194 +1,118 @@
 .container {
-  margin: 0;
+  width: 100%;
 }
 
 .title {
-  font-weight: bold;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  margin-top: 0;
-}
-
-.card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-}
-
-.dateText {
+  font-size: 18px;
   font-weight: 600;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  color: #1f2937;
+  margin-bottom: 16px;
+  color: #333;
 }
 
-.booked {
+.dateDisplay {
+  margin-bottom: 20px;
+}
+
+.dateDisplay h3 {
+  font-size: 16px;
   font-weight: 500;
-  margin-bottom: 0.5rem;
-  color: #000;
+  margin-bottom: 12px;
+  color: #333;
 }
 
-.booked span {
-  color: #FF707F;
-  margin-left: 4px;
-}
-
-.timeSection {
-  margin-top: 1rem;
-}
-
-.periodHeader {
+.periodSelector {
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-weight: 600;
-  color: #0C1338;
-  margin-bottom: 1rem;
-  gap: 1.5rem;
-  font-size: 1rem;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
-.arrow {
+.navBtn {
+  background: none;
+  border: none;
   cursor: pointer;
-  font-size: 1.1rem;
-  transition: color 0.2s ease;
+  padding: 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
 }
 
-.arrow:hover {
-  color: #6dc0c8;
+.navBtn:hover:not(:disabled) {
+  background-color: #f0f0f0;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.75rem;
-}
-
-.timeBtn {
-  padding: 0.75rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background-color: white;
-  font-weight: 500;
-  color: #1f2937;
-  font-size: 0.95rem;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.timeBtn:disabled {
-  cursor: not-allowed;
+.navBtn:disabled {
   opacity: 0.5;
-  background: #f3f4f6;
+  cursor: not-allowed;
 }
 
-.selected {
-  background-color: #FF707F;
-  color: white;
-}
-
-.meridiem {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  margin-left: 4px;
-}
-
-.confirmBtn {
-  margin-top: 1.5rem;
-  border-radius: 6px;
-  border: 2px solid #5BA9B1;
-  background: #6DC0C8;
-  box-shadow: 0px 4px 10px 0px rgba(186, 186, 186, 0.50);
-  color: white;
-  padding: 0.75rem 1rem;
-  min-width: 185px;
+.periodText {
   font-size: 16px;
   font-weight: 600;
-  letter-spacing: .5px;
-  font-family: inherit;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.confirmBtn:hover {
-  background: #53b3ba;
-}
-
-.centerBtnWrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: .4rem;
-}
-
-/* Modal */
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  max-width: 340px;
-  width: 90%;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  min-width: 40px;
   text-align: center;
 }
 
-.modal h3 {
-  font-size: 1.4rem;
-  margin-bottom: 1.6rem;
-  font-weight: bold;
-  color: #6dc0c8;
+.timeGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 400px;
 }
 
-.modal p {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.modalActions {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 1.6rem;
-}
-
-.modalActions button {
-  padding: 0.6rem 1.2rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 4px;
+.timeSlot {
+  padding: 12px 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: white;
   cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  text-align: center;
 }
 
-.modalActions button:first-child {
-  background: #e5e7eb;
-  color: #282C4B;
-  transition: background 0.3s ease;
+.timeSlot:hover:not(:disabled) {
+  border-color: #4ac7c5;
+  background-color: #f0fffe;
 }
 
-.modalActions button:last-child {
-  background: #6dc0c8;
+.timeSlot.selected {
+  background-color: #ff6b6b;
   color: white;
-  transition: background 0.3s ease;
+  border-color: #ff6b6b;
 }
 
-.modalActions button:first-child:hover {
-  background: #eceef2;
+.timeSlot.booked {
+  background-color: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+  border-color: #ddd;
 }
 
-.modalActions button:last-child:hover {
-  background: #53b3ba;
+.timeSlot:disabled {
+  cursor: not-allowed;
+}
+
+.loading {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: 16px;
 }

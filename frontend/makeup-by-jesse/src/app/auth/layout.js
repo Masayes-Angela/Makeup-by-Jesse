@@ -1,9 +1,8 @@
-export const metadata = {
-  title: 'Makeup by Jesse',
-  description: 'A Glam Experience Like No Other',
-};
+"use client"
 
 import { Roboto } from 'next/font/google'
+import { Provider } from "react-redux"
+import { store } from "@/rtk/store"
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -11,10 +10,14 @@ const roboto = Roboto({
   display: 'swap',
 })
 
-export default function RootLayout({ children }) {
+export default function AuthLayout({ children }) {
   return (
+    <Provider store={store}>
     <html lang="en">
       <body className={roboto.className}>{children}</body>
     </html>
+    </Provider>
   );
 }
+
+

@@ -1,0 +1,138 @@
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .filterBar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .filterBtn {
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  
+  .filterBtn:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .filterBtn.active {
+    background-color: #4ac7c5;
+    color: white;
+  }
+  
+  .emptyState {
+    text-align: center;
+    padding: 40px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    color: #666;
+  }
+  
+  .appointmentList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .appointmentCard {
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+  }
+  
+  .appointmentCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .appointmentHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .appointmentHeader h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .pending {
+    background-color: #fff8e1;
+    color: #f57c00;
+  }
+  
+  .confirmed {
+    background-color: #e3f2fd;
+    color: #1976d2;
+  }
+  
+  .completed {
+    background-color: #e8f5e9;
+    color: #388e3c;
+  }
+  
+  .cancelled {
+    background-color: #ffebee;
+    color: #d32f2f;
+  }
+  
+  .appointmentDetails {
+    margin-bottom: 16px;
+  }
+  
+  .appointmentDetails p {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .appointmentActions {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .cancelBtn {
+    padding: 8px 16px;
+    background-color: #ffebee;
+    color: #d32f2f;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  
+  .cancelBtn:hover {
+    background-color: #ffcdd2;
+  }
+  
