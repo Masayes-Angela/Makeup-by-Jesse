@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useAddPackageMutation } from "@/rtk/packageApi"
-import styles from "../../../manage-content/content.module.css"
+import styles from "../../../manage-content/styles/servicesandpackages.module.css"
 
 const AddPackage = ({ onPackageAdded }) => {
   const [name, setName] = useState("")
@@ -75,48 +75,65 @@ const AddPackage = ({ onPackageAdded }) => {
     <form className={styles["add-package-form"]} onSubmit={handleSubmit}>
       {error && <div className={styles.errorMessage}>{error}</div>}
 
-      {previewImage && (
-        <div className={styles["image-preview-container"]}>
-          <img src={previewImage} alt="Preview" className={styles["image-preview"]} />
-        </div>
-      )}
+      <div className={styles["package-update-form"]}>
+        <input
+          type="file"
+          accept="image/*"
+          name="packageImage"
+          id="packageImage"
+          onChange={handleImageChange}
+          disabled={isSubmitting}
+          className={styles.fileInput}
+        />
 
-      <input
-        type="file"
-        accept="image/*"
-        name="packageImage"
-        id="packageImage"
-        onChange={handleImageChange}
-        disabled={isSubmitting}
-      />
+        {previewImage && (
+          <div className={styles["image-preview-container"]}>
+            <img src={previewImage || "/placeholder.svg"} alt="Preview" className={styles["image-preview"]} />
+          </div>
+        )}
 
-      <input
-        type="text"
-        name="packageName"
-        id="packageName"
-        placeholder="Package name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        disabled={isSubmitting}
-      />
+        <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px" }}>Package Name</div>
+        <input
+          type="text"
+          name="packageName"
+          id="packageName"
+          placeholder="Package name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          disabled={isSubmitting}
+          className={styles.serviceName}
+        />
 
-      <textarea
-        name="packageDescription"
-        id="packageDescription"
-        placeholder="Package description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        disabled={isSubmitting}
-        rows="3"
-      />
+        <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px", marginTop: "16px" }}>Description</div>
+        <textarea
+          name="packageDescription"
+          id="packageDescription"
+          placeholder="Package description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          disabled={isSubmitting}
+          rows="3"
+          className={styles.serviceDescription}
+        />
 
-      <button
-        className={styles.addPackageButton}
-        type="submit"
-        disabled={isSubmitting || !name || !description || !imageFile}
-      >
-        {isSubmitting ? "Adding..." : "Add Package"}
-      </button>
+        <button
+          className={styles.addPackageButton}
+          type="submit"
+          disabled={isSubmitting || !name || !description || !imageFile}
+          style={{
+            padding: "8px 24px",
+            backgroundColor: "#1e1b4b",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontWeight: "600",
+            marginTop: "16px",
+          }}
+        >
+          {isSubmitting ? "Adding..." : "Add Package"}
+        </button>
+      </div>
     </form>
   )
 }
