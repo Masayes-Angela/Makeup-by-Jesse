@@ -19,11 +19,15 @@ function ServiceCard({ image, title, description }) {
     }
   };
 
+  const imageSrc = image
+    ? `/uploads/services/${image}` // 👈 Adjust this path if needed
+    : '/default.jpg';
+
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
         <Image
-          src={image || '/default.jpg'}
+          src={imageSrc}
           alt={title || 'Service image'}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -45,10 +49,8 @@ export default function ServicesSection() {
   const sectionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  // Fetch services using RTK Query
   const { data: services = [], isLoading, isError } = useGetServicesQuery();
 
-  // Filter only active services
   const activeServices = services.filter(service => service.status === 'ACTIVE');
 
   useEffect(() => {
@@ -60,7 +62,6 @@ export default function ServicesSection() {
     );
 
     if (sectionRef.current) observer.observe(sectionRef.current);
-
     return () => {
       if (sectionRef.current) observer.unobserve(sectionRef.current);
     };
