@@ -29,8 +29,8 @@ export default function Sidebar() {
           <h2 className={styles.logo}>admin.</h2>
         </div>
         <ul className={styles['sidebar-menu']}>
-          <li className={pathname === '/admin/dashboard' ? styles.active : ''}>
-            <Link href="/admin/dashboard">
+          <li className={pathname === '/admin' ? styles.active : ''}>
+            <Link href="/admin">
               <RxDashboard className={styles.icon} />
               <span className={styles.linkText}>Dashboard</span>
             </Link>
