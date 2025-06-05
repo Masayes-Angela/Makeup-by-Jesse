@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import styles from '../styles/gallery.module.css'
 import { BiSolidEditAlt } from 'react-icons/bi'
 
@@ -13,6 +13,7 @@ export default function GallerySection() {
   const [isEditing, setIsEditing] = useState(false)
   const [message, setMessage] = useState('')
   const [imageToDelete, setImageToDelete] = useState(null)
+  const fileInputRef = useRef(null)
 
   useEffect(() => {
     if (message) {
@@ -58,6 +59,10 @@ export default function GallerySection() {
       setPreview(null)
       setIsUploading(false)
       setMessage('Image added.')
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
     }, 500)
   }
 
@@ -113,6 +118,7 @@ export default function GallerySection() {
               accept="image/*"
               onChange={handleImageChange}
               disabled={isUploading}
+              ref={fileInputRef}
             />
 
             {preview && (
