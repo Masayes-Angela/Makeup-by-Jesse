@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import styles from './settings.module.css';
+import { RiSettings5Fill } from "react-icons/ri";
+import { BiSolidEditAlt } from 'react-icons/bi';
 
 export default function Settings() {
   // User profile state
@@ -15,7 +17,7 @@ export default function Settings() {
   });
 
   // Password states
-  const [currentPassword, setCurrentPassword] = useState('•••••••••••••••');
+  const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -54,32 +56,39 @@ export default function Settings() {
   // Handle password submission
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
-    
-    // Basic validation
+
+    // Check if any fields are empty
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      setPasswordError("Please fill in all password fields.");
+      return;
+    }
+
+    // Check if passwords match
     if (newPassword !== confirmPassword) {
-      setPasswordError("Passwords don't match");
+      setPasswordError("Passwords don't match.");
       return;
     }
-    
+
+    // Check password length
     if (newPassword.length < 8) {
-      setPasswordError("Password must be at least 8 characters");
+      setPasswordError("Password must be at least 8 characters.");
       return;
     }
-    
+
     // Clear errors if validation passes
     setPasswordError('');
-    
+
     // In a real app, you would send this to your backend:
     console.log("Password change requested:", {
       currentPassword,
       newPassword
     });
-    
+
     // Reset password fields
+    setCurrentPassword('');
     setNewPassword('');
     setConfirmPassword('');
-    
-    // Show success message (in a real app)
+
     alert("Password changed successfully!");
   };
 
@@ -137,10 +146,12 @@ export default function Settings() {
 
   return (
     <div className={styles.settingsContainer}>
-      <div className={styles.header}>
-        <div className={styles.iconWrapper}>
-          <div className={styles.settingsIcon}></div>
-          <span>Settings</span>
+      <div className={styles['settings-heading']}>
+        <div className={styles.container}>
+          <div className={styles['icon-container']}>
+            <RiSettings5Fill />
+          </div>
+          <h1>Settings</h1>
         </div>
       </div>
 
@@ -161,15 +172,36 @@ export default function Settings() {
 
         {/* Personal Information Section */}
         <div className={styles.sectionCard}>
-          <div className={styles.sectionHeader}>
-            <h3>Personal Information</h3>
+        <div className={styles.sectionHeader}>
+          <h3>Personal Information</h3>
+
+          {isEditMode ? (
+            <div className={styles.headerActions}>
+              <button 
+                className={styles.saveButton}
+                onClick={handleEditSubmit}
+              >
+                Save
+              </button>
+              <button 
+                className={styles.cancelButton}
+                onClick={() => {
+                  setTempProfile({ ...profile });
+                  setIsEditMode(false);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
             <button 
               className={styles.editButton}
-              onClick={toggleEditMode}
+              onClick={() => setIsEditMode(true)}
             >
-              {isEditMode ? 'Save' : 'Edit'} {isEditMode ? '' : '✏️'}
+              Edit <BiSolidEditAlt className={styles.editIcon} />
             </button>
-          </div>
+          )}
+        </div>
 
           <div className={styles.infoGrid}>
             <div className={styles.infoItem}>
@@ -237,68 +269,47 @@ export default function Settings() {
               )}
             </div>
           </div>
-
-          {isEditMode && (
-            <div className={styles.editActions}>
-              <button 
-                className={styles.saveButton} 
-                onClick={handleEditSubmit}
-              >
-                Save Changes
-              </button>
-              <button 
-                className={styles.cancelButton} 
-                onClick={() => {
-                  setTempProfile({...profile});
-                  setIsEditMode(false);
-                }}
-              >
-                Cancel
-              </button>
-            </div>
-          )}
         </div>
 
         <div className={styles.twoColumnLayout}>
-          {/* Change Password Section */}
-          <div className={styles.sectionCard}>
-            <h3>Change Password</h3>
-            <form onSubmit={handlePasswordSubmit}>
-              <div className={styles.formGroup}>
-                <label>Current Password</label>
-                <input 
-                  type="password" 
-                  value={currentPassword} 
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  className={styles.passwordInput}
-                  disabled // In a real app, this would be enabled
-                />
-              </div>
-              
-              <div className={styles.formGroup}>
-                <label>New Password</label>
-                <input 
-                  type="password" 
-                  value={newPassword} 
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className={styles.passwordInput}
-                />
-              </div>
-              
-              <div className={styles.formGroup}>
-                <label>Confirm Password</label>
-                <input 
-                  type="password" 
-                  value={confirmPassword} 
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className={styles.passwordInput}
-                />
-                {passwordError && <p className={styles.errorText}>{passwordError}</p>}
-              </div>
-              
-              <button type="submit" className={styles.passwordButton}>Change Password</button>
-            </form>
-          </div>
+        {/* Change Password Section */}
+        <div className={styles.sectionCard}>
+          <h3>Change Password</h3>
+          <form onSubmit={handlePasswordSubmit}>
+            <div className={styles.formGroup}>
+              <label>Current Password</label>
+              <input 
+                type="password" 
+                value={currentPassword} 
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                className={styles.passwordInput}
+              />
+            </div>
+            
+            <div className={styles.formGroup}>
+              <label>New Password</label>
+              <input 
+                type="password" 
+                value={newPassword} 
+                onChange={(e) => setNewPassword(e.target.value)}
+                className={styles.passwordInput}
+              />
+            </div>
+            
+            <div className={styles.formGroup}>
+              <label>Confirm Password</label>
+              <input 
+                type="password" 
+                value={confirmPassword} 
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className={styles.passwordInput}
+              />
+              {passwordError && <p className={styles.errorText}>{passwordError}</p>}
+            </div>
+            
+            <button type="submit" className={styles.passwordButton}>Change Password</button>
+          </form>
+        </div>
 
           {/* Notifications Section */}
           <div className={styles.sectionCard}>
