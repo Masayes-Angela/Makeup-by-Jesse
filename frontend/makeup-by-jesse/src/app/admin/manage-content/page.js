@@ -4,7 +4,6 @@ import { useState } from 'react'
 import styles from './content.module.css'
 import { BiSolidEditAlt } from 'react-icons/bi'
 import ServicesAndPackages from './components/ServicesAndPackages'
-import GallerySection from './components/GallerySection'
 import ReviewsSection from './components/ReviewsSection'
 import ContactSection from './components/ContactSection'
 
@@ -15,8 +14,6 @@ export default function ManageWebsite() {
     switch (activeTab) {
       case 'services':
         return <ServicesAndPackages />
-      case 'gallery':
-        return <GallerySection />
       case 'reviews':
         return <ReviewsSection />
       case 'contacts':
@@ -36,9 +33,6 @@ export default function ManageWebsite() {
       <nav className={styles['mw-nav']}>
         <button onClick={() => setActiveTab('services')} className={activeTab === 'services' ? styles.active : ''}>
           Services & Packages
-        </button>
-        <button onClick={() => setActiveTab('gallery')} className={activeTab === 'gallery' ? styles.active : ''}>
-          Gallery
         </button>
         <button onClick={() => setActiveTab('reviews')} className={activeTab === 'reviews' ? styles.active : ''}>
           Reviews
