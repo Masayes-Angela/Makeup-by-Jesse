@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useUpdatePackageMutation } from "@/rtk/packageApi"
-import styles from "../../../manage-content/content.module.css"
+import styles from "../../../manage-content/styles/servicesandpackages.module.css"
 
 const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPackages }) => {
   const [isUpdating, setIsUpdating] = useState(false)
@@ -20,6 +20,13 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
     setUpdatedDescription(pkg.description)
     setPreviewImage(null)
   }, [pkg])
+
+  // Set preview image when entering update mode
+  useEffect(() => {
+    if (isUpdating && pkg.image_url) {
+      setPreviewImage(`http://localhost:8080${pkg.image_url}`)
+    }
+  }, [isUpdating, pkg.image_url])
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
@@ -39,15 +46,8 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
     setError(null)
 
     if (!updatedName || !updatedDescription) {
-      setError('All fields are required.')
+      setError("All fields are required.")
       return
-    }
-
-    setIsSubmitting(true)
-
-    const updateData = {
-      name: updatedName,
-      description: updatedDescription,
     }
 
     try {
@@ -56,7 +56,7 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
       formData.append("name", updatedName)
       formData.append("description", updatedDescription)
       formData.append("status", pkg.status || "ACTIVE")
-      
+
       if (imageFile) {
         formData.append("image", imageFile)
       }
@@ -83,36 +83,66 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
             id={`updateImage-${pkg.id}`}
             onChange={handleImageChange}
             disabled={isSubmitting}
+            className={styles.fileInput}
           />
 
           {previewImage && (
             <div className={styles["image-preview-container"]}>
-              <img src={previewImage} alt="Preview" className={styles["image-preview"]} />
+              <img src={previewImage || "/placeholder.svg"} alt="Preview" className={styles["image-preview"]} />
             </div>
           )}
 
+          <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px" }}>Package Name</div>
           <input
             type="text"
             value={updatedName}
             onChange={(e) => setUpdatedName(e.target.value)}
             disabled={isSubmitting}
             placeholder="Package name"
+            className={styles.serviceName}
           />
 
+          <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px", marginTop: "16px" }}>Description</div>
           <textarea
             value={updatedDescription}
             onChange={(e) => setUpdatedDescription(e.target.value)}
             disabled={isSubmitting}
             placeholder="Description"
             rows="3"
+            className={styles.serviceDescription}
           />
 
           <div className={styles["update-actions"]}>
-            <button className={styles.cancelButton} onClick={() => setIsUpdating(false)} disabled={isSubmitting}>
+            <button
+              style={{
+                padding: "8px 24px",
+                backgroundColor: "transparent",
+                color: "#1e1b4b",
+                border: "2px solid #1e1b4b",
+                borderRadius: "4px",
+                cursor: "pointer",
+                marginRight: "8px",
+                fontWeight: "600",
+              }}
+              onClick={() => setIsUpdating(false)}
+              disabled={isSubmitting}
+            >
               Cancel
             </button>
-            <button className={styles.saveButton} onClick={handleSave} disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : "Save"}
+            <button
+              style={{
+                padding: "8px 24px",
+                backgroundColor: "#1e1b4b",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontWeight: "600",
+              }}
+              onClick={handleSave}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </div>
@@ -126,7 +156,7 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
                 className={styles.packageImage}
                 onError={(e) => {
                   console.error("Image failed to load:", pkg.image_url)
-                  e.target.src = "/images/placeholder-package.jpg"
+                  e.target.src = "/placeholder.svg"
                   e.target.onerror = null // Prevent infinite error loop
                 }}
               />
@@ -137,13 +167,43 @@ const PackageItem = ({ package: pkg, isEditing, onDelete, isDeleting, refetchPac
             )}
           </div>
           <div className={styles.packageDetails}>
-            <h3 className={styles.packageName}>{pkg.name}</h3>
-            <p className={styles.packageDescription}>{pkg.description}</p>
+            <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px" }}>Package Name</div>
+            <div className={styles.serviceName}>{pkg.name}</div>
+
+            <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px", marginTop: "16px" }}>
+              Description
+            </div>
+            <div className={styles.serviceDescription}>{pkg.description}</div>
 
             {isEditing && (
-              <div className={styles['package-actions']}>
-                <button onClick={() => setIsUpdating(true)}>Update</button>
-                <button onClick={onDelete} disabled={isDeleting}>Delete</button>
+              <div style={{ display: "flex", gap: "8px", marginTop: "16px" }}>
+                <button
+                  style={{
+                    padding: "8px 24px",
+                    backgroundColor: "#1e1b4b",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => setIsUpdating(true)}
+                >
+                  Update
+                </button>
+                <button
+                  style={{
+                    padding: "8px 24px",
+                    backgroundColor: "#1e1b4b",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                  }}
+                  onClick={onDelete}
+                  disabled={isDeleting}
+                >
+                  Delete
+                </button>
               </div>
             )}
           </div>

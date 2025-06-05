@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useUpdateServiceMutation } from "@/rtk/serviceApi"
-import styles from "../../../manage-content/content.module.css"
+import styles from "../../../manage-content/styles/servicesandpackages.module.css"
 
 const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices }) => {
   const [isUpdating, setIsUpdating] = useState(false)
@@ -99,7 +99,7 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
   return (
     <div className={styles["service-item"]}>
       {isUpdating ? (
-        <div className={styles['package-update-form']}>
+        <div className={styles["package-update-form"]}>
           {error && <div className={styles.errorMessage}>{error}</div>}
 
           <input
@@ -109,15 +109,16 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
             id={`updateImage-${service.id}`}
             onChange={handleImageChange}
             disabled={isSubmitting}
+            className={styles.fileInput}
           />
 
           {previewImage && (
-            <div className={styles['image-preview-container']}>
-              <img src={previewImage || "/placeholder.svg"} alt="Preview" className={styles['image-preview']} />
+            <div className={styles["image-preview-container"]}>
+              <img src={previewImage || "/placeholder.svg"} alt="Preview" className={styles["image-preview"]} />
             </div>
           )}
 
-          <div style={{ color: '#6B7280', fontSize: '16px', marginBottom: '8px' }}>Service Name</div>
+          <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px" }}>Service Name</div>
           <input
             type="text"
             name={`updateName-${service.id}`}
@@ -129,7 +130,7 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
             className={styles.serviceName}
           />
 
-          <div style={{ color: '#6B7280', fontSize: '16px', marginBottom: '8px', marginTop: '16px' }}>Description</div>
+          <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px", marginTop: "16px" }}>Description</div>
           <textarea
             name={`updateDescription-${service.id}`}
             id={`updateDescription-${service.id}`}
@@ -141,37 +142,37 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
             className={styles.serviceDescription}
           />
 
-          <div className={styles['update-actions']}>
-            <button 
-              style={{ 
-                padding: '8px 24px', 
-                backgroundColor: 'transparent',
-                color: '#1e1b4b',
-                border: '2px solid #1e1b4b',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                marginRight: '8px',
-                fontWeight: '600'
-              }} 
-              onClick={() => setIsUpdating(false)} 
+          <div className={styles["update-actions"]}>
+            <button
+              style={{
+                padding: "8px 24px",
+                backgroundColor: "transparent",
+                color: "#1e1b4b",
+                border: "2px solid #1e1b4b",
+                borderRadius: "4px",
+                cursor: "pointer",
+                marginRight: "8px",
+                fontWeight: "600",
+              }}
+              onClick={() => setIsUpdating(false)}
               disabled={isSubmitting}
             >
               Cancel
             </button>
-            <button 
-              style={{ 
-                padding: '8px 24px', 
-                backgroundColor: '#1e1b4b',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontWeight: '600'
-              }} 
-              onClick={handleSave} 
+            <button
+              style={{
+                padding: "8px 24px",
+                backgroundColor: "#1e1b4b",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontWeight: "600",
+              }}
+              onClick={handleSave}
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Saving...' : 'Save Changes'}
+              {isSubmitting ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </div>
@@ -195,23 +196,42 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
             )}
           </div>
 
-          <div className={styles.serviceDetails}>
-            <label htmlFor="service-name" className={styles.serviceNameLabel}>
-              Service Name
-            </label>
-            <p className={styles.serviceName}>{service.name}</p>
+          <div className={styles.packageDetails}>
+            <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px" }}>Service Name</div>
+            <div className={styles.serviceName}>{service.name}</div>
 
-            <label htmlFor="service-description" className={styles.serviceNameLabel}>
+            <div style={{ color: "#6B7280", fontSize: "16px", marginBottom: "8px", marginTop: "16px" }}>
               Description
-            </label>
-            <p className={styles.serviceDescription}>{service.description || "No description available"}</p>
+            </div>
+            <div className={styles.serviceDescription}>{service.description || "No description available"}</div>
 
             {isEditing && (
-              <div className={styles["service-actions"]}>
-                <button className={styles.updateButton} onClick={() => setIsUpdating(true)}>
+              <div style={{ display: "flex", gap: "8px", marginTop: "16px" }}>
+                <button
+                  style={{
+                    padding: "8px 24px",
+                    backgroundColor: "#1e1b4b",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => setIsUpdating(true)}
+                >
                   Update
                 </button>
-                <button className={styles.deleteButton} onClick={onDelete} disabled={isDeleting}>
+                <button
+                  style={{
+                    padding: "8px 24px",
+                    backgroundColor: "#1e1b4b",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                  }}
+                  onClick={onDelete}
+                  disabled={isDeleting}
+                >
                   Delete
                 </button>
               </div>

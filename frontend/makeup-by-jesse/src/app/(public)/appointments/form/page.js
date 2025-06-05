@@ -2,18 +2,17 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { FaChevronDown } from 'react-icons/fa';
+import { FaChevronDown, FaChevronLeft } from 'react-icons/fa';
 import styles from './form.module.css';
-import { FaChevronLeft } from 'react-icons/fa';
 
 export default function AppointmentFormPage() {
   const [formData, setFormData] = useState({
     eventType: '',
     paymentMode: '',
     addressLine: '',
-    barangay: '',
+    HouseNumber: '',
     city: '',
-    province: '',
+    state: '',
     addressNote: '',
     message: '',
   });
@@ -56,23 +55,24 @@ export default function AppointmentFormPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setShowModal(true);
+    // Here, you can add logic to send `formData`, `selectedDate`, and `selectedTime` to your backend.
   };
 
   return (
     <section className={styles.wrapper}>
-    <div className={styles.fullTopRowWrapper}>
-    <div className={styles.topRow}>
-        <button className={styles.goBackBtn} onClick={() => router.push('/appointments')}>
+      <div className={styles.fullTopRowWrapper}>
+        <div className={styles.topRow}>
+          <button className={styles.goBackBtn} onClick={() => router.push('/appointments')}>
             <FaChevronLeft className={styles.iconLeft} style={{ marginRight: '0.5rem' }} />
             Go Back
-        </button>
+          </button>
 
-        <div className={styles.headingGroup}>
+          <div className={styles.headingGroup}>
             <h2 className={styles.heading}>Appointment Form</h2>
             <p className={styles.subheading}>Fill in Your Details to Schedule an Appointment</p>
+          </div>
         </div>
-    </div>
-    </div>
+      </div>
 
       <div className={styles.formWrapper}>
         <div className={styles.datetimeDisplay}>
@@ -131,13 +131,13 @@ export default function AppointmentFormPage() {
           <div className={styles.row}>
             <input
               type="text"
-              name="barangay"
-              placeholder="Barangay"
-              value={formData.barangay}
+              name="HouseNumber"
+              placeholder="House Number"
+              value={formData.HouseNumber}
               onChange={handleChange}
               className={styles.input}
               required
-              autoComplete="address-level3"
+              autoComplete="address-line2"
             />
             <input
               type="text"
@@ -151,9 +151,9 @@ export default function AppointmentFormPage() {
             />
             <input
               type="text"
-              name="province"
-              placeholder="Province"
-              value={formData.province}
+              name="state"
+              placeholder="State"
+              value={formData.state}
               onChange={handleChange}
               className={styles.input}
               required
@@ -187,23 +187,22 @@ export default function AppointmentFormPage() {
       </div>
 
       {showModal && (
-      <div className={styles.modalOverlay}>
-        <div className={styles.modal}>
-          <h3 className={styles.modalTitle}>Appointment Submitted!</h3>
-          <p className={styles.modalText}>We’ve received your details. We’ll contact you soon.</p>
-          <button
-            className={styles.closeBtn}
-            onClick={() => {
-              setShowModal(false);
-              router.push('/'); // or another page
-            }}
-          >
-            Close
-          </button>
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h3 className={styles.modalTitle}>Appointment Submitted!</h3>
+            <p className={styles.modalText}>We’ve received your details. We’ll contact you soon.</p>
+            <button
+              className={styles.closeBtn}
+              onClick={() => {
+                setShowModal(false);
+                router.push('/');
+              }}
+            >
+              Close
+            </button>
+          </div>
         </div>
-      </div>
-    )}
-
+      )}
     </section>
   );
 }
