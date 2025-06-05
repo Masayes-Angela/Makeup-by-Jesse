@@ -92,7 +92,7 @@ export default function ReviewsSection() {
               <p className={styles.reviewText}>{review.message}</p>
               <div className={styles.reviewer}>
                 <Image
-                  src={review.avatar_url || '/default.jpg'}
+                  src={review.avatar_url || '/no-profile-pic.jpg'}
                   alt={review.name}
                   width={40}
                   height={40}
@@ -166,7 +166,7 @@ export default function ReviewsSection() {
                           },
                           body: JSON.stringify({
                             name: 'Anonymous',
-                            avatar_url: '/default.jpg',
+                            avatar_url: '/no-profile-pic.jpg',
                             message: reviewText
                           })
                         });
