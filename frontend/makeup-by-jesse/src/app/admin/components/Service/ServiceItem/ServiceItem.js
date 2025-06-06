@@ -1,27 +1,27 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useUpdateServiceMutation } from "@/rtk/serviceApi"
+import { useUpdateServiceMutation, useDeleteServiceMutation } from "@/rtk/serviceApi"
 import styles from "../../../manage-content/styles/servicesandpackages.module.css"
 
-const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices }) => {
+const ServiceItem = ({ service, isEditing, refetchServices }) => {
   const [isUpdating, setIsUpdating] = useState(false)
   const [updatedName, setUpdatedName] = useState(service.name)
   const [updatedDescription, setUpdatedDescription] = useState(service.description || "")
   const [imageFile, setImageFile] = useState(null)
   const [previewImage, setPreviewImage] = useState(null)
   const [error, setError] = useState(null)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   const [updateService, { isLoading: isSubmitting }] = useUpdateServiceMutation()
+  const [deleteService, { isLoading: isDeleting }] = useDeleteServiceMutation()
 
-  // Update local state when service prop changes
   useEffect(() => {
     setUpdatedName(service.name)
     setUpdatedDescription(service.description || "")
     setPreviewImage(null)
   }, [service])
 
-  // Set preview image when entering update mode
   useEffect(() => {
     if (isUpdating && service.inspo) {
       setPreviewImage(service.inspo)
@@ -34,7 +34,6 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
 
     setImageFile(file)
 
-    // Create preview
     const reader = new FileReader()
     reader.onload = () => {
       setPreviewImage(reader.result)
@@ -59,7 +58,6 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
       }
 
       if (imageFile) {
-        // Convert image to base64
         const reader = new FileReader()
         reader.readAsDataURL(imageFile)
 
@@ -80,7 +78,6 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
           setError("Failed to read the image file")
         }
       } else {
-        // No new image, just update the name and status
         try {
           await updateService(updateData).unwrap()
           if (refetchServices) await refetchServices()
@@ -93,6 +90,18 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
     } catch (error) {
       console.error("Error processing update:", error)
       setError(`Failed to process update: ${error.message || "Unknown error"}`)
+    }
+  }
+
+  const handleDeleteConfirmed = async () => {
+    try {
+      await deleteService(service.id).unwrap()
+      if (refetchServices) await refetchServices()
+      setShowDeleteModal(false)
+    } catch (error) {
+      console.error("Delete failed:", error)
+      alert("Something went wrong while deleting.")
+      setShowDeleteModal(false)
     }
   }
 
@@ -229,7 +238,7 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
                     borderRadius: "4px",
                     cursor: "pointer",
                   }}
-                  onClick={onDelete}
+                  onClick={() => setShowDeleteModal(true)}
                   disabled={isDeleting}
                 >
                   Delete
@@ -238,6 +247,50 @@ const ServiceItem = ({ service, isEditing, onDelete, isDeleting, refetchServices
             )}
           </div>
         </>
+      )}
+
+      {showDeleteModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <h3>Are you sure you want to delete?</h3>
+            <p>This action cannot be undone.</p>
+            <div style={{ marginTop: "20px", display: "flex", gap: "12px", justifyContent: "center" }}>
+              <button
+                onClick={handleDeleteConfirmed}
+                disabled={isDeleting}
+                style={{
+                  backgroundColor: "#282C4B",
+                  color: "white",
+                  padding: "8px 20px",
+                  border: "none",
+                  borderRadius: "4px",
+                  fontWeight: "500",
+                  fontFamily: "Roboto",
+                  letterSpacing: ".6px",
+                  cursor: "pointer",
+                }}
+              >
+                {isDeleting ? "Deleting..." : "Yes, Delete"}
+              </button>
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                style={{
+                  backgroundColor: "#e9e7ee",
+                  color: "#282C4B",
+                  padding: "8px 20px",
+                  border: "none",
+                  borderRadius: "4px",
+                  fontWeight: "500",
+                  fontFamily: "Roboto",
+                  letterSpacing: ".6px",
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )
