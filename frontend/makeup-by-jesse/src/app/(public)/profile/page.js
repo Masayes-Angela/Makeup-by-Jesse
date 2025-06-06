@@ -209,10 +209,12 @@ export default function ManageProfilePage() {
           </div>
           {imageError && <p className={styles.errorMsg}>{imageError}</p>}
         </div>
-        <div className={styles.userInfo}>
-          <h3>{user.full_name}</h3>
-          <p>{user.email}</p>
-        </div>
+        {user && (
+          <div className={styles.userInfo}>
+            <h3>{user.full_name}</h3>
+            <p>{user.email}</p>
+          </div>
+        )}
       </div>
 
       <div className={styles.cardWrapper}>
