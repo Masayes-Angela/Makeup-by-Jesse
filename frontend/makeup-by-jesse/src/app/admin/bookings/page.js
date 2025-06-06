@@ -1,121 +1,124 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import styles from "./bookings.module.css"
-import { HiBookmark } from "react-icons/hi2"
-import { MdOutlineEventNote } from "react-icons/md"
-import { IoLocationSharp } from "react-icons/io5"
+import { useState } from 'react';
+import styles from './bookings.module.css';
+import { HiBookmark } from 'react-icons/hi2';
+import { MdOutlineEventNote } from 'react-icons/md';
+import { IoLocationSharp } from 'react-icons/io5';
 import {
   useGetAllAppointmentsQuery,
   useGetAppointmentStatsQuery,
   useUpdateAppointmentStatusMutation,
-} from "@/rtk/appointmentsApi"
+} from '@/rtk/appointmentsApi';
 
 export default function ManageBookings() {
-  const [activeTab, setActiveTab] = useState("Pending")
-  const [selectedBooking, setSelectedBooking] = useState(null)
-  const [actionType, setActionType] = useState("") // 'Accept' or 'Decline'
+  const [activeTab, setActiveTab] = useState('Pending');
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [actionType, setActionType] = useState('');
 
-  // RTK Query hooks
-  const { data: appointments = [], isLoading, error, refetch } = useGetAllAppointmentsQuery()
-  const { data: stats = {} } = useGetAppointmentStatsQuery()
-  const [updateAppointmentStatus] = useUpdateAppointmentStatusMutation()
+  const { data: appointments = [], isLoading, error, refetch } = useGetAllAppointmentsQuery();
+  const { data: stats = {} } = useGetAppointmentStatsQuery();
+  const [updateAppointmentStatus] = useUpdateAppointmentStatusMutation();
 
-  const openDetailsModal = (booking) => setSelectedBooking(booking)
+  const openDetailsModal = (booking) => setSelectedBooking(booking);
   const closeModal = () => {
-    setSelectedBooking(null)
-    setActionType("")
-  }
+    setSelectedBooking(null);
+    setActionType('');
+  };
 
   const openConfirmation = (booking, type) => {
-    setSelectedBooking(booking)
-    setActionType(type)
-  }
+    setSelectedBooking(booking);
+    setActionType(type);
+  };
 
   const confirmAction = async () => {
-    if (!selectedBooking) return
+    if (!selectedBooking) return;
 
     try {
-      const newStatus = actionType === "Accept" ? "Confirmed" : "Declined"
-      await updateAppointmentStatus({
-        id: selectedBooking.id,
-        status: newStatus,
-      }).unwrap()
-
-      // Refetch data to update the UI
-      refetch()
-      closeModal()
+      const newStatus = actionType === 'Accept' ? 'Confirmed' : 'Declined';
+      await updateAppointmentStatus({ id: selectedBooking.id, status: newStatus }).unwrap();
+      refetch();
+      closeModal();
     } catch (error) {
-      console.error("Failed to update appointment status:", error)
-      alert("Failed to update appointment status. Please try again.")
+      console.error('Failed to update appointment status:', error);
+      alert('Failed to update appointment status. Please try again.');
     }
-  }
+  };
 
-  const tabs = ["Pending", "Confirmed", "Declined", "Cancelled"]
-  const filteredBookings = appointments.filter((b) => b.status === activeTab)
+  const tabs = ['Pending', 'Confirmed', 'Declined', 'Cancelled'];
+  const filteredBookings = appointments.filter((b) => b.status === activeTab);
 
-  // Format date for display
   const formatDate = (dateString) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    })
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
+const formatTime = (timeString) => {
+  if (!timeString) return '—';
+  if (timeString.toLowerCase().includes('am') || timeString.toLowerCase().includes('pm')) {
+    return timeString.toUpperCase();
   }
 
-  // Format time for display
-  const formatTime = (timeString) => {
-    return timeString // Assuming time is already in correct format
-  }
+  const [hours, minutes] = timeString.split(':');
+  const date = new Date();
+  date.setHours(+hours);
+  date.setMinutes(+minutes);
+  return date.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
+};
 
   if (isLoading) {
     return (
       <div className={styles.bookingsWrapper}>
-        <div className={styles["bookings-heading"]}>
+        <div className={styles['bookings-heading']}>
           <div className={styles.container}>
-            <div className={styles["icon-container"]}>
+            <div className={styles['icon-container']}>
               <HiBookmark />
             </div>
             <h1>Manage Bookings</h1>
           </div>
         </div>
-        <div style={{ padding: "2rem", textAlign: "center" }}>Loading appointments...</div>
+        <div style={{ padding: '2rem', textAlign: 'center' }}>Loading appointments...</div>
       </div>
-    )
+    );
   }
 
   if (error) {
     return (
       <div className={styles.bookingsWrapper}>
-        <div className={styles["bookings-heading"]}>
+        <div className={styles['bookings-heading']}>
           <div className={styles.container}>
-            <div className={styles["icon-container"]}>
+            <div className={styles['icon-container']}>
               <HiBookmark />
             </div>
             <h1>Manage Bookings</h1>
           </div>
         </div>
-        <div style={{ padding: "2rem", textAlign: "center", color: "red" }}>
+        <div style={{ padding: '2rem', textAlign: 'center', color: 'red' }}>
           Error loading appointments: {error.message}
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <div className={styles.bookingsWrapper}>
-      {/* Heading */}
-      <div className={styles["bookings-heading"]}>
+      <div className={styles['bookings-heading']}>
         <div className={styles.container}>
-          <div className={styles["icon-container"]}>
+          <div className={styles['icon-container']}>
             <HiBookmark />
           </div>
           <h1>Manage Bookings</h1>
         </div>
       </div>
 
-      {/* Quick Stats */}
       <h2 className={styles.statsHeading}>Quick Stats</h2>
       <div className={styles.statsContainer}>
         <div className={styles.statBox}>
@@ -128,12 +131,11 @@ export default function ManageBookings() {
         </div>
       </div>
 
-      {/* Tabs */}
       <div className={styles.tabsContainer}>
         {tabs.map((tab) => (
           <button
             key={tab}
-            className={`${styles.tabButton} ${activeTab === tab ? styles.activeTab : ""}`}
+            className={`${styles.tabButton} ${activeTab === tab ? styles.activeTab : ''}`}
             onClick={() => setActiveTab(tab)}
           >
             {tab}
@@ -141,15 +143,14 @@ export default function ManageBookings() {
         ))}
       </div>
 
-      {/* Booking Cards */}
       <div className={styles.cardsGrid}>
         {filteredBookings.length === 0 ? (
-          <div style={{ padding: "2rem", textAlign: "center", color: "#666" }}>
+          <div style={{ padding: '2rem', textAlign: 'center', color: '#666' }}>
             No {activeTab.toLowerCase()} appointments found.
           </div>
         ) : (
           filteredBookings.map((booking) =>
-            activeTab === "Pending" ? (
+            activeTab === 'Pending' ? (
               <div className={styles.card} key={booking.id}>
                 <div className={styles.cardHeader}>
                   <strong className={styles.clientName}>{booking.full_name}</strong>
@@ -171,10 +172,10 @@ export default function ManageBookings() {
                   </div>
                 </div>
                 <div className={styles.actions}>
-                  <button className={styles.accept} onClick={() => openConfirmation(booking, "Accept")}>
+                  <button className={styles.accept} onClick={() => openConfirmation(booking, 'Accept')}>
                     Accept Booking
                   </button>
-                  <button className={styles.decline} onClick={() => openConfirmation(booking, "Decline")}>
+                  <button className={styles.decline} onClick={() => openConfirmation(booking, 'Decline')}>
                     Decline
                   </button>
                 </div>
@@ -212,16 +213,14 @@ export default function ManageBookings() {
                   </div>
                 </div>
               </div>
-            ),
+            )
           )
         )}
       </div>
 
-      {/* Detail or Confirmation Modal */}
       {selectedBooking && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
-            {/* X Close Icon */}
             {!actionType && (
               <button className={styles.closeIcon} onClick={closeModal}>
                 ×
@@ -230,7 +229,7 @@ export default function ManageBookings() {
 
             {actionType ? (
               <>
-                <h3 className={styles.modalTitle}>Confirm {actionType === "Accept" ? "Acceptance" : "Rejection"}</h3>
+                <h3 className={styles.modalTitle}>Confirm {actionType === 'Accept' ? 'Acceptance' : 'Rejection'}</h3>
                 <p>Are you sure you want to {actionType.toLowerCase()} this booking?</p>
                 <div className={styles.modalActions}>
                   <button className={styles.closeBtn} onClick={closeModal}>
@@ -244,49 +243,26 @@ export default function ManageBookings() {
             ) : (
               <div className={styles.detailsContent}>
                 <h3 className={styles.modalTitle}>Booking Details</h3>
-                <p>
-                  <strong>Full Name:</strong> {selectedBooking.full_name}
-                </p>
-                <p>
-                  <strong>Email:</strong> {selectedBooking.email}
-                </p>
-                <p>
-                  <strong>Event:</strong> {selectedBooking.event_type}
-                </p>
-                <p>
-                  <strong>Mode of Payment:</strong> {selectedBooking.payment_mode}
-                </p>
-                <p>
-                  <strong>Date:</strong> {formatDate(selectedBooking.appointment_date)}
-                </p>
-                <p>
-                  <strong>Time:</strong> {formatTime(selectedBooking.appointment_time)}
-                </p>
-                <p>
-                  <strong>Address:</strong> {selectedBooking.address_line}, {selectedBooking.barangay},{" "}
-                  {selectedBooking.city}, {selectedBooking.province}
-                </p>
+                <p><strong>Full Name:</strong> {selectedBooking.full_name}</p>
+                <p><strong>Email:</strong> {selectedBooking.email}</p>
+                <p><strong>Event:</strong> {selectedBooking.event_type}</p>
+                <p><strong>Mode of Payment:</strong> {selectedBooking.payment_mode}</p>
+                <p><strong>Date:</strong> {formatDate(selectedBooking.appointment_date)}</p>
+                <p><strong>Time:</strong> {formatTime(selectedBooking.appointment_time)}</p>
+                <p><strong>Address:</strong> {selectedBooking.address_line}, {selectedBooking.barangay}, {selectedBooking.city}, {selectedBooking.province}</p>
                 {selectedBooking.address_note && (
-                  <p>
-                    <strong>Address Note:</strong> {selectedBooking.address_note}
-                  </p>
+                  <p><strong>Address Note:</strong> {selectedBooking.address_note}</p>
                 )}
                 {selectedBooking.message && (
-                  <p>
-                    <strong>Message:</strong> {selectedBooking.message}
-                  </p>
+                  <p><strong>Message:</strong> {selectedBooking.message}</p>
                 )}
-                <p>
-                  <strong>Status:</strong> {selectedBooking.status}
-                </p>
-                <p>
-                  <strong>Created:</strong> {new Date(selectedBooking.created_at).toLocaleString()}
-                </p>
+                <p><strong>Status:</strong> {selectedBooking.status}</p>
+                <p><strong>Created:</strong> {new Date(selectedBooking.created_at).toLocaleString()}</p>
               </div>
             )}
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -1,19 +1,20 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
 import styles from '../styles/Hero.module.css';
 import Image from 'next/image';
 import { RiBookFill } from 'react-icons/ri';
 
 export default function HeroSection() {
   const router = useRouter();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const handleBookNowClick = () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      router.push('/auth/login'); // Redirect to login first
+    if (!isLoggedIn) {
+      router.push('/auth/login?redirect=/appointments');
     } else {
-      router.push('/appointments'); // Proceed to booking
+      router.push('/appointments');
     }
   };
 
