@@ -1,29 +1,42 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import Calendar from "./components/Calendar"
-import TimeSelector from "./components/TimeSelector"
-import styles from "../styles/appointments.module.css"
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Calendar from './components/Calendar'
+import TimeSelector from './components/TimeSelector'
+import styles from '../styles/appointments.module.css'
+import { useSelector } from 'react-redux'
+import { FaSpinner } from 'react-icons/fa'
 
 export default function AppointmentPage() {
   const [selectedDate, setSelectedDate] = useState(null)
   const [selectedTime, setSelectedTime] = useState(null)
+  const [isRedirecting, setIsRedirecting] = useState(false)
   const router = useRouter()
 
-  // Function to handle appointment booking
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !isLoggedIn) {
+      router.push('/auth/login?redirect=/appointments')
+    }
+  }, [isLoggedIn, router])
+
+  if (!isLoggedIn) return null
+
   const handleGetAppointment = () => {
     if (!selectedDate || !selectedTime) {
-      alert("Please select both a date and time for your appointment.")
+      alert('Please select both a date and time for your appointment.')
       return
     }
 
-    // Store selected date and time in localStorage
-    localStorage.setItem("selectedDate", selectedDate)
-    localStorage.setItem("selectedTime", selectedTime)
+    setIsRedirecting(true)
+    localStorage.setItem('selectedDate', selectedDate)
+    localStorage.setItem('selectedTime', selectedTime)
 
-    // Navigate to the appointment form page
-    router.push("/appointments/form")
+    setTimeout(() => {
+      router.push('/appointments/form')
+    }, 600)
   }
 
   return (
@@ -42,13 +55,22 @@ export default function AppointmentPage() {
         </div>
       </div>
 
-      {selectedDate && selectedTime && (
-        <div className={styles.buttonContainer}>
-          <button className={styles.getAppointmentBtn} onClick={handleGetAppointment}>
-            Get Appointment
-          </button>
-        </div>
-      )}
+      <div className={styles.buttonContainer}>
+        <button
+          className={styles.getAppointmentBtn}
+          onClick={handleGetAppointment}
+          disabled={!selectedDate || !selectedTime || isRedirecting}
+        >
+          {isRedirecting ? (
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <FaSpinner className={styles.spinner} />
+              Loading
+            </span>
+          ) : (
+            'Get Appointment'
+          )}
+        </button>
+      </div>
     </section>
   )
 }

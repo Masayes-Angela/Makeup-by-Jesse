@@ -1,8 +1,9 @@
 .pageWrapper {
-  padding: 7rem 2rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  height: 100dvh;
+  padding: 7rem 2rem 2rem;
+  min-height: 105dvh;
+  scroll-margin-top: 8rem;
 }
 
 .headingSection {
@@ -26,7 +27,7 @@
 .container {
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* 👈 ensure vertical top alignment */
+  align-items: flex-start;
   gap: 2.5rem;
   flex-wrap: wrap;
   padding: 0;
@@ -46,42 +47,6 @@
   justify-content: flex-start; /* align to top */
 }
 
-.pageWrapper {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-}
-
-.headingSection {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.title {
-  font-size: 32px;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.subtext {
-  font-size: 16px;
-  color: #666;
-}
-
-.container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  margin-bottom: 30px;
-}
-
-.calendarWrap,
-.timeWrap {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
 .buttonContainer {
   display: flex;
   justify-content: center;
@@ -89,10 +54,11 @@
 }
 
 .getAppointmentBtn {
-  background-color: #4ac7c5;
+  border-radius: 8px;
+  border: 2px solid #5BA9B1;
+  background: #6DC0C8;
+  box-shadow: 0px 4px 10px 0px rgba(186, 186, 186, 0.50);
   color: white;
-  border: none;
-  border-radius: 4px;
   padding: 12px 30px;
   font-size: 16px;
   font-weight: 500;
@@ -101,7 +67,29 @@
 }
 
 .getAppointmentBtn:hover {
-  background-color: #3ab8b6;
+  background-color: #67b7be;
+}
+
+.getAppointmentBtn:disabled {
+  background-color: #dee0e4;
+  border: 2px solid #adafb3;
+  color: #919396;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  font-size: 1.2rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 768px) {
