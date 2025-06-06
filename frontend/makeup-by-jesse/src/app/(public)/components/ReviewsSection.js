@@ -8,27 +8,28 @@ import { useRef, useEffect, useState } from 'react';
 import { LuPencil } from 'react-icons/lu';
 import { createPortal } from 'react-dom';
 import { BsCheckCircle } from 'react-icons/bs';
+import { useSelector } from 'react-redux';
 
 export default function ReviewsSection() {
   const cardRefs = useRef([]);
   const [visibleCards, setVisibleCards] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [reviewText, setReviewText] = useState('');
   const [step, setStep] = useState(1);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const [reviews, setReviews] = useState([]);
+
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     const fetchReviews = async () => {
       try {
         const res = await fetch('http://localhost:8080/api/reviews/published');
         const data = await res.json();
-        console.log('Published reviews:', data);
         setReviews(data);
-        setVisibleCards(new Array(data.length).fill(false)); // initialize animation state
+        setVisibleCards(new Array(data.length).fill(false));
       } catch (err) {
         console.error('Failed to fetch reviews:', err);
       }
@@ -37,12 +38,9 @@ export default function ReviewsSection() {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
-
     const observer = new IntersectionObserver(
       entries => {
-        entries.forEach((entry, index) => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             setVisibleCards(prev => {
               const updated = [...prev];
@@ -69,6 +67,44 @@ export default function ReviewsSection() {
       return;
     }
     setStep(2);
+  };
+
+  const handleSubmitReview = async () => {
+    if (!reviewText.trim()) {
+      alert("Please write something in your review.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const token = localStorage.getItem('userToken'); // still okay here
+      const res = await fetch('http://localhost:8080/api/reviews', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: user.full_name,
+          avatar_url: user.avatar_url || '/no-profile-pic.jpg',
+          message: reviewText,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to submit review');
+      }
+
+      setShowModal(false);
+      setShowSuccess(true);
+      setReviewText('');
+      setStep(1);
+    } catch (err) {
+      alert('Something went wrong: ' + err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -111,10 +147,7 @@ export default function ReviewsSection() {
 
       {isLoggedIn && (
         <div className={styles.writeReviewBox}>
-          <button
-            className={styles.writeReviewBtn}
-            onClick={() => setShowModal(true)}
-          >
+          <button className={styles.writeReviewBtn} onClick={() => setShowModal(true)}>
             <LuPencil className={styles.writeIcon} />
             Write a Review
           </button>
@@ -155,36 +188,7 @@ export default function ReviewsSection() {
                   <button onClick={() => setStep(1)} className={styles.cancelBtn}>Back</button>
                   <button
                     className={styles.submitBtn}
-                    onClick={async () => {
-                      setIsSubmitting(true);
-
-                      try {
-                        const res = await fetch('http://localhost:8080/api/reviews', {
-                          method: 'POST',
-                          headers: {
-                            'Content-Type': 'application/json'
-                          },
-                          body: JSON.stringify({
-                            name: 'Anonymous',
-                            avatar_url: '/no-profile-pic.jpg',
-                            message: reviewText
-                          })
-                        });
-
-                        if (!res.ok) {
-                          throw new Error('Failed to submit review');
-                        }
-
-                        setShowModal(false);
-                        setShowSuccess(true);
-                        setReviewText('');
-                        setStep(1);
-                      } catch (err) {
-                        alert('Something went wrong: ' + err.message);
-                      } finally {
-                        setIsSubmitting(false);
-                      }
-                    }}
+                    onClick={handleSubmitReview}
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? 'Submitting...' : 'Submit'}
