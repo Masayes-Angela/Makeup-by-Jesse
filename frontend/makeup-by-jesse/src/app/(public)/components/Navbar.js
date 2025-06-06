@@ -1,120 +1,100 @@
-'use client'
+'use client';
 
-import Link from 'next/link'
-import { useEffect, useState, useRef } from 'react'
-import { usePathname } from 'next/navigation'
-import styles from '../styles/Navbar.module.css'
-import ScrollLink from '../components/NavLink'
-import { IoPersonSharp, IoLogOutSharp } from 'react-icons/io5'
-import { LuBook } from 'react-icons/lu'
+import Link from 'next/link';
+import { useEffect, useState, useRef } from 'react';
+import { usePathname } from 'next/navigation';
+import styles from '../styles/Navbar.module.css';
+import ScrollLink from '../components/NavLink';
+import { IoPersonSharp, IoLogOutSharp } from 'react-icons/io5';
+import { LuBook } from 'react-icons/lu';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '@/rtk/authSlice';
+import { persistor } from '@/rtk/store';
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [activeLink, setActiveLink] = useState('')
-  const [isMounted, setIsMounted] = useState(false)
-  const [showDropdown, setShowDropdown] = useState(false)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [profileImage, setProfileImage] = useState('/no-profile-pic.jpg')
+  const [activeLink, setActiveLink] = useState('');
+  const [isMounted, setIsMounted] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const pathname = usePathname()
-  const dropdownRef = useRef(null)
+  const pathname = usePathname();
+  const dropdownRef = useRef(null);
+  const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('userRole')
-    localStorage.removeItem('userProfileImage')
-    window.location.href = '/'
-  }
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const user = useSelector((state) => state.auth.user);
+
+  const handleLogout = async () => {
+    dispatch(logout());
+    await persistor.purge();     // 🧼 clear persisted state
+    localStorage.clear();        // 🧼 optional: clear anything else
+    window.location.href = '/';  // 🔄 force redirect and reset
+  };
 
   useEffect(() => {
-    setIsMounted(true)
-    const token = localStorage.getItem('token')
-    const savedImage = localStorage.getItem('userProfileImage')
-    setIsLoggedIn(!!token)
-    if (savedImage) setProfileImage(savedImage)
+    setIsMounted(true);
 
     if (pathname !== '/') {
-      setActiveLink('')
-      return
+      setActiveLink('');
+      return;
     }
 
     const handleScroll = () => {
-      const sections = ['hero', 'services', 'about', 'gallery', 'reviews', 'contact']
+      const sections = ['hero', 'services', 'about', 'gallery', 'reviews', 'contact'];
       for (const id of sections) {
-        const section = document.getElementById(id)
+        const section = document.getElementById(id);
         if (section) {
-          const rect = section.getBoundingClientRect()
+          const rect = section.getBoundingClientRect();
           if (rect.top <= 120 && rect.bottom >= 120) {
-            setActiveLink(id)
-            break
+            setActiveLink(id);
+            break;
           }
         }
       }
-    }
+    };
 
-    window.addEventListener('scroll', handleScroll)
-    handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [pathname])
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [pathname]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowDropdown(false)
+        setShowDropdown(false);
       }
-    }
+    };
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
-    setShowDropdown(false)
-    setIsMenuOpen(false)
-  }, [pathname])
+    setShowDropdown(false);
+    setIsMenuOpen(false);
+  }, [pathname]);
 
-  if (!isMounted) return null
+  if (!isMounted) return null;
 
   return (
     <nav className={styles.navbar}>
-      {/* Left: Logo */}
       <div className={styles.logo}>
         Makeup <span>by Jesse</span>
       </div>
 
-      {/* Center: Nav links (visible on desktop) */}
       <div className={styles.centerNav}>
         <ul className={styles.navLinks}>
+          {['hero', 'services', 'about', 'gallery', 'reviews', 'contact'].map((id) => (
+            <li key={id} className={styles.navItem}>
+              <ScrollLink id={id} label={id.charAt(0).toUpperCase() + id.slice(1)} activeClass={styles.active} currentActive={activeLink} />
+            </li>
+          ))}
           <li className={styles.navItem}>
-            <ScrollLink id="hero" label="Home" activeClass={styles.active} currentActive={activeLink} />
-          </li>
-          <li className={styles.navItem}>
-            <ScrollLink id="services" label="Services" activeClass={styles.active} currentActive={activeLink} />
-          </li>
-          <li className={styles.navItem}>
-            <ScrollLink id="about" label="About Me" activeClass={styles.active} currentActive={activeLink} />
-          </li>
-          <li className={styles.navItem}>
-            <ScrollLink id="gallery" label="Gallery" activeClass={styles.active} currentActive={activeLink} />
-          </li>
-          <li className={styles.navItem}>
-            <ScrollLink id="reviews" label="Reviews" activeClass={styles.active} currentActive={activeLink} />
-          </li>
-          <li className={styles.navItem}>
-            <ScrollLink id="contact" label="Contact" activeClass={styles.active} currentActive={activeLink} />
-          </li>
-          <li className={styles.navItem}>
-            <Link
-              href="/faqs"
-              className={`${styles.link} ${pathname === '/faqs' ? styles.active : ''}`}
-            >
-              FAQS
-            </Link>
+            <Link href="/faqs" className={`${styles.link} ${pathname === '/faqs' ? styles.active : ''}`}>FAQS</Link>
           </li>
         </ul>
       </div>
 
-      {/* Right: Auth buttons + Hamburger */}
       <div className={styles.rightSide}>
         {isLoggedIn ? (
           <div className={styles.authArea}>
@@ -125,28 +105,26 @@ export default function Navbar() {
               </span>
             </Link>
 
-          <div className={styles.profileWrapper} ref={dropdownRef}>
+            <div className={styles.profileWrapper} ref={dropdownRef}>
             <img
-              src={profileImage}
-              alt="User"
-              className={styles.userIcon}
-              onClick={() => setShowDropdown(!showDropdown)}
-            />
-            {showDropdown && (
-              <ul className={styles.dropdown}>
-                <li>
-                  <IoPersonSharp />
-                  <Link href="/profile" className={styles.dropdownLink}>
-                    Manage Profile
-                  </Link>
-                </li>
-                <li onClick={handleLogout}>
-                  <IoLogOutSharp />
-                  <span className={styles.dropdownLink}>Logout</span>
-                </li>
-              </ul>
-            )}
-          </div>
+              src={user?.avatar_url || '/no-profile-pic.jpg'}
+                alt="User"
+                className={styles.userIcon}
+                onClick={() => setShowDropdown(!showDropdown)}
+              />
+              {showDropdown && (
+                <ul className={styles.dropdown}>
+                  <li>
+                    <IoPersonSharp />
+                    <Link href="/profile" className={styles.dropdownLink}>Manage Profile</Link>
+                  </li>
+                  <li onClick={handleLogout}>
+                    <IoLogOutSharp />
+                    <span className={styles.dropdownLink}>Logout</span>
+                  </li>
+                </ul>
+              )}
+            </div>
           </div>
         ) : (
           <div className={styles.authBtns}>
@@ -155,7 +133,6 @@ export default function Navbar() {
           </div>
         )}
 
-        {/* Hamburger toggle (mobile only) */}
         <button className={styles.menuToggle} onClick={() => setIsMenuOpen(!isMenuOpen)}>
           <div className={styles.bar}></div>
           <div className={styles.bar}></div>
@@ -163,34 +140,18 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Slide-down nav links for mobile */}
       <div className={`${styles.navWrapper} ${isMenuOpen ? styles.open : ''}`}>
         <ul className={`${styles.navLinks} ${isMenuOpen ? styles.open : ''}`}>
+          {['hero', 'services', 'about', 'gallery', 'reviews', 'contact'].map((id) => (
+            <li key={id} className={styles.navItem}>
+              <ScrollLink id={id} label={id.charAt(0).toUpperCase() + id.slice(1)} activeClass={styles.active} currentActive={activeLink} onClick={() => setIsMenuOpen(false)} />
+            </li>
+          ))}
           <li className={styles.navItem}>
-            <ScrollLink id="hero" label="Home" activeClass={styles.active} currentActive={activeLink} onClick={() => setIsMenuOpen(false)} />
-          </li>
-          <li className={styles.navItem}>
-            <ScrollLink id="services" label="Services" activeClass={styles.active} currentActive={activeLink} onClick={() => setIsMenuOpen(false)} />
-          </li>
-          <li className={styles.navItem}>
-            <ScrollLink id="about" label="About Me" activeClass={styles.active} currentActive={activeLink} onClick={() => setIsMenuOpen(false)} />
-          </li>
-          <li className={styles.navItem}>
-            <ScrollLink id="gallery" label="Gallery" activeClass={styles.active} currentActive={activeLink} onClick={() => setIsMenuOpen(false)} />
-          </li>
-          <li className={styles.navItem}>
-            <ScrollLink id="reviews" label="Reviews" activeClass={styles.active} currentActive={activeLink} onClick={() => setIsMenuOpen(false)} />
-          </li>
-          <li className={styles.navItem}>
-            <ScrollLink id="contact" label="Contact" activeClass={styles.active} currentActive={activeLink} onClick={() => setIsMenuOpen(false)} />
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/faqs" onClick={() => setIsMenuOpen(false)} className={`${styles.link} ${pathname === '/faqs' ? styles.active : ''}`}>
-              FAQS
-            </Link>
+            <Link href="/faqs" onClick={() => setIsMenuOpen(false)} className={`${styles.link} ${pathname === '/faqs' ? styles.active : ''}`}>FAQS</Link>
           </li>
         </ul>
       </div>
     </nav>
-  )
+  );
 }

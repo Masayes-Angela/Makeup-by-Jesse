@@ -28,7 +28,7 @@
   font-size: 2rem;
   color: #6DC0C8;
   font-weight: 700;
-  margin: 1.5rem 0 2rem;
+  margin-bottom: 1rem;
   text-align: left;
 }
 
@@ -41,18 +41,27 @@
 }
 
 .subtextTop {
-  font-size: 0.9rem;
+  font-size: 14px;
   font-weight: 600;
   color: #282C4B;
   text-align: left;
+  margin-bottom: 1.4rem;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1rem;
   width: 100%;
   max-width: 380px;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 400;
+  font-family: inherit;
+  margin-bottom: 0.4rem;
+  color: #9FA0A7;
 }
 
 .inputGroup {
@@ -62,10 +71,10 @@
 
 .input {
   width: 100%;
-  padding: 1rem;
+  padding: .9rem 1rem;
   border-radius: 8px;
   border: none;
-  font-size: .95rem;
+  font-size: 14px;
   font-family: 'Roboto', sans-serif;
   background: #FFF;
   box-shadow: 0px 4px 12px 0px rgba(218, 218, 218, 0.25);
@@ -92,15 +101,15 @@
 }
 
 .passwordNote {
-  font-size: 0.8rem;
+  font-size: 12.5px;
   color: #9FA0A7;
-  margin-top: -0.5rem;
+  margin-top: -0.1rem;
   text-align: left;
   padding-left: 0.2rem;
 }
 
 .signupBtn {
-  margin-top: 1rem;
+  margin-top: 8px;
   padding: 1rem;
   background: #6DC0C8;
   border: none;
@@ -120,7 +129,7 @@
 }
 
 .login {
-  margin: 2rem 0 1rem;
+  margin: 1rem 0;
   font-size: 0.85rem;
   color: #9FA0A7;
   text-align: center;
@@ -140,7 +149,7 @@
 .error {
   font-size: 0.8rem;
   color: red;
-  margin-top: -0.5rem;
+  margin-top: -0.1rem;
   text-align: left;
   padding-left: 0.2rem;
 }
@@ -155,19 +164,44 @@
   box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
-  .left {
-    display: none;
-  }
+.skeletonInput {
+  height: 44px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  margin-bottom: 1rem;
+}
 
-  .right {
-    width: 100%;
-  }
+.skeletonButton {
+  height: 44px;
+  width: 100%;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
 
-  .container {
-    justify-content: center;
-    padding: 2rem 1rem;
-  }
+.btnContent {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+/* Spinner animation */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.loading {
+  opacity: 0.9;
+  pointer-events: none;
 }
 
 /* Modal */
@@ -236,6 +270,21 @@
   color: #bababa;
 }
 
+@media (max-width: 768px) {
+  .left {
+    display: none;
+  }
+
+  .right {
+    width: 100%;
+  }
+
+  .container {
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {
@@ -261,22 +310,10 @@
   100% { transform: scale(1); }
 }
 
-.skeletonInput {
-  height: 44px;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  margin-bottom: 1rem;
-}
-
-.skeletonButton {
-  height: 44px;
-  width: 100%;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes shimmer {
