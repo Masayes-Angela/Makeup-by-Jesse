@@ -8,8 +8,6 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { BsCheckCircleFill } from "react-icons/bs";
 import Link from "next/link";
 import { useRegisterUserMutation } from "@/rtk/authApi";
-import { useDispatch } from "react-redux";
-import { setCredentials } from "@/rtk/authSlice";
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -26,7 +24,6 @@ export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
-  const dispatch = useDispatch();
   const [registerUser] = useRegisterUserMutation();
 
   const handleChange = (e) => {
@@ -76,13 +73,7 @@ export default function SignUpPage() {
 
     try {
       const { confirmPassword, ...userData } = formData;
-      const result = await registerUser(userData).unwrap();
-
-      // Save to Redux auth state (will auto-persist)
-      dispatch(setCredentials({
-        token: result.token,
-        user: result.user,
-      }));
+      await registerUser(userData).unwrap();
 
       setFormData({
         full_name: "",
@@ -95,7 +86,7 @@ export default function SignUpPage() {
       setShowModal(true);
       setTimeout(() => {
         setShowModal(false);
-        router.push("/"); // or redirect somewhere else
+        router.push("/auth/login");
       }, 2000);
     } catch (err) {
       console.error("Registration error:", err);
@@ -116,6 +107,7 @@ export default function SignUpPage() {
 
             <div className={styles.formWrapper}>
               <form className={styles.form} onSubmit={handleSubmit}>
+                {/* Full Name */}
                 <div className={styles.inputGroup}>
                   <label htmlFor="full_name" className={styles.label}>Full Name</label>
                   <input
@@ -129,6 +121,7 @@ export default function SignUpPage() {
                   />
                 </div>
 
+                {/* Email */}
                 <div className={styles.inputGroup}>
                   <label htmlFor="email" className={styles.label}>Email Address</label>
                   <input
@@ -142,6 +135,7 @@ export default function SignUpPage() {
                   />
                 </div>
 
+                {/* Contact Number */}
                 <div className={styles.inputGroup}>
                   <label htmlFor="contact_number" className={styles.label}>Contact Number</label>
                   <input
@@ -155,6 +149,7 @@ export default function SignUpPage() {
                   />
                 </div>
 
+                {/* Password */}
                 <div className={styles.inputGroup}>
                   <label htmlFor="password" className={styles.label}>Password</label>
                   <div className={styles.passwordWrapper}>
@@ -173,6 +168,7 @@ export default function SignUpPage() {
                   </div>
                 </div>
 
+                {/* Confirm Password */}
                 <div className={styles.inputGroup}>
                   <label htmlFor="confirmPassword" className={styles.label}>Confirm Password</label>
                   <div className={styles.passwordWrapper}>

@@ -123,7 +123,9 @@ const formatTime = (timeString) => {
       <div className={styles.statsContainer}>
         <div className={styles.statBox}>
           <p className={styles.statLabel}>Total Bookings</p>
-          <h2 className={styles.statValue}>{stats.total || 0}</h2>
+          <h2 className={styles.statValue}>
+            {appointments.filter((b) => b.status === 'Confirmed').length}
+          </h2>
         </div>
         <div className={styles.statBox}>
           <p className={styles.statLabel}>Pending Approval</p>
