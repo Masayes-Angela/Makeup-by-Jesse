@@ -134,22 +134,22 @@
 /* Widen the Full Name column */
 .reviewTable th:nth-child(1),
 .reviewTable td:nth-child(1) {
-  width: 220px;
-  max-width: 220px;
+  width: 240px;
+  max-width: 240px;
 }
 
 /* Widen the Email column */
 .reviewTable th:nth-child(2),
 .reviewTable td:nth-child(2) {
-  width: 260px;
-  max-width: 260px;
+  width: 400px;
+  max-width: 400px;
   word-break: break-word;
 }
 
 .reviewTable th:nth-child(3),
 .reviewTable td:nth-child(3) {
-  width: 300px;
-  max-width: 300px;
+  width: 100px;
+  max-width: 100px;
 }
 
 .reviewContent {

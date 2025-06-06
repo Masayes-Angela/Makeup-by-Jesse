@@ -115,7 +115,6 @@ export default function AdminReviews() {
         <thead>
           <tr>
             <th>Received By</th>
-            <th>Avatar</th>
             <th>Review</th>
             <th>Action</th>
           </tr>
@@ -131,7 +130,6 @@ export default function AdminReviews() {
             return (
               <tr key={r.id}>
                 <td>{r.name}</td>
-                <td>{r.avatar_url}</td>
                 <td>
                   <div className={styles.reviewContent}>
                     {reviewText}
